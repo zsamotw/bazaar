@@ -4,6 +4,8 @@ import * as ROUTES from '../../constants/routes'
 import SignInPage from '../SignInPage'
 import SignUpPage from '../SignUpPage'
 import Navigation from '../Navigation'
+import HomePage from '../HomePage'
+import WelcomePage from '../WelcomePage'
 
 function App() {
   return (
@@ -11,13 +13,10 @@ function App() {
       <Router>
         <div>
           <Navigation />
-          {/* <Route exact path={ROUTES.LANDING} component={LandingPage} /> */}
+          <Route exact path={ROUTES.WELCOME} component={WelcomePage} />
+          <Route path={ROUTES.HOME} component={HomePage} />
           <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} /> */}
-          {/* <Route path={ROUTES.HOME} component={HomePage} /> */}
-          {/* <Route path={ROUTES.ACCOUNT} component={AccountPage} /> */}
-          {/* <Route path={ROUTES.ADMIN} component={AdminPage} /> */}
         </div>
       </Router>
     </div>
