@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { addAuthUser } from '../actions'
-import { handleLogin } from '../action-handlers'
+import { handleAddAuthUser } from '../action-handlers'
 import { Record } from 'immutable'
 
 const makeinitialState = Record({
