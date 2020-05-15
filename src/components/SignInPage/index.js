@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
 import { ADD_AUTH_USER } from '../../store/actions'
+import AppInput from '../AppInput'
 
 const SignInPage = () => (
   <div>
@@ -13,12 +16,24 @@ const SignInPage = () => (
   </div>
 )
 
+const useStyles = makeStyles({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  errorBar: {
+    color: 'red',
+  },
+})
+
 const SignInFormBase = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState({})
 
   const history = useHistory()
+
+  const classes = useStyles()
 
   const resetState = () => {
     setEmail('')
@@ -40,29 +55,44 @@ const SignInFormBase = props => {
     event.preventDefault()
   }
 
-  const isInvalid = password === '' || email === ''
+  const isInvalid = !password || !email
+
+  const emailInputProps = {
+    id: 'email-input',
+    label: 'Email',
+    variant: 'outlined',
+    name: 'email',
+    value: email,
+    onChange: event => setEmail(event.target.value),
+    type: 'text',
+    placeholder: 'Type your email...',
+  }
+  const passwordInputProps = {
+    id: 'password-input',
+    label: 'Password',
+    variant: 'outlined',
+    name: 'password',
+    value: password,
+    onChange: event => setPassword(event.target.value),
+    type: 'password',
+    placeholder: 'Type your password...',
+  }
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        name="email"
-        value={email}
-        onChange={event => setEmail(event.target.value)}
-        type="text"
-        placeholder="Email Address"
-      />
-      <input
-        name="password"
-        value={password}
-        onChange={event => setPassword(event.target.value)}
-        type="password"
-        placeholder="Password"
-      />
-      <button type="submit" disabled={isInvalid}>
-        Sign Up
-      </button>
+    <form onSubmit={onSubmit} className={classes.form}>
+      {AppInput(emailInputProps)}
+      {AppInput(passwordInputProps)}
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        size="large"
+        disabled={isInvalid}
+      >
+        Sign In
+      </Button>
 
-      {error && <p>{error.message}</p>}
+      <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
   )
 }
