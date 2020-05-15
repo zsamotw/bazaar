@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
+import { ADD_AUTH_USER } from '../../store/actions'
 
 const SignUpPage = () => (
   <div>
@@ -32,6 +34,7 @@ const SignUpFormBase = props => {
     props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        props.addAuthUser(authUser)
         resetState()
         history.push(ROUTES.HOME)
       })
@@ -93,7 +96,16 @@ const SignUpLink = () => (
   </p>
 )
 
-const SignUpForm = withFirebase(SignUpFormBase)
+const mapDispatchToState = dispatch => {
+  return {
+    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser })),
+  }
+}
+
+const SignUpForm = connect(
+  null,
+  mapDispatchToState
+)(withFirebase(SignUpFormBase))
 
 export default SignUpPage
 

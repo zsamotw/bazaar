@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
+import { ADD_AUTH_USER } from '../../store/actions'
 
 const SignInPage = () => (
   <div>
@@ -28,6 +30,7 @@ const SignInFormBase = props => {
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
         resetState()
+        props.addAuthUser(authUser)
         history.push(ROUTES.HOME)
       })
       .catch(err => {
@@ -64,7 +67,16 @@ const SignInFormBase = props => {
   )
 }
 
-const SignInForm = withFirebase(SignInFormBase)
+const mapDispatchToState = dispatch => {
+  return {
+    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser })),
+  }
+}
+
+const SignInForm = connect(
+  null,
+  mapDispatchToState
+)(withFirebase(SignInFormBase))
 
 export default SignInPage
 

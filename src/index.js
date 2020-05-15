@@ -1,15 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
+import { Provider } from 'react-redux'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 import Firebase, { FirebaseContext } from './components/Firebase'
+import store from './store/store'
 
 ReactDOM.render(
   <React.StrictMode>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App />
-    </FirebaseContext.Provider>
+    <Provider store={store['store']}>
+      <FirebaseContext.Provider value={new Firebase()}>
+        <App />
+      </FirebaseContext.Provider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
