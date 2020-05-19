@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
 import { ADD_AUTH_USER } from '../../store/actions'
+import AppInput from '../AppInput'
 
 const SignUpPage = () => (
   <div>
@@ -13,6 +17,16 @@ const SignUpPage = () => (
   </div>
 )
 
+const useStyles = makeStyles({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  errorBar: {
+    color: 'red',
+  },
+})
+
 const SignUpFormBase = props => {
   const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
@@ -20,7 +34,11 @@ const SignUpFormBase = props => {
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
 
+  const { register, handleSubmit, errors } = useForm()
+
   const history = useHistory()
+
+  const classes = useStyles()
 
   const resetState = () => {
     setUserName('')
@@ -45,47 +63,74 @@ const SignUpFormBase = props => {
     event.preventDefault()
   }
 
-  const isInvalid =
-    passwordOne !== passwordTwo ||
-    passwordOne === '' ||
-    email === '' ||
-    userName === ''
+  const userNameInputProps = {
+    id: 'userName-input',
+    label: 'User Name',
+    variant: 'outlined',
+    name: 'userName',
+    value: userName,
+    onChange: event => setUserName(event.target.value),
+    type: 'text',
+    placeholder: 'Type your name...',
+    register: register({
+      required: 'Required',
+    }),
+    error: errors.userName,
+  }
+  const emailInputProps = {
+    id: 'email-input',
+    label: 'Email',
+    variant: 'outlined',
+    name: 'email',
+    value: email,
+    onChange: event => setEmail(event.target.value),
+    type: 'text',
+    placeholder: 'Type your email...',
+    register: register({
+      required: 'Required',
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: 'Invalid email address',
+      },
+    }),
+    error: errors.email,
+  }
+  const passwordOneInputProps = {
+    id: 'passwordOne-input',
+    label: 'Password',
+    variant: 'outlined',
+    name: 'passwordOne',
+    value: passwordOne,
+    onChange: event => setPasswordOne(event.target.value),
+    type: 'password',
+    placeholder: 'Type your password...',
+    register: register({ required: 'Required' }),
+    error: errors.passwordOne,
+  }
+  const passwordTwoInputProps = {
+    id: 'passwordTwo-input',
+    label: 'Password Confirmation',
+    variant: 'outlined',
+    name: 'passwordTwo',
+    value: passwordTwo,
+    onChange: event => setPasswordTwo(event.target.value),
+    type: 'password',
+    placeholder: 'Confirm your password...',
+    register: register({ required: 'Required' }),
+    error: errors.passwordTwo,
+  }
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        name="username"
-        value={userName}
-        onChange={event => setUserName(event.target.value)}
-        type="text"
-        placeholder="Full Name"
-      />
-      <input
-        name="email"
-        value={email}
-        onChange={event => setEmail(event.target.value)}
-        type="text"
-        placeholder="Email Address"
-      />
-      <input
-        name="passwordOne"
-        value={passwordOne}
-        onChange={event => setPasswordOne(event.target.value)}
-        type="password"
-        placeholder="Password"
-      />
-      <input
-        name="passwordTwo"
-        value={passwordTwo}
-        onChange={event => setPasswordTwo(event.target.value)}
-        type="password"
-        placeholder="Confirm Password"
-      />
-      <button type="submit" disabled={isInvalid}>
-        Sign Up
-      </button>
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      {AppInput(userNameInputProps)}
+      {AppInput(emailInputProps)}
+      {AppInput(passwordOneInputProps)}
+      {AppInput(passwordTwoInputProps)}
+      <Button variant="contained" color="primary" type="submit" size="large">
+        Sign In
+      </Button>
 
-      {error && <p>{error.message}</p>}
+      <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
   )
 }
