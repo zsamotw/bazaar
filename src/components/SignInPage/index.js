@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
+import { useForm } from 'react-hook-form'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
@@ -31,6 +32,8 @@ const SignInFormBase = props => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState({})
 
+  const { register, handleSubmit, errors } = useForm()
+
   const history = useHistory()
 
   const classes = useStyles()
@@ -55,8 +58,6 @@ const SignInFormBase = props => {
     event.preventDefault()
   }
 
-  const isInvalid = !password || !email
-
   const emailInputProps = {
     id: 'email-input',
     label: 'Email',
@@ -66,6 +67,14 @@ const SignInFormBase = props => {
     onChange: event => setEmail(event.target.value),
     type: 'text',
     placeholder: 'Type your email...',
+    register: register({
+      required: 'Required',
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: 'Invalid email address',
+      },
+    }),
+    error: errors.email,
   }
   const passwordInputProps = {
     id: 'password-input',
@@ -76,19 +85,15 @@ const SignInFormBase = props => {
     onChange: event => setPassword(event.target.value),
     type: 'password',
     placeholder: 'Type your password...',
+    register: register({ required: 'Required' }),
+    error: errors.password,
   }
 
   return (
-    <form onSubmit={onSubmit} className={classes.form}>
+    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       {AppInput(emailInputProps)}
       {AppInput(passwordInputProps)}
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        size="large"
-        disabled={isInvalid}
-      >
+      <Button variant="contained" color="primary" type="submit" size="large">
         Sign In
       </Button>
 

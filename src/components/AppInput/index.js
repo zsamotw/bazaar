@@ -13,7 +13,19 @@ const useStyles = makeStyles({
 
 export default function AppInput(props) {
   const classes = useStyles()
-  const { id, label, variant, name, value, onChange, type, placeholder } = props
+  const {
+    id,
+    label,
+    variant,
+    name,
+    value,
+    onChange,
+    type,
+    placeholder,
+    register,
+    error,
+  } = props
+
   return (
     <TextField
       id={id}
@@ -25,6 +37,9 @@ export default function AppInput(props) {
       onChange={onChange}
       type={type}
       placeholder={placeholder}
+      inputRef={register}
+      error={!!error}
+      helperText={error ? error.message : ''}
     />
   )
 }
