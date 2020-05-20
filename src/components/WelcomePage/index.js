@@ -1,6 +1,7 @@
 import React from 'react'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
+import Grid from '@material-ui/core/Grid'
 import SignInPage from '../SignInPage'
 import SignUpPage from '../SignUpPage'
 
@@ -11,8 +12,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`welcome-page-tabpanel-${index}`}
+      aria-labelledby={`welcome-page-tab-${index}`}
       {...other}
     >
       {value === index && <>{children}</>}
@@ -22,8 +23,8 @@ function TabPanel(props) {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `welcome-page-tab-${index}`,
+    'aria-controls': `welcome-page-tabpanel-${index}`,
   }
 }
 
@@ -35,23 +36,26 @@ const WelcomePage = () => {
   }
 
   return (
-    <>
-      <h1>App Welcome Page</h1>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="simple tabs example"
-      >
-        <Tab label="Sign In" {...a11yProps(0)} />
-        <Tab label="Sign Up" {...a11yProps(1)} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <SignInPage />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <SignUpPage />
-      </TabPanel>
-    </>
+    <div>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <h1>App Welcome Page</h1>
+        </Grid>
+        <Grid item xs={2} md={4} lg={7} />
+        <Grid item xs={8} md={4} lg={3}>
+          <Tabs value={value} onChange={handleChange} aria-label="Welcome Page">
+            <Tab label="Sign In" {...a11yProps(0)} />
+            <Tab label="Sign Up" {...a11yProps(1)} />
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            <SignInPage />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <SignUpPage />
+          </TabPanel>
+        </Grid>
+      </Grid>
+    </div>
   )
 }
 

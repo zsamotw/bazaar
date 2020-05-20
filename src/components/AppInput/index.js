@@ -5,9 +5,6 @@ import { makeStyles } from '@material-ui/core'
 const useStyles = makeStyles({
   root: {
     marginBottom: '10px',
-    '&:last-of-type': {
-      marginBottom: 0,
-    },
   },
 })
 

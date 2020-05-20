@@ -10,12 +10,10 @@ function App() {
   return (
     <div>
       <Router>
-        <div>
-          <Route exact path={ROUTES.WELCOME} component={WelcomePage} />
-          <Route path={ROUTES.HOME} component={HomePage} />
-          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-        </div>
+        <Route exact path={ROUTES.WELCOME} component={WelcomePage} />
+        <Route path={ROUTES.HOME} component={HomePage} />
+        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       </Router>
     </div>
   )
