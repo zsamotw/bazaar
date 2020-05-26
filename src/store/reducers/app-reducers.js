@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { Record } from 'immutable'
 import { handleAddAuthUser } from '../action-handlers'
-import { ADD_AUTH_USER } from '../actions'
+import { SET_AUTH_USER } from '../actions'
 
 const makeInitialState = Record({
   currentUser: null
@@ -10,7 +10,7 @@ const makeInitialState = Record({
 const initialState = makeInitialState()
 
 const appReducers = createReducer(initialState, {
-  [ADD_AUTH_USER.type]: (state, action) => {
+  [SET_AUTH_USER.type]: (state, action) => {
     return handleAddAuthUser(state, action.payload)
   }
 })

@@ -1,12 +1,17 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import MenuItem from '@material-ui/core/MenuItem'
-import Menu from '@material-ui/core/Menu'
+import React, { useContext } from 'react'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { SET_AUTH_USER } from '../../store/actions'
+import { FirebaseContext } from '../Firebase'
+import * as ROUTES from '../../constants/routes'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,11 +25,14 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function MenuAppBar() {
+function MenuAppBar(props) {
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
+
+  const firebase = useContext(FirebaseContext)
+  const history = useHistory()
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -32,6 +40,12 @@ export default function MenuAppBar() {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    firebase.doSignOut()
+    props.setAuthUser(null)
+    history.push(ROUTES.WELCOME)
   }
 
   return (
@@ -61,7 +75,7 @@ export default function MenuAppBar() {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -69,3 +83,11 @@ export default function MenuAppBar() {
     </div>
   )
 }
+
+const mapDispatchToState = dispatch => {
+  return {
+    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+  }
+}
+
+export default connect(null, mapDispatchToState)(MenuAppBar)

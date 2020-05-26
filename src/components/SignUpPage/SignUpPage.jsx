@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { withFirebase } from '../Firebase'
 
 import * as ROUTES from '../../constants/routes'
-import { ADD_AUTH_USER } from '../../store/actions'
+import { SET_AUTH_USER } from '../../store/actions'
 import AppInput from '../AppInput'
 
 const SignUpPage = () => (
@@ -63,7 +63,7 @@ const SignUpFormBase = props => {
               const currentUser = props.firebase.transformFirebaseUserToStateUser(
                 loggedUser
               )
-              props.addAuthUser(currentUser)
+              props.setAuthUser(currentUser)
               history.push(ROUTES.HOME)
             })
         }
@@ -147,7 +147,7 @@ const SignUpFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser }))
+    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
   }
 }
 
