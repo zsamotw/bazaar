@@ -13,19 +13,11 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`welcome-page-tabpanel-${index}`}
-      aria-labelledby={`welcome-page-tab-${index}`}
       {...other}
     >
       {value === index && <>{children}</>}
     </div>
   )
-}
-
-function a11yProps(index) {
-  return {
-    id: `welcome-page-tab-${index}`,
-    'aria-controls': `welcome-page-tabpanel-${index}`,
-  }
 }
 
 const WelcomePage = () => {
@@ -39,13 +31,13 @@ const WelcomePage = () => {
     <div>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-          <h1>App Welcome Page</h1>
+          <h1>App App</h1>
         </Grid>
         <Grid item xs={2} md={4} lg={7} />
         <Grid item xs={8} md={4} lg={3}>
-          <Tabs value={value} onChange={handleChange} aria-label="Welcome Page">
-            <Tab label="Sign In" {...a11yProps(0)} />
-            <Tab label="Sign Up" {...a11yProps(1)} />
+          <Tabs value={value} onChange={handleChange}>
+            <Tab label="Sign In" />
+            <Tab label="Sign Up" />
           </Tabs>
           <TabPanel value={value} index={0}>
             <SignInPage />

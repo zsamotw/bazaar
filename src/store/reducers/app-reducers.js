@@ -4,15 +4,15 @@ import { handleAddAuthUser } from '../action-handlers'
 import { ADD_AUTH_USER } from '../actions'
 
 const makeInitialState = Record({
-  currentUser: null,
+  currentUser: null
 })
 
 const initialState = makeInitialState()
 
 const appReducers = createReducer(initialState, {
   [ADD_AUTH_USER.type]: (state, action) => {
-    return handleAddAuthUser(initialState, action.payload)
-  },
+    return handleAddAuthUser(state, action.payload)
+  }
 })
 
 export default appReducers

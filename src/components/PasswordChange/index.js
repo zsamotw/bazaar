@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { withFirebase } from '../Firebase';
+import React, { useState } from 'react'
+import { withFirebase } from '../Firebase'
 
 const PasswordChangeForm = props => {
-
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
@@ -14,7 +13,6 @@ const PasswordChangeForm = props => {
   }
 
   const onSubmit = event => {
-
     props.firebase
       .doPasswordUpdate(passwordOne)
       .then(() => {
@@ -22,17 +20,12 @@ const PasswordChangeForm = props => {
       })
       .catch(err => {
         setError(err)
-      });
+      })
 
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  const isInvalid =
-    passwordOne !== passwordTwo || passwordOne === '';
+  const isInvalid = passwordOne !== passwordTwo || passwordOne === ''
 
   return (
     <form onSubmit={onSubmit}>
@@ -52,11 +45,11 @@ const PasswordChangeForm = props => {
       />
       <button disabled={isInvalid} type="submit">
         Reset My Password
-        </button>
+      </button>
 
       {error && <p>{error.message}</p>}
     </form>
   )
 }
 
-export default withFirebase(PasswordChangeForm);
+export default withFirebase(PasswordChangeForm)

@@ -9,7 +9,7 @@ import store from './store/store'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store['store']}>
+    <Provider store={store.store}>
       <FirebaseContext.Provider value={new Firebase()}>
         <App />
       </FirebaseContext.Provider>

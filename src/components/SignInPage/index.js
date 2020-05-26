@@ -12,7 +12,7 @@ import AppInput from '../AppInput'
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
+    <h1>Sign In</h1>
     <SignInForm />
   </div>
 )
@@ -20,11 +20,11 @@ const SignInPage = () => (
 const useStyles = makeStyles({
   form: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   errorBar: {
-    color: 'red',
-  },
+    color: 'red'
+  }
 })
 
 const SignInFormBase = props => {
@@ -43,19 +43,20 @@ const SignInFormBase = props => {
     setPassword('')
   }
 
-  const onSubmit = event => {
+  const onSubmit = () => {
     props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(authUser => {
+      .then(firebaseUser => {
+        const storeUser = props.firebase.transformFirebaseUserToStateUser(
+          firebaseUser
+        )
         resetState()
-        props.addAuthUser(authUser)
+        props.addAuthUser(storeUser)
         history.push(ROUTES.HOME)
       })
       .catch(err => {
         setError(err)
       })
-
-    event.preventDefault()
   }
 
   const emailInputProps = {
@@ -71,10 +72,10 @@ const SignInFormBase = props => {
       required: 'Required',
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address',
-      },
+        message: 'Invalid email address'
+      }
     }),
-    error: errors.email,
+    error: errors.email
   }
   const passwordInputProps = {
     id: 'password-input',
@@ -86,7 +87,7 @@ const SignInFormBase = props => {
     type: 'password',
     placeholder: 'Type your password...',
     register: register({ required: 'Required' }),
-    error: errors.password,
+    error: errors.password
   }
 
   return (
@@ -104,7 +105,7 @@ const SignInFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser })),
+    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser }))
   }
 }
 

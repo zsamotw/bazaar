@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
-    marginBottom: '10px',
-  },
+    marginBottom: '20px'
+  }
 })
 
 export default function AppInput(props) {
@@ -20,7 +20,7 @@ export default function AppInput(props) {
     type,
     placeholder,
     register,
-    error,
+    error
   } = props
 
   return (

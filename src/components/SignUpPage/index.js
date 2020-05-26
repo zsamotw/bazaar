@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
@@ -12,7 +12,7 @@ import AppInput from '../AppInput'
 
 const SignUpPage = () => (
   <div>
-    <h1>SignUp</h1>
+    <h1>Sign Up</h1>
     <SignUpForm />
   </div>
 )
@@ -20,15 +20,15 @@ const SignUpPage = () => (
 const useStyles = makeStyles({
   form: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   errorBar: {
-    color: 'red',
-  },
+    color: 'red'
+  }
 })
 
 const SignUpFormBase = props => {
-  const [userName, setUserName] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
@@ -41,26 +41,36 @@ const SignUpFormBase = props => {
   const classes = useStyles()
 
   const resetState = () => {
-    setUserName('')
+    setDisplayName('')
     setEmail('')
     setPasswordOne('')
     setPasswordTwo('')
     setError({})
   }
 
-  const onSubmit = event => {
+  const onSubmit = () => {
     props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-        props.addAuthUser(authUser)
-        resetState()
-        history.push(ROUTES.HOME)
+      .then(firebaseUser => {
+        if (firebaseUser) {
+          const loggedUser = props.firebase.doGetCurrentUser()
+          loggedUser
+            .updateProfile({
+              displayName
+            })
+            .then(() => {
+              resetState()
+              const currentUser = props.firebase.transformFirebaseUserToStateUser(
+                loggedUser
+              )
+              props.addAuthUser(currentUser)
+              history.push(ROUTES.HOME)
+            })
+        }
       })
       .catch(err => {
         setError(err)
       })
-
-    event.preventDefault()
   }
 
   const userNameInputProps = {
@@ -68,14 +78,14 @@ const SignUpFormBase = props => {
     label: 'User Name',
     variant: 'outlined',
     name: 'userName',
-    value: userName,
-    onChange: event => setUserName(event.target.value),
+    value: displayName,
+    onChange: event => setDisplayName(event.target.value),
     type: 'text',
     placeholder: 'Type your name...',
     register: register({
-      required: 'Required',
+      required: 'Required'
     }),
-    error: errors.userName,
+    error: errors.userName
   }
   const emailInputProps = {
     id: 'email-input',
@@ -90,10 +100,10 @@ const SignUpFormBase = props => {
       required: 'Required',
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address',
-      },
+        message: 'Invalid email address'
+      }
     }),
-    error: errors.email,
+    error: errors.email
   }
   const passwordOneInputProps = {
     id: 'passwordOne-input',
@@ -105,7 +115,7 @@ const SignUpFormBase = props => {
     type: 'password',
     placeholder: 'Type your password...',
     register: register({ required: 'Required' }),
-    error: errors.passwordOne,
+    error: errors.passwordOne
   }
   const passwordTwoInputProps = {
     id: 'passwordTwo-input',
@@ -117,7 +127,7 @@ const SignUpFormBase = props => {
     type: 'password',
     placeholder: 'Confirm your password...',
     register: register({ required: 'Required' }),
-    error: errors.passwordTwo,
+    error: errors.passwordTwo
   }
 
   return (
@@ -135,15 +145,9 @@ const SignUpFormBase = props => {
   )
 }
 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
-)
-
 const mapDispatchToState = dispatch => {
   return {
-    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser })),
+    addAuthUser: authUser => dispatch(ADD_AUTH_USER({ payload: authUser }))
   }
 }
 
@@ -154,4 +158,4 @@ const SignUpForm = connect(
 
 export default SignUpPage
 
-export { SignUpForm, SignUpLink }
+export { SignUpForm }

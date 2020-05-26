@@ -9,7 +9,7 @@ const config = {
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 }
 
 class Firebase {
@@ -31,6 +31,31 @@ class Firebase {
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email)
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password)
+
+  doGetCurrentUser = () => firebase.auth().currentUser
+
+  doOnAuthStateChange = () => firebase.auth().onAuthStateChanged
+
+  // Utils
+
+  transformFirebaseUserToStateUser = firebaseUser => {
+    const { user } = firebaseUser
+    const userProperties = [
+      'displayName',
+      'email',
+      'emailVerified',
+      'isAnonymous',
+      'photoURL',
+      'providerId',
+      'refreshToken',
+      'uid',
+      'isAdmin'
+    ]
+
+    return userProperties.reduce((obj, prop) => {
+      return prop in user ? { ...obj, [prop]: user[prop] } : obj
+    }, {})
+  }
 }
 
 export default Firebase
