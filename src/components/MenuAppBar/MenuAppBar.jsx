@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import { SET_AUTH_USER } from '../../store/actions'
 import { FirebaseContext } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
+import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,9 +44,14 @@ function MenuAppBar(props) {
   }
 
   const handleLogout = () => {
-    firebase.doSignOut()
-    props.setAuthUser(null)
-    history.push(ROUTES.WELCOME)
+    firebase
+      .doSignOut()
+      .then(() => {
+        props.setAuthUser(null)
+        setAuthUserInLocalStorage(null)
+        history.push(ROUTES.WELCOME)
+      })
+      .catch(() => {})
   }
 
   return (

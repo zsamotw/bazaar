@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { withFirebase } from '../Firebase'
+import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 import * as ROUTES from '../../constants/routes'
 import { SET_AUTH_USER } from '../../store/actions'
@@ -40,7 +41,7 @@ const SignUpFormBase = props => {
 
   const classes = useStyles()
 
-  const resetState = () => {
+  const resetFormState = () => {
     setDisplayName('')
     setEmail('')
     setPasswordOne('')
@@ -59,11 +60,12 @@ const SignUpFormBase = props => {
               displayName
             })
             .then(() => {
-              resetState()
+              resetFormState()
               const currentUser = props.firebase.transformFirebaseUserToStateUser(
                 loggedUser
               )
               props.setAuthUser(currentUser)
+              setAuthUserInLocalStorage(currentUser)
               history.push(ROUTES.HOME)
             })
         }

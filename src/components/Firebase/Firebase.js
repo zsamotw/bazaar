@@ -36,6 +36,16 @@ class Firebase {
 
   doOnAuthStateChange = () => firebase.auth().onAuthStateChanged
 
+  onAuthUserListener = (next, fallback) => {
+    this.doOnAuthStateChange(authUser => {
+      if (authUser) {
+        next(authUser)
+      } else {
+        fallback()
+      }
+    })
+  }
+
   // Utils
 
   transformFirebaseUserToStateUser = firebaseUser => {

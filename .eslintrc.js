@@ -36,7 +36,7 @@ module.exports = {
 
   },
 
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'react-hooks'],
 
   rules: {
 
@@ -51,6 +51,10 @@ module.exports = {
     'semi': ['error', 'never'],
 
     "react/jsx-props-no-spreading": "off",
+
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
     
   },
 

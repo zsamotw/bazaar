@@ -7,6 +7,7 @@ import SignUpPage from '../SignUpPage'
 import WelcomePage from '../WelcomePage'
 import PrivateRoute from '../PrivateRoute'
 import PublicRoute from '../PublicRoute'
+import withAuthentication from '../Session'
 
 function App() {
   return (
@@ -21,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default withAuthentication(App)
