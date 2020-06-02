@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+// import AccountCircle from '@material-ui/icons/AccountCircle'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -26,6 +26,11 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const AccountCircle = props => {
+  const { content } = props
+  return <div style={{ textTransform: 'uppercase' }}>{content}</div>
+}
+
 function MenuAppBar(props) {
   const classes = useStyles()
 
@@ -34,6 +39,8 @@ function MenuAppBar(props) {
 
   const firebase = useContext(FirebaseContext)
   const history = useHistory()
+
+  const { currentUser } = props
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -63,15 +70,11 @@ function MenuAppBar(props) {
           </Typography>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
-              <AccountCircle />
+              <AccountCircle content={currentUser.displayName.charAt(0)} />
             </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
