@@ -5,10 +5,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-// import AccountCircle from '@material-ui/icons/AccountCircle'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { SET_AUTH_USER } from '../../store/actions'
 import { FirebaseContext } from '../Firebase'
 import * as ROUTES from '../../constants/routes'
@@ -46,6 +45,11 @@ function MenuAppBar(props) {
     setAnchorEl(event.currentTarget)
   }
 
+  const handleNavigateAccount = () => {
+    history.push(ROUTES.HOME_ACCOUNT)
+    setAnchorEl(null)
+  }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -66,7 +70,12 @@ function MenuAppBar(props) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            App App
+            <Link
+              to={ROUTES.HOME}
+              style={{ textDecoration: 'none', color: '#fff' }}
+            >
+              App App
+            </Link>
           </Typography>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
@@ -83,7 +92,7 @@ function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleNavigateAccount}>Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>

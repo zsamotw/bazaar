@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { getCurrentUser } from '../../store/selectors'
 import AccountProfile from '../AccountProfile'
 
@@ -7,11 +8,20 @@ import MenuAppBar from '../MenuAppBar'
 
 const HomePage = props => {
   const { currentUser } = props
+  const { path } = useRouteMatch()
+
   return (
-    <div>
+    <>
       <MenuAppBar currentUser={currentUser} />
-      <AccountProfile />
-    </div>
+      <Switch>
+        <Route exact path={path}>
+          Welcome in App App
+        </Route>
+        <Route path={`${path}/account`}>
+          <AccountProfile />
+        </Route>
+      </Switch>
+    </>
   )
 }
 
