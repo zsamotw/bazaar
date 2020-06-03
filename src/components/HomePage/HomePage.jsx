@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getCurrentUser } from '../../store/selectors'
+import AccountProfile from '../AccountProfile'
 
 import MenuAppBar from '../MenuAppBar'
 
@@ -9,6 +10,7 @@ const HomePage = props => {
   return (
     <div>
       <MenuAppBar currentUser={currentUser} />
+      <AccountProfile />
     </div>
   )
 }

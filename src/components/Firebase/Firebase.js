@@ -49,7 +49,6 @@ class Firebase {
   // Utils
 
   transformFirebaseUserToStateUser = firebaseUser => {
-    const { user } = firebaseUser
     const userProperties = [
       'displayName',
       'email',
@@ -63,7 +62,7 @@ class Firebase {
     ]
 
     return userProperties.reduce((obj, prop) => {
-      return prop in user ? { ...obj, [prop]: user[prop] } : obj
+      return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj
     }, {})
   }
 }

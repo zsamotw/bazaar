@@ -19,10 +19,6 @@ const SignUpPage = () => (
 )
 
 const useStyles = makeStyles({
-  form: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   errorBar: {
     color: 'red'
   }
@@ -133,13 +129,13 @@ const SignUpFormBase = props => {
   }
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      {AppInput(userNameInputProps)}
-      {AppInput(emailInputProps)}
-      {AppInput(passwordOneInputProps)}
-      {AppInput(passwordTwoInputProps)}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>{AppInput(userNameInputProps)}</div>
+      <div>{AppInput(emailInputProps)}</div>
+      <div>{AppInput(passwordOneInputProps)}</div>
+      <div>{AppInput(passwordTwoInputProps)}</div>
       <Button variant="contained" color="primary" type="submit" size="large">
-        Sign In
+        Sign Up
       </Button>
 
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>

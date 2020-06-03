@@ -19,10 +19,6 @@ const SignInPage = () => (
 )
 
 const useStyles = makeStyles({
-  form: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   errorBar: {
     color: 'red'
   }
@@ -49,7 +45,7 @@ const SignInFormBase = props => {
       .doSignInWithEmailAndPassword(email, password)
       .then(firebaseUser => {
         const currentUser = props.firebase.transformFirebaseUserToStateUser(
-          firebaseUser
+          firebaseUser.user
         )
         resetFormState()
         props.setAuthUser(currentUser)
@@ -93,9 +89,9 @@ const SignInFormBase = props => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-      {AppInput(emailInputProps)}
-      {AppInput(passwordInputProps)}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>{AppInput(emailInputProps)}</div>
+      <div>{AppInput(passwordInputProps)}</div>
       <Button variant="contained" color="primary" type="submit" size="large">
         Sign In
       </Button>
