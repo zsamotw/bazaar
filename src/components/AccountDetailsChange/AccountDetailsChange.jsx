@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
+import ButtonWithProgress from '../ButtonWithProgress'
 import { getCurrentUser } from '../../store/selectors'
 import AppInput from '../AppInput'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
@@ -20,12 +20,14 @@ function AccountDetailsChange(props) {
 
   const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
   const classes = useStyles()
 
   const onSubmit = () => {
+    setIsLoading(true)
     const loggedUser = props.firebase.doGetCurrentUser()
     loggedUser
       .updateProfile({
@@ -39,9 +41,11 @@ function AccountDetailsChange(props) {
           content: 'Account update successfully',
           type: 'success'
         })
+        setIsLoading(false)
       })
       .catch(err => {
         setError(err)
+        setIsLoading(false)
       })
   }
 
@@ -69,9 +73,14 @@ function AccountDetailsChange(props) {
       <h3>Account details:</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>{AppInput(displayNameInputProps)}</div>
-        <Button variant="contained" color="primary" type="submit" size="large">
-          Save
-        </Button>
+        <ButtonWithProgress
+          variant="contained"
+          color="primary"
+          type="submit"
+          size="large"
+          text="Save"
+          isLoading={isLoading}
+        />
         <div className={classes.errorBar}>
           {error && <p>{error.message}</p>}
         </div>

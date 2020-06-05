@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
+import ButtonWithProgress from '../ButtonWithProgress'
 import { withFirebase } from '../Firebase'
 import AppInput from '../AppInput'
 import { SET_APP_MESSAGE } from '../../store/actions'
@@ -21,6 +21,7 @@ const PasswordChangeForm = props => {
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
+  const [isLoading, setIsLading] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
@@ -58,6 +59,7 @@ const PasswordChangeForm = props => {
   }
 
   const onSubmit = () => {
+    setIsLading(true)
     props.firebase
       .doPasswordUpdate(passwordOne)
       .then(() => {
@@ -66,9 +68,11 @@ const PasswordChangeForm = props => {
           content: 'Password update successfully',
           type: 'success'
         })
+        setIsLading(false)
       })
       .catch(err => {
         setError(err)
+        setIsLading(false)
       })
   }
 
@@ -78,9 +82,14 @@ const PasswordChangeForm = props => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>{AppInput(passwordOneInputProps)}</div>
         <div>{AppInput(passwordTwoInputProps)}</div>
-        <Button variant="contained" color="primary" type="submit" size="large">
-          Reset
-        </Button>
+        <ButtonWithProgress
+          variant="contained"
+          color="primary"
+          size="large"
+          type="submit"
+          text="Reset"
+          isLoading={isLoading}
+        />
 
         <div className={classes.errorBar}>
           {error && <p>{error.message}</p>}

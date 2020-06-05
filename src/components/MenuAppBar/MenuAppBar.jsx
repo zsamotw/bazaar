@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar'
-import IconButton from '@material-ui/core/IconButton'
 import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,18 +8,15 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { useHistory, Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import * as ROUTES from '../../constants/routes'
 import { SET_AUTH_USER } from '../../store/actions'
 import { FirebaseContext } from '../Firebase'
-import * as ROUTES from '../../constants/routes'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
   },
   title: {
     flexGrow: 1
@@ -28,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     backgroundColor: 'green'
   }
-}))
+})
 
 function MenuAppBar(props) {
   const classes = useStyles()
