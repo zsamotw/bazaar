@@ -53,7 +53,7 @@ function AccountDetailsChange(props) {
     id: 'displayName-input',
     label: 'Display Name',
     variant: 'outlined',
-    name: 'display-name',
+    name: 'displayName',
     value: displayName,
     onChange: event => setDisplayName(event.target.value),
     type: 'text',
@@ -61,7 +61,7 @@ function AccountDetailsChange(props) {
     register: register({
       required: 'Required'
     }),
-    error: errors.email
+    error: errors.displayName
   }
 
   useEffect(() => {
