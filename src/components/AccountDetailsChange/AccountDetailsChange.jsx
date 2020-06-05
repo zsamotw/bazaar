@@ -7,7 +7,7 @@ import { getCurrentUser } from '../../store/selectors'
 import AppInput from '../AppInput'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { withFirebase } from '../Firebase'
-import { SET_AUTH_USER } from '../../store/actions'
+import { SET_AUTH_USER, SET_APP_MESSAGE } from '../../store/actions'
 
 const useStyles = makeStyles({
   errorBar: {
@@ -35,6 +35,10 @@ function AccountDetailsChange(props) {
         const user = props.firebase.transformFirebaseUserToStateUser(loggedUser)
         props.setAuthUser(user)
         setAuthUserInLocalStorage(user)
+        props.setAppMessage({
+          content: 'Account update successfully',
+          type: 'success'
+        })
       })
       .catch(err => {
         setError(err)
@@ -83,7 +87,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser })),
+    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
   }
 }
 

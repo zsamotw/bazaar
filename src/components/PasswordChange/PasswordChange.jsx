@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
 import { withFirebase } from '../Firebase'
 import AppInput from '../AppInput'
+import { SET_APP_MESSAGE } from '../../store/actions'
 
 const useStyles = makeStyles({
   form: {
@@ -60,6 +62,10 @@ const PasswordChangeForm = props => {
       .doPasswordUpdate(passwordOne)
       .then(() => {
         resetState()
+        props.setAppMessage({
+          content: 'Password update successfully',
+          type: 'success'
+        })
       })
       .catch(err => {
         setError(err)
@@ -84,4 +90,12 @@ const PasswordChangeForm = props => {
   )
 }
 
-export default withFirebase(PasswordChangeForm)
+const mapDispatchToState = dispatch => {
+  return {
+    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
+  }
+}
+
+export default withFirebase(
+  connect(null, mapDispatchToState)(PasswordChangeForm)
+)

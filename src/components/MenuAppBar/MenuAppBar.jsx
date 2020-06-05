@@ -1,5 +1,6 @@
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
+import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,13 +23,12 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  avatar: {
+    textTransform: 'uppercase',
+    backgroundColor: 'green'
   }
 }))
-
-const AccountCircle = props => {
-  const { content } = props
-  return <div style={{ textTransform: 'uppercase' }}>{content}</div>
-}
 
 function MenuAppBar(props) {
   const classes = useStyles()
@@ -79,7 +79,9 @@ function MenuAppBar(props) {
           </Typography>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
-              <AccountCircle content={currentUser.displayName.charAt(0)} />
+              <Avatar className={classes.avatar}>
+                {currentUser.displayName.charAt(0)}
+              </Avatar>
             </IconButton>
             <Menu
               id="menu-appbar"
