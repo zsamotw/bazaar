@@ -10,7 +10,7 @@ const withAuthentication = Component => {
       const authUserFromStorage = getAuthUserFromLocalStorage()
 
       if (authUserFromStorage) props.setAuthUser(authUserFromStorage)
-    }, [])
+    }, [props])
 
     return <Component {...props} />
   }

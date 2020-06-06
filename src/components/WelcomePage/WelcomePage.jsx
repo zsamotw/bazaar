@@ -31,7 +31,7 @@ const WelcomePage = () => {
     <div>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-          <h1>App App</h1>
+          <h1 style={{ paddingLeft: '20px' }}>App App</h1>
         </Grid>
         <Grid item xs={2} md={4} lg={7} />
         <Grid item xs={8} md={4} lg={3}>

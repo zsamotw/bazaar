@@ -112,7 +112,10 @@ const SignUpFormBase = props => {
     onChange: event => setPasswordOne(event.target.value),
     type: 'password',
     placeholder: 'Type your password...',
-    register: register({ required: 'Required' }),
+    register: register({
+      required: 'Required',
+      minLength: { value: 6, message: 'Password should have 6 letters' }
+    }),
     error: errors.passwordOne
   }
   const passwordTwoInputProps = {
@@ -124,7 +127,11 @@ const SignUpFormBase = props => {
     onChange: event => setPasswordTwo(event.target.value),
     type: 'password',
     placeholder: 'Confirm your password...',
-    register: register({ required: 'Required' }),
+    register: register({
+      required: 'Required',
+      minLength: { value: 6, message: 'Password should have 6 letters' },
+      validate: value => value === passwordOne
+    }),
     error: errors.passwordTwo
   }
 

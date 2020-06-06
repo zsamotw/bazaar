@@ -5,6 +5,7 @@ import { getCurrentUser } from '../../store/selectors'
 import AccountProfile from '../AccountProfile'
 
 import MenuAppBar from '../MenuAppBar'
+import MainPage from '../MainPage'
 
 const HomePage = props => {
   const { currentUser } = props
@@ -15,7 +16,7 @@ const HomePage = props => {
       <MenuAppBar currentUser={currentUser} />
       <Switch>
         <Route exact path={path}>
-          Welcome in App App
+          <MainPage />
         </Route>
         <Route path={`${path}/account`}>
           <AccountProfile />

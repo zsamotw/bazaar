@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import React, { useContext } from 'react'
@@ -14,7 +14,7 @@ import { SET_AUTH_USER } from '../../store/actions'
 import { FirebaseContext } from '../Firebase'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
@@ -22,13 +22,16 @@ const useStyles = makeStyles({
     flexGrow: 1
   },
   avatar: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     textTransform: 'uppercase',
-    backgroundColor: 'green'
+    backgroundColor: theme.palette.secondary.main
   }
-})
+}))
 
 function MenuAppBar(props) {
-  const classes = useStyles()
+  const theme = useTheme()
+  const classes = useStyles(theme)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)

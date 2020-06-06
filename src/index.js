@@ -2,16 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Provider } from 'react-redux'
+import { ThemeProvider } from '@material-ui/core/styles'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 import Firebase, { FirebaseContext } from './components/Firebase'
 import store from './store/store'
+import { theme } from './constants/theme'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store.store}>
       <FirebaseContext.Provider value={new Firebase()}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </FirebaseContext.Provider>
     </Provider>
   </React.StrictMode>,

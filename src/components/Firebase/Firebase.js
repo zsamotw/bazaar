@@ -63,7 +63,7 @@ class Firebase {
 
     return userProperties.reduce((obj, prop) => {
       return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj
-    }, {})
+    }, Object.create(null))
   }
 }
 

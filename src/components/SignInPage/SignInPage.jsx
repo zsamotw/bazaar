@@ -84,7 +84,10 @@ const SignInFormBase = props => {
     onChange: event => setPassword(event.target.value),
     type: 'password',
     placeholder: 'Type your password...',
-    register: register({ required: 'Required' }),
+    register: register({
+      required: 'Required',
+      minLength: { value: 6, message: 'Password should have 6 letters' }
+    }),
     error: errors.password
   }
 

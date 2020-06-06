@@ -9,8 +9,10 @@ const useStyles = makeStyles({
   },
   buttonProgress: {
     position: 'absolute',
-    top: '25%',
-    left: '40%'
+    top: '50%',
+    left: '50%',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
   }
 })
 
