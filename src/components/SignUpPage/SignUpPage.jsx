@@ -130,7 +130,8 @@ const SignUpFormBase = props => {
     register: register({
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' },
-      validate: value => value === passwordOne
+      validate: value =>
+        value === passwordOne || 'Incorrect password confirmation'
     }),
     error: errors.passwordTwo
   }

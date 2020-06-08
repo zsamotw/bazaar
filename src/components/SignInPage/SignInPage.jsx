@@ -98,7 +98,6 @@ const SignInFormBase = props => {
       <Button variant="contained" color="primary" type="submit" size="large">
         Sign In
       </Button>
-
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
   )

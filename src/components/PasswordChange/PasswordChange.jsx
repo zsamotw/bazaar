@@ -6,6 +6,7 @@ import ButtonWithProgress from '../ButtonWithProgress'
 import { withFirebase } from '../Firebase'
 import AppInput from '../AppInput'
 import { SET_APP_MESSAGE } from '../../store/actions'
+import { getAuthUserFromLocalStorage } from '../LocalStorage'
 
 const useStyles = makeStyles({
   form: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles({
 })
 
 const PasswordChangeForm = props => {
+  const [passwordOld, setPasswordOld] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
@@ -28,11 +30,27 @@ const PasswordChangeForm = props => {
   const classes = useStyles()
 
   const resetState = () => {
+    setPasswordOld('')
     setPasswordOne('')
     setPasswordTwo('')
     setError({})
   }
 
+  const passwordOldInputProps = {
+    id: 'passwordOld-input',
+    label: 'Old Password',
+    variant: 'outlined',
+    name: 'passwordOld',
+    value: passwordOld,
+    onChange: event => setPasswordOld(event.target.value),
+    type: 'password',
+    placeholder: 'Type your old password...',
+    register: register({
+      required: 'Required',
+      minLength: { value: 6, message: 'Password should have 6 letters' }
+    }),
+    error: errors.passwordOld
+  }
   const passwordOneInputProps = {
     id: 'passwordOne-input',
     label: 'Password',
@@ -60,22 +78,32 @@ const PasswordChangeForm = props => {
     register: register({
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' },
-      validate: value => value === passwordOne
+      validate: value =>
+        value === passwordOne || 'Incorrect password confirmation'
     }),
     error: errors.passwordTwo
   }
 
   const onSubmit = () => {
     setIsLading(true)
+    const { email } = getAuthUserFromLocalStorage()
     props.firebase
-      .doPasswordUpdate(passwordOne)
+      .doSignInWithEmailAndPassword(email, passwordOld)
       .then(() => {
-        resetState()
-        props.setAppMessage({
-          content: 'Password update successfully',
-          type: 'success'
-        })
-        setIsLading(false)
+        props.firebase
+          .doPasswordUpdate(passwordOne)
+          .then(() => {
+            resetState()
+            props.setAppMessage({
+              content: 'Password update successfully',
+              type: 'success'
+            })
+            setIsLading(false)
+          })
+          .catch(err => {
+            setError(err)
+            setIsLading(false)
+          })
       })
       .catch(err => {
         setError(err)
@@ -87,6 +115,7 @@ const PasswordChangeForm = props => {
     <>
       <h3>Reset Password:</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div>{AppInput(passwordOldInputProps)}</div>
         <div>{AppInput(passwordOneInputProps)}</div>
         <div>{AppInput(passwordTwoInputProps)}</div>
         <ButtonWithProgress

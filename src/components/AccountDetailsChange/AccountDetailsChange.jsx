@@ -81,6 +81,7 @@ function AccountDetailsChange(props) {
           text="Save"
           isLoading={isLoading}
         />
+
         <div className={classes.errorBar}>
           {error && <p>{error.message}</p>}
         </div>

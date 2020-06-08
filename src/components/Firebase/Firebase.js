@@ -36,6 +36,14 @@ class Firebase {
 
   doOnAuthStateChange = () => firebase.auth().onAuthStateChanged
 
+  doReauthenticateWithCredential = (credential, next, onError) => {
+    const user = this.auth.currentUser
+    user
+      .reauthenticateWithCredential(credential)
+      .then(next())
+      .catch(err => onError(err))
+  }
+
   onAuthUserListener = (next, fallback) => {
     this.doOnAuthStateChange(authUser => {
       if (authUser) {
