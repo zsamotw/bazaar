@@ -8,9 +8,12 @@ const useStyles = makeStyles({
     display: 'inline-block'
   },
   buttonProgress: {
+    margin: 'auto',
     position: 'absolute',
-    top: '24%',
-    left: '38%'
+    top: '0',
+    bottom: '0',
+    left: '0',
+    right: '0'
   }
 })
 
