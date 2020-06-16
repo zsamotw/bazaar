@@ -20,7 +20,7 @@ function TabPanel(props) {
   )
 }
 
-const WelcomePage = () => {
+const LandingPage = () => {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event, newValue) => {
@@ -51,4 +51,4 @@ const WelcomePage = () => {
   )
 }
 
-export default WelcomePage
+export default LandingPage
