@@ -1,4 +1,4 @@
-export const handleAddAuthUser = (state, user) => {
+export const handleSetAuthUser = (state, user) => {
   const nextState = state.set('currentUser', user)
   return nextState
 }
