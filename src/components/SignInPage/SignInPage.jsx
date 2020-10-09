@@ -8,7 +8,7 @@ import { withFirebase } from '../Firebase'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 import * as ROUTES from '../../constants/routes'
-import { SET_AUTH_USER } from '../../store/actions'
+import { LOGIN_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
 const SignInPage = () => (
@@ -41,20 +41,21 @@ const SignInFormBase = props => {
   }
 
   const onSubmit = () => {
-    props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(firebaseUser => {
-        const currentUser = props.firebase.transformFirebaseUserToStateUser(
-          firebaseUser.user
-        )
-        resetFormState()
-        props.setAuthUser(currentUser)
-        setAuthUserInLocalStorage(currentUser)
-        history.push(ROUTES.HOME)
-      })
-      .catch(err => {
-        setError(err)
-      })
+    props.login(email, password, setAuthUserInLocalStorage)
+    // props.firebase
+    //   .doSignInWithEmailAndPassword(email, password)
+    //   .then(firebaseUser => {
+    //     const currentUser = props.firebase.transformFirebaseUserToStateUser(
+    //       firebaseUser.user
+    //     )
+    //     resetFormState()
+    //     props.setAuthUser(currentUser)
+    //     setAuthUserInLocalStorage(currentUser)
+    //     history.push(ROUTES.HOME)
+    //   })
+    //   .catch(err => {
+    //     setError(err)
+    //   })
   }
 
   const emailInputProps = {
@@ -105,7 +106,8 @@ const SignInFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+    login: (email, password, callback) =>
+      dispatch(LOGIN_REQUEST({ payload: { email, password, callback } }))
   }
 }
 

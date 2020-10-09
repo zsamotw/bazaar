@@ -5,18 +5,17 @@ import { Provider } from 'react-redux'
 import { ThemeProvider } from '@material-ui/core/styles'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
-import Firebase, { FirebaseContext } from './components/Firebase'
 import store from './store/store'
 import { theme } from './constants/theme'
+
+// export const firebase = new Firebase()
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store.store}>
-      <FirebaseContext.Provider value={new Firebase()}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </FirebaseContext.Provider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

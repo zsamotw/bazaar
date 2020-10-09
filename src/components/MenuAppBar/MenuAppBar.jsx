@@ -6,12 +6,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import React, { useContext } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
-import { SET_AUTH_USER } from '../../store/actions'
-import { FirebaseContext } from '../Firebase'
+import { SET_AUTH_USER, LOGOUT_REQUEST } from '../../store/actions'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 const useStyles = makeStyles(theme => ({
@@ -36,10 +35,9 @@ function MenuAppBar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
-  const firebase = useContext(FirebaseContext)
   const history = useHistory()
 
-  const { currentUser } = props
+  const { currentUser, logout } = props
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -55,14 +53,7 @@ function MenuAppBar(props) {
   }
 
   const handleLogout = () => {
-    firebase
-      .doSignOut()
-      .then(() => {
-        props.setAuthUser(null)
-        setAuthUserInLocalStorage(null)
-        history.push(ROUTES.WELCOME)
-      })
-      .catch(() => {})
+    logout(setAuthUserInLocalStorage)
   }
 
   return (
@@ -106,7 +97,8 @@ function MenuAppBar(props) {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser })),
+    logout: callback => dispatch(LOGOUT_REQUEST({ payload: { callback } }))
   }
 }
 

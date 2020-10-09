@@ -8,7 +8,7 @@ import { withFirebase } from '../Firebase'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 import * as ROUTES from '../../constants/routes'
-import { SET_AUTH_USER } from '../../store/actions'
+import { SIGNUP_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
 const SignUpPage = () => (
@@ -46,29 +46,31 @@ const SignUpFormBase = props => {
   }
 
   const onSubmit = () => {
-    props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(firebaseUser => {
-        if (firebaseUser) {
-          const loggedUser = props.firebase.doGetCurrentUser()
-          loggedUser
-            .updateProfile({
-              displayName
-            })
-            .then(() => {
-              resetFormState()
-              const currentUser = props.firebase.transformFirebaseUserToStateUser(
-                loggedUser
-              )
-              props.setAuthUser(currentUser)
-              setAuthUserInLocalStorage(currentUser)
-              history.push(ROUTES.HOME)
-            })
-        }
-      })
-      .catch(err => {
-        setError(err)
-      })
+    props.signup(displayName, email, passwordOne, setAuthUserInLocalStorage)
+    // props.firebase
+    //   .doCreateUserWithEmailAndPassword(email, passwordOne)
+    //   .then(firebaseUser => {
+    //     if (firebaseUser) {
+    //       debugger
+    //       const loggedUser = props.firebase.doGetCurrentUser()
+    //       loggedUser
+    //         .updateProfile({
+    //           displayName
+    //         })
+    //         .then(() => {
+    //           resetFormState()
+    //           const currentUser = props.firebase.transformFirebaseUserToStateUser(
+    //             loggedUser
+    //           )
+    //           // props.setAuthUser(currentUser)
+    //           setAuthUserInLocalStorage(currentUser)
+    //           history.push(ROUTES.HOME)
+    //         })
+    //     }
+    //   })
+    //   .catch(err => {
+    //     setError(err)
+    //   })
   }
 
   const userNameInputProps = {
@@ -153,7 +155,10 @@ const SignUpFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+    signup: (displayName, email, password, callback) =>
+      dispatch(
+        SIGNUP_REQUEST({ payload: { displayName, email, password, callback } })
+      )
   }
 }
 

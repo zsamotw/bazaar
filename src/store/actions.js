@@ -5,3 +5,13 @@ export const SET_APP_MESSAGE = createAction(
   'set app message',
   message => message
 )
+
+export const LOGIN_REQUEST = createAction(
+  'login request',
+  credential => credential
+)
+export const LOGOUT_REQUEST = createAction(
+  'logout request',
+  callback => callback
+)
+export const SIGNUP_REQUEST = createAction('signup request', data => data)
