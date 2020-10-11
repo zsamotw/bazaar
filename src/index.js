@@ -8,8 +8,6 @@ import * as serviceWorker from './serviceWorker'
 import store from './store/store'
 import { theme } from './constants/theme'
 
-// export const firebase = new Firebase()
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store.store}>
