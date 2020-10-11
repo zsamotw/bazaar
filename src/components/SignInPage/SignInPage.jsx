@@ -41,7 +41,7 @@ const SignInFormBase = props => {
   }
 
   const onSubmit = () => {
-    props.login(email, password, setAuthUserInLocalStorage)
+    props.login(email, password, { setAuthUserInLocalStorage, setError })
     // props.firebase
     //   .doSignInWithEmailAndPassword(email, password)
     //   .then(firebaseUser => {
@@ -106,8 +106,8 @@ const SignInFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    login: (email, password, callback) =>
-      dispatch(LOGIN_REQUEST({ payload: { email, password, callback } }))
+    login: (email, password, callbacks) =>
+      dispatch(LOGIN_REQUEST({ payload: { email, password, callbacks } }))
   }
 }
 

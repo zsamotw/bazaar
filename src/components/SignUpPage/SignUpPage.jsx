@@ -46,7 +46,10 @@ const SignUpFormBase = props => {
   }
 
   const onSubmit = () => {
-    props.signup(displayName, email, passwordOne, setAuthUserInLocalStorage)
+    props.signUp(displayName, email, passwordOne, {
+      setAuthUserInLocalStorage,
+      setError
+    })
     // props.firebase
     //   .doCreateUserWithEmailAndPassword(email, passwordOne)
     //   .then(firebaseUser => {
@@ -155,9 +158,9 @@ const SignUpFormBase = props => {
 
 const mapDispatchToState = dispatch => {
   return {
-    signup: (displayName, email, password, callback) =>
+    signUp: (displayName, email, password, callbacks) =>
       dispatch(
-        SIGNUP_REQUEST({ payload: { displayName, email, password, callback } })
+        SIGNUP_REQUEST({ payload: { displayName, email, password, callbacks } })
       )
   }
 }

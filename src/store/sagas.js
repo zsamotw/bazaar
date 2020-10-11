@@ -8,16 +8,23 @@ import {
 import Firebase from '../components/Firebase'
 
 function* login(action) {
-  const { email, password, callback } = action.payload
-  debugger
-  const { user } = yield call(
-    Firebase.doSignInWithEmailAndPassword,
+  const {
     email,
-    password
-  )
-  const currentUser = Firebase.transformFirebaseUserToStateUser(user)
-  yield put(SET_AUTH_USER({ payload: currentUser }))
-  callback(currentUser)
+    password,
+    callbacks: { setAuthUserInLocalStorage, setError }
+  } = action.payload
+  try {
+    const { user } = yield call(
+      Firebase.doSignInWithEmailAndPassword,
+      email,
+      password
+    )
+    const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+    yield put(SET_AUTH_USER({ payload: currentUser }))
+    setAuthUserInLocalStorage(currentUser)
+  } catch (error) {
+    setError(error)
+  }
 }
 
 function* logout(action) {
@@ -27,26 +34,35 @@ function* logout(action) {
   callback(null)
 }
 
-function* signup(action) {
-  const { displayName, email, password, callback } = action.payload
-  const user = yield call(
-    Firebase.doCreateUserWithEmailAndPassword,
+function* signUp(action) {
+  const {
+    displayName,
     email,
-    password
-  )
-  if (user) {
-    const loggedUser = yield call(Firebase.doGetCurrentUser)
-    yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
-    const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
-    yield put(SET_AUTH_USER({ payload: currentUser }))
-    callback(currentUser)
+    password,
+    callbacks: { setAuthUserInLocalStorage, setError }
+  } = action.payload
+  try {
+    const user = yield call(
+      Firebase.doCreateUserWithEmailAndPassword,
+      email,
+      password
+    )
+    if (user) {
+      const loggedUser = yield call(Firebase.doGetCurrentUser)
+      yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
+      const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
+      yield put(SET_AUTH_USER({ payload: currentUser }))
+      setAuthUserInLocalStorage(currentUser)
+    }
+  } catch (error) {
+    setError(error)
   }
 }
 
 function* appSaga() {
   yield takeLatest(LOGIN_REQUEST.type, login)
   yield takeLatest(LOGOUT_REQUEST.type, logout)
-  yield takeLatest(SIGNUP_REQUEST.type, signup)
+  yield takeLatest(SIGNUP_REQUEST.type, signUp)
 }
 
 export default function* rootSaga() {
