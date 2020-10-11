@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { withFirebase } from '../Firebase'
+import ButtonWithProgress from '../ButtonWithProgress'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
-
-import * as ROUTES from '../../constants/routes'
+import { getIsFetchingData } from '../../store/selectors'
 import { SIGNUP_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
@@ -25,55 +23,28 @@ const useStyles = makeStyles({
 })
 
 const SignUpFormBase = props => {
+  const { isFetchingSignUpData, signUp } = props
+
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
-  const history = useHistory()
-
   const classes = useStyles()
 
-  const resetFormState = () => {
-    setDisplayName('')
-    setEmail('')
-    setPasswordOne('')
-    setPasswordTwo('')
-    setError({})
-  }
+  useEffect(() => {
+    setIsLoading(isFetchingSignUpData)
+  }, [isFetchingSignUpData])
 
   const onSubmit = () => {
-    props.signUp(displayName, email, passwordOne, {
+    signUp(displayName, email, passwordOne, {
       setAuthUserInLocalStorage,
       setError
     })
-    // props.firebase
-    //   .doCreateUserWithEmailAndPassword(email, passwordOne)
-    //   .then(firebaseUser => {
-    //     if (firebaseUser) {
-    //       debugger
-    //       const loggedUser = props.firebase.doGetCurrentUser()
-    //       loggedUser
-    //         .updateProfile({
-    //           displayName
-    //         })
-    //         .then(() => {
-    //           resetFormState()
-    //           const currentUser = props.firebase.transformFirebaseUserToStateUser(
-    //             loggedUser
-    //           )
-    //           // props.setAuthUser(currentUser)
-    //           setAuthUserInLocalStorage(currentUser)
-    //           history.push(ROUTES.HOME)
-    //         })
-    //     }
-    //   })
-    //   .catch(err => {
-    //     setError(err)
-    //   })
   }
 
   const userNameInputProps = {
@@ -147,16 +118,25 @@ const SignUpFormBase = props => {
       <div>{AppInput(emailInputProps)}</div>
       <div>{AppInput(passwordOneInputProps)}</div>
       <div>{AppInput(passwordTwoInputProps)}</div>
-      <Button variant="contained" color="primary" type="submit" size="large">
-        Sign Up
-      </Button>
-
+      <ButtonWithProgress
+        variant="contained"
+        color="primary"
+        type="submit"
+        size="large"
+        isLoading={isLoading}
+        text="Sign Up"
+      />
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
   )
 }
 
-const mapDispatchToState = dispatch => {
+function mapStateToProps(state) {
+  const { isFetchingSignUpData } = getIsFetchingData(state)
+  return { isFetchingSignUpData }
+}
+
+function mapDispatchToState(dispatch) {
   return {
     signUp: (displayName, email, password, callbacks) =>
       dispatch(
@@ -166,7 +146,7 @@ const mapDispatchToState = dispatch => {
 }
 
 const SignUpForm = connect(
-  null,
+  mapStateToProps,
   mapDispatchToState
 )(withFirebase(SignUpFormBase))
 

@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
+import ButtonWithProgress from '../ButtonWithProgress'
 import { withFirebase } from '../Firebase'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
-
-import * as ROUTES from '../../constants/routes'
+import { getIsFetchingData } from '../../store/selectors'
 import { LOGIN_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
@@ -25,37 +23,23 @@ const useStyles = makeStyles({
 })
 
 const SignInFormBase = props => {
+  const { isFetchingLoginData, login } = props
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
-  const history = useHistory()
-
   const classes = useStyles()
 
-  const resetFormState = () => {
-    setEmail('')
-    setPassword('')
-  }
+  useEffect(() => {
+    setIsLoading(isFetchingLoginData)
+  }, [isFetchingLoginData])
 
   const onSubmit = () => {
-    props.login(email, password, { setAuthUserInLocalStorage, setError })
-    // props.firebase
-    //   .doSignInWithEmailAndPassword(email, password)
-    //   .then(firebaseUser => {
-    //     const currentUser = props.firebase.transformFirebaseUserToStateUser(
-    //       firebaseUser.user
-    //     )
-    //     resetFormState()
-    //     props.setAuthUser(currentUser)
-    //     setAuthUserInLocalStorage(currentUser)
-    //     history.push(ROUTES.HOME)
-    //   })
-    //   .catch(err => {
-    //     setError(err)
-    //   })
+    login(email, password, { setAuthUserInLocalStorage, setError })
   }
 
   const emailInputProps = {
@@ -96,15 +80,25 @@ const SignInFormBase = props => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>{AppInput(emailInputProps)}</div>
       <div>{AppInput(passwordInputProps)}</div>
-      <Button variant="contained" color="primary" type="submit" size="large">
-        Sign In
-      </Button>
+      <ButtonWithProgress
+        variant="contained"
+        color="primary"
+        type="submit"
+        size="large"
+        isLoading={isLoading}
+        text="Sign In"
+      />
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
   )
 }
 
-const mapDispatchToState = dispatch => {
+function mapStateToProps(state) {
+  const { isFetchingLoginData } = getIsFetchingData(state)
+  return { isFetchingLoginData }
+}
+
+function mapDispatchToState(dispatch) {
   return {
     login: (email, password, callbacks) =>
       dispatch(LOGIN_REQUEST({ payload: { email, password, callbacks } }))
@@ -112,7 +106,7 @@ const mapDispatchToState = dispatch => {
 }
 
 const SignInForm = connect(
-  null,
+  mapStateToProps,
   mapDispatchToState
 )(withFirebase(SignInFormBase))
 
