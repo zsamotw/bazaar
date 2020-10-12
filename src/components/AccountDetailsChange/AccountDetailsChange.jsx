@@ -6,7 +6,6 @@ import ButtonWithProgress from '../ButtonWithProgress'
 import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
 import AppInput from '../AppInput'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
-import { withFirebase } from '../Firebase'
 import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../store/actions'
 
 const useStyles = makeStyles({
@@ -96,6 +95,7 @@ function mapDispatchToState(dispatch) {
   }
 }
 
-export default withFirebase(
-  connect(mapStateToProps, mapDispatchToState)(AccountDetailsChange)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToState
+)(AccountDetailsChange)

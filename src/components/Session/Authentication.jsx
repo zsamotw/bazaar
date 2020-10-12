@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withFirebase } from '../Firebase'
 import { SET_AUTH_USER } from '../../store/actions'
 import { getAuthUserFromLocalStorage } from '../LocalStorage'
 
@@ -21,7 +20,7 @@ const withAuthentication = Component => {
     }
   }
 
-  return withFirebase(connect(null, mapDispatchToState)(WithAuthentication))
+  return connect(null, mapDispatchToState)(WithAuthentication)
 }
 
 export default withAuthentication

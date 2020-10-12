@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { withFirebase } from '../Firebase'
 import AppInput from '../AppInput'
 import { CHANGE_USER_PASSWORD_REQUEST } from '../../store/actions'
 import { getAuthUserFromLocalStorage } from '../LocalStorage'
@@ -129,6 +128,4 @@ function mapDispatchToState(dispatch) {
   }
 }
 
-export default withFirebase(
-  connect(mapStateToProps, mapDispatchToState)(PasswordChangeForm)
-)
+export default connect(mapStateToProps, mapDispatchToState)(PasswordChangeForm)

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { withFirebase } from '../Firebase'
 import ButtonWithProgress from '../ButtonWithProgress'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { getIsFetchingData } from '../../store/selectors'
@@ -145,9 +144,6 @@ function mapDispatchToState(dispatch) {
   }
 }
 
-const SignUpForm = connect(
-  mapStateToProps,
-  mapDispatchToState
-)(withFirebase(SignUpFormBase))
+const SignUpForm = connect(mapStateToProps, mapDispatchToState)(SignUpFormBase)
 
 export { SignUpForm, SignUpPage }

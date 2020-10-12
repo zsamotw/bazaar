@@ -2,8 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { LOGOUT_REQUEST } from '../../store/actions'
 
-// import { withFirebase } from '../Firebase'
-
 const SignOutButton = ({ logout }) => (
   <button type="button" onClick={logout}>
     Sign Out

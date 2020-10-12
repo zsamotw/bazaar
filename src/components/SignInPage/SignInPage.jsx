@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { withFirebase } from '../Firebase'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { getIsFetchingData } from '../../store/selectors'
 import { LOGIN_REQUEST } from '../../store/actions'
@@ -105,9 +104,6 @@ function mapDispatchToState(dispatch) {
   }
 }
 
-const SignInForm = connect(
-  mapStateToProps,
-  mapDispatchToState
-)(withFirebase(SignInFormBase))
+const SignInForm = connect(mapStateToProps, mapDispatchToState)(SignInFormBase)
 
 export { SignInForm, SignInPage }
