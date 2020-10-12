@@ -13,7 +13,8 @@ const makeInitialState = Record({
     isFetchingLoginData: false,
     isFetchingSignUpdData: false,
     isFetchingSignOutData: false,
-    isFetchingUpdateUserAccountData: false
+    isFetchingUpdateUserAccountData: false,
+    isFetchingChangePasswordData: false
   },
   appMessage: { content: '', type: null }
 })

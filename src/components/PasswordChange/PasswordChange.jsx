@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
 import { withFirebase } from '../Firebase'
 import AppInput from '../AppInput'
-import { SET_APP_MESSAGE } from '../../store/actions'
+import { CHANGE_USER_PASSWORD_REQUEST } from '../../store/actions'
 import { getAuthUserFromLocalStorage } from '../LocalStorage'
+import { getIsFetchingData } from '../../store/selectors'
 
 const useStyles = makeStyles({
   form: {
@@ -19,22 +20,21 @@ const useStyles = makeStyles({
 })
 
 const PasswordChangeForm = props => {
+  const { changePassword, isFetchingChangePasswordData } = props
+
   const [passwordOld, setPasswordOld] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
-  const [isLoading, setIsLading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
   const classes = useStyles()
 
-  const resetState = () => {
-    setPasswordOld('')
-    setPasswordOne('')
-    setPasswordTwo('')
-    setError({})
-  }
+  useEffect(() => {
+    setIsLoading(isFetchingChangePasswordData)
+  }, [isFetchingChangePasswordData])
 
   const passwordOldInputProps = {
     id: 'passwordOld-input',
@@ -85,30 +85,8 @@ const PasswordChangeForm = props => {
   }
 
   const onSubmit = () => {
-    setIsLading(true)
     const { email } = getAuthUserFromLocalStorage()
-    props.firebase
-      .doSignInWithEmailAndPassword(email, passwordOld)
-      .then(() => {
-        props.firebase
-          .doPasswordUpdate(passwordOne)
-          .then(() => {
-            resetState()
-            props.setAppMessage({
-              content: 'Password update successfully',
-              type: 'success'
-            })
-            setIsLading(false)
-          })
-          .catch(err => {
-            setError(err)
-            setIsLading(false)
-          })
-      })
-      .catch(err => {
-        setError(err)
-        setIsLading(false)
-      })
+    changePassword(email, passwordOld, passwordOne, { setError })
   }
 
   return (
@@ -135,12 +113,22 @@ const PasswordChangeForm = props => {
   )
 }
 
-const mapDispatchToState = dispatch => {
+function mapStateToProps(state) {
+  const { isFetchingChangePasswordData } = getIsFetchingData(state)
+  return { isFetchingChangePasswordData }
+}
+
+function mapDispatchToState(dispatch) {
   return {
-    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
+    changePassword: (email, passwordOld, passwordNew, callbacks) =>
+      dispatch(
+        CHANGE_USER_PASSWORD_REQUEST({
+          payload: { email, passwordOld, passwordNew, callbacks }
+        })
+      )
   }
 }
 
 export default withFirebase(
-  connect(null, mapDispatchToState)(PasswordChangeForm)
+  connect(mapStateToProps, mapDispatchToState)(PasswordChangeForm)
 )

@@ -6,7 +6,8 @@ import {
   SIGNUP_REQUEST,
   SET_AUTH_USER,
   SET_IS_FETCHING_DATA,
-  UPDATE_USER_ACCOUNT_DETAILS_REQUEST
+  UPDATE_USER_ACCOUNT_DETAILS_REQUEST,
+  CHANGE_USER_PASSWORD_REQUEST
 } from './actions'
 import Firebase from '../components/Firebase'
 
@@ -118,7 +119,7 @@ function* updateUserAccountDetails(action) {
         SET_APP_MESSAGE({
           payload: {
             content: 'Account update successfully',
-            type: 'success'
+            status: 'success'
           }
         })
       )
@@ -134,7 +135,59 @@ function* updateUserAccountDetails(action) {
       SET_APP_MESSAGE({
         payload: {
           content: 'Account update failed',
-          type: 'error'
+          status: 'error'
+        }
+      })
+    )
+    setError(error)
+  }
+}
+
+function* changePassword(action) {
+  const {
+    email,
+    passwordOld,
+    passwordNew,
+    callbacks: { setError }
+  } = action.payload
+  yield put(
+    SET_IS_FETCHING_DATA({
+      payload: { type: 'isFetchingChangePasswordData', value: true }
+    })
+  )
+  try {
+    const { user } = yield call(
+      Firebase.doSignInWithEmailAndPassword,
+      email,
+      passwordOld
+    )
+    if (user) {
+      yield call(Firebase.doPasswordUpdate, passwordNew)
+      yield put(
+        SET_IS_FETCHING_DATA({
+          payload: { type: 'isFetchingChangePasswordData', value: false }
+        })
+      )
+      yield put(
+        SET_APP_MESSAGE({
+          payload: {
+            content: 'Password updated successfully',
+            status: 'success'
+          }
+        })
+      )
+    }
+  } catch (error) {
+    yield put(
+      SET_IS_FETCHING_DATA({
+        payload: { type: 'isFetchingChangePasswordData', value: false }
+      })
+    )
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Password update failed',
+          status: 'error'
         }
       })
     )
@@ -150,6 +203,7 @@ function* appSaga() {
     UPDATE_USER_ACCOUNT_DETAILS_REQUEST.type,
     updateUserAccountDetails
   )
+  yield takeLatest(CHANGE_USER_PASSWORD_REQUEST, changePassword)
 }
 
 export default function* rootSaga() {

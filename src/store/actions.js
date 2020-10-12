@@ -23,3 +23,7 @@ export const UPDATE_USER_ACCOUNT_DETAILS_REQUEST = createAction(
   'UPDATE_USER_ACCOUNT_DETAILS_REQUEST',
   data => data
 )
+export const CHANGE_USER_PASSWORD_REQUEST = createAction(
+  'CHANGE_USER_PASSWORD_REQUEST',
+  data => data
+)
