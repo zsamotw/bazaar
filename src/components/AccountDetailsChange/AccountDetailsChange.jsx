@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { getCurrentUser } from '../../store/selectors'
+import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
 import AppInput from '../AppInput'
 import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { withFirebase } from '../Firebase'
-import { SET_AUTH_USER, SET_APP_MESSAGE } from '../../store/actions'
+import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../store/actions'
 
 const useStyles = makeStyles({
   errorBar: {
@@ -16,7 +16,11 @@ const useStyles = makeStyles({
 })
 
 function AccountDetailsChange(props) {
-  const { currentUser } = props
+  const {
+    currentUser,
+    isFetchingUpdateUserAccountData,
+    updateUserProfile
+  } = props
 
   const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState({})
@@ -26,27 +30,12 @@ function AccountDetailsChange(props) {
 
   const classes = useStyles()
 
+  useEffect(() => {
+    setIsLoading(isFetchingUpdateUserAccountData)
+  }, [isFetchingUpdateUserAccountData])
+
   const onSubmit = () => {
-    setIsLoading(true)
-    const loggedUser = props.firebase.doGetCurrentUser()
-    loggedUser
-      .updateProfile({
-        displayName
-      })
-      .then(() => {
-        const user = props.firebase.transformFirebaseUserToStateUser(loggedUser)
-        props.setAuthUser(user)
-        setAuthUserInLocalStorage(user)
-        props.setAppMessage({
-          content: 'Account update successfully',
-          type: 'success'
-        })
-        setIsLoading(false)
-      })
-      .catch(err => {
-        setError(err)
-        setIsLoading(false)
-      })
+    updateUserProfile(displayName, { setAuthUserInLocalStorage, setError })
   }
 
   const displayNameInputProps = {
@@ -92,13 +81,18 @@ function AccountDetailsChange(props) {
 
 function mapStateToProps(state) {
   const currentUser = getCurrentUser(state)
-  return { currentUser }
+  const { isFetchingUpdateUserAccountData } = getIsFetchingData(state)
+  return { currentUser, isFetchingUpdateUserAccountData }
 }
 
-const mapDispatchToState = dispatch => {
+function mapDispatchToState(dispatch) {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser })),
-    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
+    updateUserProfile: (displayName, callbacks) =>
+      dispatch(
+        UPDATE_USER_ACCOUNT_DETAILS_REQUEST({
+          payload: { displayName, callbacks }
+        })
+      )
   }
 }
 

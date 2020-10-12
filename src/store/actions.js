@@ -19,3 +19,7 @@ export const LOGOUT_REQUEST = createAction(
   callback => callback
 )
 export const SIGNUP_REQUEST = createAction('SIGNUP REQUEST', data => data)
+export const UPDATE_USER_ACCOUNT_DETAILS_REQUEST = createAction(
+  'UPDATE_USER_ACCOUNT_DETAILS_REQUEST',
+  data => data
+)

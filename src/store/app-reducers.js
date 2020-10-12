@@ -9,10 +9,11 @@ import { SET_AUTH_USER, SET_APP_MESSAGE, SET_IS_FETCHING_DATA } from './actions'
 
 const makeInitialState = Record({
   currentUser: null,
-  fetchingData: {
+  isFetchingData: {
     isFetchingLoginData: false,
     isFetchingSignUpdData: false,
-    isFetchingSignOutData: false
+    isFetchingSignOutData: false,
+    isFetchingUpdateUserAccountData: false
   },
   appMessage: { content: '', type: null }
 })

@@ -9,6 +9,6 @@ export const getAppMessage = state => {
 }
 
 export const getIsFetchingData = state => {
-  const isFetchingData = state.get('fetchingData')
+  const isFetchingData = state.get('isFetchingData')
   return isFetchingData
 }
