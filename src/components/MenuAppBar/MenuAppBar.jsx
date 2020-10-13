@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
 import { SET_AUTH_USER, LOGOUT_REQUEST } from '../../store/actions'
-import { setAuthUserInLocalStorage } from '../LocalStorage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,7 +52,7 @@ function MenuAppBar(props) {
   }
 
   const handleLogout = () => {
-    logout(setAuthUserInLocalStorage)
+    logout()
   }
 
   return (
@@ -98,7 +97,7 @@ function MenuAppBar(props) {
 const mapDispatchToState = dispatch => {
   return {
     setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser })),
-    logout: callback => dispatch(LOGOUT_REQUEST({ payload: { callback } }))
+    logout: () => dispatch(LOGOUT_REQUEST())
   }
 }
 

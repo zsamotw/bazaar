@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
 import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
 import AppInput from '../AppInput'
-import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../store/actions'
 
 const useStyles = makeStyles({
@@ -34,7 +33,7 @@ function AccountDetailsChange(props) {
   }, [isFetchingUpdateUserAccountData])
 
   const onSubmit = () => {
-    updateUserProfile(displayName, { setAuthUserInLocalStorage, setError })
+    updateUserProfile(displayName, { setError })
   }
 
   const displayNameInputProps = {

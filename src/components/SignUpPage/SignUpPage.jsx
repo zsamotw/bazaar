@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { getIsFetchingData } from '../../store/selectors'
 import { SIGNUP_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
@@ -41,7 +40,6 @@ const SignUpFormBase = props => {
 
   const onSubmit = () => {
     signUp(displayName, email, passwordOne, {
-      setAuthUserInLocalStorage,
       setError
     })
   }

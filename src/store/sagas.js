@@ -1,4 +1,5 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects'
+import { setAuthUserInLocalStorage } from '../components/LocalStorage'
 import {
   SET_APP_MESSAGE,
   LOGIN_REQUEST,
@@ -20,7 +21,7 @@ function* login(action) {
   const {
     email,
     password,
-    callbacks: { setAuthUserInLocalStorage, setError }
+    callbacks: { setError }
   } = action.payload
   try {
     const { user } = yield call(
@@ -46,11 +47,10 @@ function* login(action) {
   }
 }
 
-function* logout(action) {
-  const { callback } = action.payload
+function* logout() {
   yield call(Firebase.doSignOut)
   yield put(SET_AUTH_USER({ payload: null }))
-  callback(null)
+  setAuthUserInLocalStorage(null)
 }
 
 function* signUp(action) {
@@ -63,7 +63,7 @@ function* signUp(action) {
     displayName,
     email,
     password,
-    callbacks: { setAuthUserInLocalStorage, setError }
+    callbacks: { setError }
   } = action.payload
   try {
     const user = yield call(
@@ -101,7 +101,7 @@ function* updateUserAccountDetails(action) {
   )
   const {
     displayName,
-    callbacks: { setAuthUserInLocalStorage, setError }
+    callbacks: { setError }
   } = action.payload
   try {
     const loggedUser = yield call(Firebase.doGetCurrentUser)

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { setAuthUserInLocalStorage } from '../LocalStorage'
 import { getIsFetchingData } from '../../store/selectors'
 import { LOGIN_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
@@ -38,7 +37,7 @@ const SignInFormBase = props => {
   }, [isFetchingLoginData])
 
   const onSubmit = () => {
-    login(email, password, { setAuthUserInLocalStorage, setError })
+    login(email, password, { setError })
   }
 
   const emailInputProps = {
