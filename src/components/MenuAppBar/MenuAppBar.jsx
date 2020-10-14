@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import * as ROUTES from '../../constants/routes'
 import { SET_AUTH_USER, LOGOUT_REQUEST } from '../../store/actions'
 
@@ -35,6 +35,7 @@ function MenuAppBar(props) {
   const open = Boolean(anchorEl)
 
   const history = useHistory()
+  const { path } = useRouteMatch()
 
   const { currentUser, logout } = props
 
@@ -43,7 +44,7 @@ function MenuAppBar(props) {
   }
 
   const handleNavigateAccount = () => {
-    history.push(ROUTES.HOME_ACCOUNT)
+    history.push(`${path}${ROUTES.ACCOUNT}`)
     setAnchorEl(null)
   }
 

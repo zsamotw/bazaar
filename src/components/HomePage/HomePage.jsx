@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { getCurrentUser } from '../../store/selectors'
 import AccountProfile from '../AccountProfile'
+import * as ROUTES from '../../constants/routes'
 
 import MenuAppBar from '../MenuAppBar'
 import MainPage from '../MainPage'
@@ -18,8 +19,11 @@ const HomePage = props => {
         <Route exact path={path}>
           <MainPage />
         </Route>
-        <Route path={`${path}/account`}>
+        <Route path={`${path}${ROUTES.ACCOUNT}`}>
           <AccountProfile />
+        </Route>
+        <Route path={path}>
+          <MainPage />
         </Route>
       </Switch>
     </>

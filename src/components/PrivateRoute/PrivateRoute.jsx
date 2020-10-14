@@ -8,7 +8,11 @@ const PrivateRoute = ({ component: Component, currentUser, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      currentUser ? <Component {...props} /> : <Redirect to={ROUTES.WELCOME} />
+      currentUser ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to={ROUTES.LANDING_PAGE} />
+      )
     }
   />
 )

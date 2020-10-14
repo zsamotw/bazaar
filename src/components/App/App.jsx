@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Snackbar from '@material-ui/core/Snackbar'
 import * as ROUTES from '../../constants/routes'
 import HomePage from '../HomePage'
@@ -37,10 +37,17 @@ function App(props) {
   return (
     <div>
       <Router>
-        <PublicRoute exact path={ROUTES.WELCOME} component={LandingPage} />
-        <PrivateRoute path={ROUTES.HOME} component={HomePage} />
-        <PublicRoute path={ROUTES.SIGN_UP} component={SignUpPage} />
-        <PublicRoute path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Switch>
+          <PublicRoute
+            exact
+            path={ROUTES.LANDING_PAGE}
+            component={LandingPage}
+          />
+          <PrivateRoute path={ROUTES.HOME} component={HomePage} />
+          <PublicRoute path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <PublicRoute path={ROUTES.SIGN_IN} component={SignInPage} />
+          <PublicRoute patch="*" component={LandingPage} />
+        </Switch>
       </Router>
       <Snackbar
         anchorOrigin={{
