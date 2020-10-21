@@ -36,6 +36,8 @@ class Firebase {
 
   doOnAuthStateChange = () => firebase.auth().onAuthStateChanged
 
+  doDeleteUser = () => firebase.auth().currentUser.delete()
+
   doReauthenticateWithCredential = (credential, next, onError) => {
     const user = this.auth.currentUser
     user

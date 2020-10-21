@@ -3,12 +3,14 @@ import { setAuthUserInLocalStorage } from '../components/LocalStorage'
 import {
   SET_APP_MESSAGE,
   LOGIN_REQUEST,
+  RE_LOGIN_REQUEST,
   LOGOUT_REQUEST,
   SIGNUP_REQUEST,
   SET_AUTH_USER,
   SET_IS_FETCHING_DATA,
   UPDATE_USER_ACCOUNT_DETAILS_REQUEST,
-  CHANGE_USER_PASSWORD_REQUEST
+  CHANGE_USER_PASSWORD_REQUEST,
+  DELETE_USER_REQUEST
 } from './actions'
 import Firebase from '../components/Firebase'
 
@@ -42,6 +44,31 @@ function* login(action) {
     yield put(
       SET_IS_FETCHING_DATA({
         payload: { type: 'isFetchingLoginData', value: false }
+      })
+    )
+  }
+}
+
+function* reLogin() {
+  yield put(
+    SET_IS_FETCHING_DATA({
+      payload: { type: 'isFetchingSignUpData', value: true }
+    })
+  )
+  try {
+    const loggedUser = yield call(Firebase.doGetCurrentUser)
+    const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
+    yield put(SET_AUTH_USER({ payload: currentUser }))
+    setAuthUserInLocalStorage(currentUser)
+    yield put(
+      SET_IS_FETCHING_DATA({
+        payload: { type: 'isFetchingSignUpData', value: false }
+      })
+    )
+  } catch (error) {
+    yield put(
+      SET_IS_FETCHING_DATA({
+        payload: { type: 'isFetchingSignUpData', value: false }
       })
     )
   }
@@ -194,9 +221,41 @@ function* changePassword(action) {
     setError(error)
   }
 }
+function* deleteUser(action) {
+  yield put(
+    SET_IS_FETCHING_DATA({
+      payload: { type: 'isFetchingLoginData', value: true }
+    })
+  )
+  const {
+    callbacks: { setError }
+  } = action.payload
+  try {
+    const loggedUser = yield call(Firebase.doGetCurrentUser)
+    if (loggedUser) {
+      yield call(loggedUser.delete.bind(loggedUser))
+      yield put(SET_AUTH_USER({ payload: null }))
+      setAuthUserInLocalStorage(null)
+    }
+
+    yield put(
+      SET_IS_FETCHING_DATA({
+        payload: { type: 'isFetchingLoginData', value: false }
+      })
+    )
+  } catch (error) {
+    setError(error)
+    yield put(
+      SET_IS_FETCHING_DATA({
+        payload: { type: 'isFetchingLoginData', value: false }
+      })
+    )
+  }
+}
 
 function* appSaga() {
   yield takeLatest(LOGIN_REQUEST.type, login)
+  yield takeLatest(RE_LOGIN_REQUEST.type, reLogin)
   yield takeLatest(LOGOUT_REQUEST.type, logout)
   yield takeLatest(SIGNUP_REQUEST.type, signUp)
   yield takeLatest(
@@ -204,6 +263,7 @@ function* appSaga() {
     updateUserAccountDetails
   )
   yield takeLatest(CHANGE_USER_PASSWORD_REQUEST, changePassword)
+  yield takeLatest(DELETE_USER_REQUEST.type, deleteUser)
 }
 
 export default function* rootSaga() {

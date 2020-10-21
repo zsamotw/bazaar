@@ -1,26 +1,35 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { SET_AUTH_USER } from '../../store/actions'
+import { RE_LOGIN_REQUEST } from '../../store/actions'
+import { getCurrentUser } from '../../store/selectors'
 import { getAuthUserFromLocalStorage } from '../LocalStorage'
 
 const withAuthentication = Component => {
   const WithAuthentication = props => {
+    const { reLogin, currentUser } = props
+
     useEffect(() => {
       const authUserFromStorage = getAuthUserFromLocalStorage()
-
-      if (authUserFromStorage) props.setAuthUser(authUserFromStorage)
-    }, [props])
+      if (authUserFromStorage) {
+        reLogin()
+      }
+    }, [])
 
     return <Component {...props} />
   }
 
-  const mapDispatchToState = dispatch => {
+  function mapStateToProps(state) {
+    const currentUser = getCurrentUser(state)
+    return { currentUser }
+  }
+
+  function mapDispatchToState(dispatch) {
     return {
-      setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
+      reLogin: () => dispatch(RE_LOGIN_REQUEST())
     }
   }
 
-  return connect(null, mapDispatchToState)(WithAuthentication)
+  return connect(mapStateToProps, mapDispatchToState)(WithAuthentication)
 }
 
 export default withAuthentication

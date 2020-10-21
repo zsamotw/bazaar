@@ -14,6 +14,7 @@ export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
   credential => credential
 )
+export const RE_LOGIN_REQUEST = createAction('RE_LOGIN REQUEST')
 export const LOGOUT_REQUEST = createAction('LOGOUT REQUEST')
 export const SIGNUP_REQUEST = createAction('SIGNUP REQUEST', data => data)
 export const UPDATE_USER_ACCOUNT_DETAILS_REQUEST = createAction(
@@ -23,4 +24,8 @@ export const UPDATE_USER_ACCOUNT_DETAILS_REQUEST = createAction(
 export const CHANGE_USER_PASSWORD_REQUEST = createAction(
   'CHANGE_USER_PASSWORD_REQUEST',
   data => data
+)
+export const DELETE_USER_REQUEST = createAction(
+  'DELETE USER REQUEST',
+  credential => credential
 )
