@@ -10,7 +10,7 @@ export default function MainPage() {
         height: '80vh'
       }}
     >
-      Welcome in App App
+      Welcome in Bazaar 
     </div>
   )
 }

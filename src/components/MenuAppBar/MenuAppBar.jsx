@@ -65,7 +65,7 @@ function MenuAppBar(props) {
               to={ROUTES.HOME}
               style={{ textDecoration: 'none', color: '#fff' }}
             >
-              App App
+             Bazaar 
             </Link>
           </Typography>
           <div>
