@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/firestore'
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,6 +17,7 @@ class Firebase {
   constructor() {
     firebase.initializeApp(config)
     this.auth = firebase.auth()
+    this.db = firebase.firestore()
   }
 
   // Auth API
@@ -56,6 +58,13 @@ class Firebase {
     })
   }
 
+  // Item API
+  item = uid => this.db.collection('items').doc(uid)
+
+  items = () => this.db.collection('items')
+
+  addItem = item => this.db.collection('items').add(item)
+
   // Utils
 
   transformFirebaseUserToStateUser = firebaseUser => {
@@ -70,6 +79,14 @@ class Firebase {
       'uid',
       'isAdmin'
     ]
+
+    return userProperties.reduce((obj, prop) => {
+      return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj
+    }, Object.create(null))
+  }
+
+  transformStateUserToSafeUser = firebaseUser => {
+    const userProperties = ['displayName', 'email', 'photoURL', 'uid']
 
     return userProperties.reduce((obj, prop) => {
       return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj

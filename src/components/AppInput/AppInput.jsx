@@ -20,7 +20,8 @@ export default function AppInput(props) {
     type,
     placeholder,
     register,
-    error
+    error,
+    isMultiline
   } = props
 
   return (
@@ -37,6 +38,7 @@ export default function AppInput(props) {
       inputRef={register}
       error={!!error}
       helperText={error ? error.message : ''}
+      multiline={isMultiline}
     />
   )
 }

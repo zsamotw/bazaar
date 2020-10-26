@@ -63,9 +63,25 @@ function MenuAppBar(props) {
           <Typography variant="h6" className={classes.title}>
             <Link
               to={ROUTES.HOME}
-              style={{ textDecoration: 'none', color: '#fff' }}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                fontSize: '20px',
+                textTransform: 'uppercase'
+              }}
             >
-             Bazaar 
+              Bazaar
+            </Link>
+            <Link
+              to={ROUTES.HOME + ROUTES.ADD_ITEM}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                fontSize: '15px',
+                marginLeft: '15px'
+              }}
+            >
+              Add item
             </Link>
           </Typography>
           <div>

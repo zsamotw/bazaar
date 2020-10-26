@@ -10,6 +10,7 @@ export const SET_IS_FETCHING_DATA = createAction(
   data => data
 )
 
+// account actions
 export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
   credential => credential
@@ -29,3 +30,6 @@ export const DELETE_USER_REQUEST = createAction(
   'DELETE USER REQUEST',
   credential => credential
 )
+
+// user items actions
+export const ADD_ITEM_REQUEST = createAction('ADD ITEM REQUEST', data => data)

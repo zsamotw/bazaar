@@ -189,9 +189,9 @@ export const theme = createMuiTheme({
     },
     divider: 'rgba(0, 0, 0, 0.12)',
     secondary: {
-      main: '#FFB300',
-      light: 'rgb(255, 194, 51)',
-      dark: 'rgb(178, 125, 0)',
+      main: '#fbc02d',
+      light: '#fff263',
+      dark: '#c49000',
       contrastText: 'rgba(0, 0, 0, 0.87)'
     },
     common: { black: '#000', white: '#fff' },
@@ -211,11 +211,11 @@ export const theme = createMuiTheme({
       active: 'rgba(0, 0, 0, 0.54)'
     },
     primary: {
-      main: '#AD1457',
-      light: 'rgb(189, 67, 120)',
-      dark: 'rgb(121, 14, 60)',
+      main: '#4caf50',
+      light: '#80e27e',
+      dark: '#087f23',
       contrastText: '#fff'
     }
   },
-  themeName: 'Jazzberry Jam Selective Yellow Aardwolf'
+  themeName: 'Bazaar theme 1.0'
 })

@@ -7,6 +7,7 @@ import * as ROUTES from '../../constants/routes'
 
 import MenuAppBar from '../MenuAppBar'
 import MainPage from '../MainPage'
+import AddItem from '../AddItem'
 
 const HomePage = props => {
   const { currentUser } = props
@@ -21,6 +22,9 @@ const HomePage = props => {
         </Route>
         <Route path={`${path}${ROUTES.ACCOUNT}`}>
           <AccountProfile />
+        </Route>
+        <Route path={`${path}${ROUTES.ADD_ITEM}`}>
+          <AddItem />
         </Route>
         <Route path={path}>
           <MainPage />
