@@ -81,7 +81,18 @@ function MenuAppBar(props) {
                 marginLeft: '15px'
               }}
             >
-              Add item
+              Add
+            </Link>
+            <Link
+              to={ROUTES.HOME + ROUTES.ITEMS}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                fontSize: '15px',
+                marginLeft: '15px'
+              }}
+            >
+              Find
             </Link>
           </Typography>
           <div>

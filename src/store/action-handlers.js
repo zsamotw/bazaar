@@ -14,3 +14,8 @@ export const handleSetIsFetchingData = (state, data) => {
   const nextState = state.set('isFetchingData', fetchingData)
   return nextState
 }
+
+export const handleSetItems = (state, items) => {
+  const nextState = state.set('items', items)
+  return nextState
+}

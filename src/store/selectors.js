@@ -12,3 +12,8 @@ export const getIsFetchingData = state => {
   const isFetchingData = state.get('isFetchingData')
   return isFetchingData
 }
+
+export const getItems = state => {
+  const items = state.get('items')
+  return items
+}

@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import ReduxSagaFirebase from 'redux-saga-firebase'
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,13 +16,13 @@ const config = {
 
 class Firebase {
   constructor() {
-    firebase.initializeApp(config)
-    this.auth = firebase.auth()
-    this.db = firebase.firestore()
+    const firebaseApp = firebase.initializeApp(config)
+    this.rsf = new ReduxSagaFirebase(firebaseApp)
+    this.auth = this.rsf.auth
+    this.db = this.rsf.firestore
   }
 
   // Auth API
-
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password)
 
@@ -58,15 +59,13 @@ class Firebase {
     })
   }
 
-  // Item API
-  item = uid => this.db.collection('items').doc(uid)
+  // Firestore API
+  addDocument = (collectionName, document) =>
+    this.db.addDocument(collectionName, document)
 
-  items = () => this.db.collection('items')
+  getCollection = collectionName => this.db.getCollection(collectionName)
 
-  addItem = item => this.db.collection('items').add(item)
-
-  // Utils
-
+  // Utils API
   transformFirebaseUserToStateUser = firebaseUser => {
     const userProperties = [
       'displayName',

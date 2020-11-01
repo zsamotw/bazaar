@@ -3,9 +3,15 @@ import { Record } from 'immutable'
 import {
   handleSetAuthUser,
   handleSetAppMessage,
-  handleSetIsFetchingData
+  handleSetIsFetchingData,
+  handleSetItems
 } from './action-handlers'
-import { SET_AUTH_USER, SET_APP_MESSAGE, SET_IS_FETCHING_DATA } from './actions'
+import {
+  SET_AUTH_USER,
+  SET_APP_MESSAGE,
+  SET_IS_FETCHING_DATA,
+  SET_ITEMS
+} from './actions'
 
 const makeInitialState = Record({
   currentUser: null,
@@ -17,7 +23,8 @@ const makeInitialState = Record({
     isFetchingChangePasswordData: false,
     isFetchingProcessItem: false
   },
-  appMessage: { content: '', type: null }
+  appMessage: { content: '', type: null },
+  items: []
 })
 
 const initialState = makeInitialState()
@@ -31,6 +38,9 @@ const appReducers = createReducer(initialState, {
   },
   [SET_IS_FETCHING_DATA.type]: (state, action) => {
     return handleSetIsFetchingData(state, action.payload)
+  },
+  [SET_ITEMS.type]: (state, action) => {
+    return handleSetItems(state, action.payload)
   }
 })
 
