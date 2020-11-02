@@ -1,21 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 import { GET_ITEMS_REQUEST } from '../../store/actions'
 import { getIsFetchingData, getItems } from '../../store/selectors'
 import Item from '../Item'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
-  }
-}))
-
 function ItemsList(props) {
-  const theme = useTheme()
-  const classes = useStyles(theme)
   const { getItemsList, items, isFetchingProcessItem } = props
 
   useEffect(() => {
@@ -23,9 +13,9 @@ function ItemsList(props) {
   }, [])
 
   return (
-    <div className={classes.root}>
+    <Grid container>
       {items ? items.map(item => <Item item={item} />) : null}
-    </div>
+    </Grid>
   )
 }
 
