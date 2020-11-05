@@ -13,255 +13,176 @@ import {
   DELETE_USER_REQUEST
 } from '../actions'
 import Firebase from '../../components/Firebase'
+import { isFetchingData, requestWithFetchingData } from './SagasHelper'
 
-function* login(action) {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingLoginData', value: true }
-    })
-  )
-  const {
+function* signInWithFirebase(action) {
+  const { email, password } = action.payload
+  const { user } = yield call(
+    Firebase.doSignInWithEmailAndPassword,
     email,
-    password,
-    callbacks: { setError }
-  } = action.payload
-  try {
-    const { user } = yield call(
-      Firebase.doSignInWithEmailAndPassword,
-      email,
-      password
-    )
-    const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+    password
+  )
+  const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+  yield put(SET_AUTH_USER({ payload: currentUser }))
+  setAuthUserInLocalStorage(currentUser)
+}
+
+function* signUpWithFirebase(action) {
+  const { displayName, email, password } = action.payload
+  const user = yield call(
+    Firebase.doCreateUserWithEmailAndPassword,
+    email,
+    password
+  )
+  if (user) {
+    const loggedUser = yield call(Firebase.doGetCurrentUser)
+    yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
+    const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
     setAuthUserInLocalStorage(currentUser)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingLoginData', value: false }
-      })
-    )
-  } catch (error) {
-    setError(error)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingLoginData', value: false }
-      })
-    )
   }
 }
 
-function* reLogin() {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingSignUpData', value: true }
-    })
-  )
-  try {
-    const loggedUser = yield call(Firebase.doGetCurrentUser)
+function* relogin() {
+  const loggedUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
+  yield put(SET_AUTH_USER({ payload: currentUser }))
+  setAuthUserInLocalStorage(currentUser)
+}
+
+function* updateFirebaseUserAccount(action) {
+  const { displayName } = action.payload
+  const loggedUser = yield call(Firebase.doGetCurrentUser)
+  if (loggedUser) {
+    yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
     const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
     setAuthUserInLocalStorage(currentUser)
     yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingSignUpData', value: false }
-      })
-    )
-  } catch (error) {
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingSignUpData', value: false }
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Account update successfully',
+          status: 'success'
+        }
       })
     )
   }
 }
 
-function* logout() {
+function* changeFirebasePassword(action) {
+  const { email, passwordOld, passwordNew } = action.payload
+  yield put(
+    SET_IS_FETCHING_DATA({
+      payload: {
+        type: isFetchingData.isFetchingChangePasswordData,
+        value: true
+      }
+    })
+  )
+  const { user } = yield call(
+    Firebase.doSignInWithEmailAndPassword,
+    email,
+    passwordOld
+  )
+  if (user) {
+    yield call(Firebase.doPasswordUpdate, passwordNew)
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Password updated successfully',
+          status: 'success'
+        }
+      })
+    )
+  }
+}
+
+function* deleteFirebaseUser() {
+  const loggedUser = yield call(Firebase.doGetCurrentUser)
+  if (loggedUser) {
+    yield call(loggedUser.delete.bind(loggedUser))
+    yield put(SET_AUTH_USER({ payload: null }))
+    setAuthUserInLocalStorage(null)
+  }
+}
+
+function* singInRequest(action) {
+  yield requestWithFetchingData(
+    action,
+    signInWithFirebase,
+    isFetchingData.isFetchingLoginData,
+    null
+  )
+}
+
+function* reLoginRequest() {
+  yield requestWithFetchingData(
+    null,
+    relogin,
+    isFetchingData.isFetchingLoginData,
+    null
+  )
+}
+
+function* logoutRequest() {
   yield call(Firebase.doSignOut)
   yield put(SET_AUTH_USER({ payload: null }))
   setAuthUserInLocalStorage(null)
 }
 
-function* signUp(action) {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingSignUpData', value: true }
-    })
+function* signUpRequest(action) {
+  yield requestWithFetchingData(
+    action,
+    signUpWithFirebase,
+    isFetchingData.isFetchingSignUpData,
+    null
   )
-  const {
-    displayName,
-    email,
-    password,
-    callbacks: { setError }
-  } = action.payload
-  try {
-    const user = yield call(
-      Firebase.doCreateUserWithEmailAndPassword,
-      email,
-      password
-    )
-    if (user) {
-      const loggedUser = yield call(Firebase.doGetCurrentUser)
-      yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
-      const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
-      yield put(SET_AUTH_USER({ payload: currentUser }))
-      setAuthUserInLocalStorage(currentUser)
-      yield put(
-        SET_IS_FETCHING_DATA({
-          payload: { type: 'isFetchingSignUpData', value: false }
-        })
-      )
-    }
-  } catch (error) {
-    setError(error)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingSignUpData', value: false }
-      })
-    )
-  }
 }
 
-function* updateUserAccountDetails(action) {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingUpdateUserAccountData', value: true }
-    })
-  )
-  const {
-    displayName,
-    callbacks: { setError }
-  } = action.payload
-  try {
-    const loggedUser = yield call(Firebase.doGetCurrentUser)
-    if (loggedUser) {
-      yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
-      const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
-      yield put(SET_AUTH_USER({ payload: currentUser }))
-      setAuthUserInLocalStorage(currentUser)
-      yield put(
-        SET_IS_FETCHING_DATA({
-          payload: { type: 'isFetchingUpdateUserAccountData', value: false }
-        })
-      )
-      yield put(
-        SET_APP_MESSAGE({
-          payload: {
-            content: 'Account update successfully',
-            status: 'success'
-          }
-        })
-      )
-    }
-  } catch (error) {
-    setError(error)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingUpdateUserAccountData', value: false }
-      })
-    )
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Account update failed',
-          status: 'error'
-        }
-      })
-    )
-    setError(error)
+function* updateUserAccountDetailsRequest(action) {
+  const messageOnError = {
+    content: 'Account update failed',
+    status: 'error'
   }
+  yield requestWithFetchingData(
+    action,
+    updateFirebaseUserAccount,
+    isFetchingData.isFetchingUpdateUserAccountData,
+    messageOnError
+  )
 }
 
-function* changePassword(action) {
-  const {
-    email,
-    passwordOld,
-    passwordNew,
-    callbacks: { setError }
-  } = action.payload
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingChangePasswordData', value: true }
-    })
-  )
-  try {
-    const { user } = yield call(
-      Firebase.doSignInWithEmailAndPassword,
-      email,
-      passwordOld
-    )
-    if (user) {
-      yield call(Firebase.doPasswordUpdate, passwordNew)
-      yield put(
-        SET_IS_FETCHING_DATA({
-          payload: { type: 'isFetchingChangePasswordData', value: false }
-        })
-      )
-      yield put(
-        SET_APP_MESSAGE({
-          payload: {
-            content: 'Password updated successfully',
-            status: 'success'
-          }
-        })
-      )
-    }
-  } catch (error) {
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingChangePasswordData', value: false }
-      })
-    )
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Password update failed',
-          status: 'error'
-        }
-      })
-    )
-    setError(error)
+function* changePasswordRequest(action) {
+  const messageOnError = {
+    content: 'Password update failed',
+    status: 'error'
   }
+  yield requestWithFetchingData(
+    action,
+    changeFirebasePassword,
+    isFetchingData.isFetchingChangePasswordData,
+    messageOnError
+  )
 }
-function* deleteUser(action) {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingLoginData', value: true }
-    })
-  )
-  const {
-    callbacks: { setError }
-  } = action.payload
-  try {
-    const loggedUser = yield call(Firebase.doGetCurrentUser)
-    if (loggedUser) {
-      yield call(loggedUser.delete.bind(loggedUser))
-      yield put(SET_AUTH_USER({ payload: null }))
-      setAuthUserInLocalStorage(null)
-    }
 
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingLoginData', value: false }
-      })
-    )
-  } catch (error) {
-    setError(error)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingLoginData', value: false }
-      })
-    )
-  }
+function* deleteUserRequest(action) {
+  yield requestWithFetchingData(
+    action,
+    deleteFirebaseUser,
+    isFetchingData.isFetchingLoginData,
+    null
+  )
 }
 
 export default function* accountSaga() {
-  yield takeLatest(LOGIN_REQUEST.type, login)
-  yield takeLatest(RE_LOGIN_REQUEST.type, reLogin)
-  yield takeLatest(LOGOUT_REQUEST.type, logout)
-  yield takeLatest(SIGNUP_REQUEST.type, signUp)
+  yield takeLatest(LOGIN_REQUEST.type, singInRequest)
+  yield takeLatest(RE_LOGIN_REQUEST.type, reLoginRequest)
+  yield takeLatest(LOGOUT_REQUEST.type, logoutRequest)
+  yield takeLatest(SIGNUP_REQUEST.type, signUpRequest)
   yield takeLatest(
     UPDATE_USER_ACCOUNT_DETAILS_REQUEST.type,
-    updateUserAccountDetails
+    updateUserAccountDetailsRequest
   )
-  yield takeLatest(CHANGE_USER_PASSWORD_REQUEST, changePassword)
-  yield takeLatest(DELETE_USER_REQUEST.type, deleteUser)
+  yield takeLatest(CHANGE_USER_PASSWORD_REQUEST, changePasswordRequest)
+  yield takeLatest(DELETE_USER_REQUEST.type, deleteUserRequest)
 }

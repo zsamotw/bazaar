@@ -7,7 +7,7 @@ import {
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
-import requestWithFetchingData from './SagasHelper'
+import { isFetchingData, requestWithFetchingData } from './SagasHelper'
 
 function* addFirebaseItem(action) {
   const { name, description, price } = action.payload
@@ -39,7 +39,7 @@ function* getFirebaseItems() {
   yield put(SET_ITEMS({ payload: items }))
 }
 
-function* addItem(action) {
+function* addItemRequest(action) {
   const messageOnError = {
     content: 'Item adding failed',
     status: 'error'
@@ -47,12 +47,12 @@ function* addItem(action) {
   yield requestWithFetchingData(
     action,
     addFirebaseItem,
-    'isFetchingProcessItem',
+    isFetchingData.isFetchingProcessItem,
     messageOnError
   )
 }
 
-function* getItems(action) {
+function* getItemsRequest(action) {
   const messageOnError = {
     content: 'Getting items list failed',
     status: 'error'
@@ -60,12 +60,12 @@ function* getItems(action) {
   yield requestWithFetchingData(
     action,
     getFirebaseItems,
-    'isFetchingProcessItem',
+    isFetchingData.isFetchingProcessItem,
     messageOnError
   )
 }
 
 export default function* itemsSaga() {
-  yield takeLatest(ADD_ITEM_REQUEST.type, addItem)
-  yield takeLatest(GET_ITEMS_REQUEST.type, getItems)
+  yield takeLatest(ADD_ITEM_REQUEST.type, addItemRequest)
+  yield takeLatest(GET_ITEMS_REQUEST.type, getItemsRequest)
 }
