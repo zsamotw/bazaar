@@ -2,98 +2,67 @@ import { call, put, select, takeLatest } from 'redux-saga/effects'
 import {
   SET_APP_MESSAGE,
   SET_ITEMS,
-  SET_IS_FETCHING_DATA,
   ADD_ITEM_REQUEST,
   GET_ITEMS_REQUEST
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
+import requestWithFetchingData from './SagasHelper'
 
-function* addItem(action) {
-  yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingProcessItem', value: true }
-    })
-  )
-  const {
+function* addFirebaseItem(action) {
+  const { name, description, price } = action.payload
+  const currentUser = yield select(getCurrentUser)
+  const seller = Firebase.transformStateUserToSafeUser(currentUser)
+
+  yield call(Firebase.addDocument, 'items', {
     name,
     description,
     price,
-    callbacks: { setError }
-  } = action.payload
-  const currentUser = yield select(getCurrentUser)
-  const seller = Firebase.transformStateUserToSafeUser(currentUser)
-  try {
-    yield call(Firebase.addDocument, 'items', {
-      name,
-      description,
-      price,
-      seller
-    })
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Item has been added ',
-          status: 'success'
-        }
-      })
-    )
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingProcessItem', value: false }
-      })
-    )
-  } catch (error) {
-    setError(error)
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingProcessItem', value: false }
-      })
-    )
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Item adding failed',
-          status: 'error'
-        }
-      })
-    )
-  }
-}
-
-function* getItems() {
+    seller
+  })
   yield put(
-    SET_IS_FETCHING_DATA({
-      payload: { type: 'isFetchingProcessItem', value: true }
+    SET_APP_MESSAGE({
+      payload: {
+        content: 'Item has been added ',
+        status: 'success'
+      }
     })
   )
-  try {
-    const snapshot = yield call(Firebase.getCollection, 'items')
-    let items = []
-    snapshot.forEach(item => {
-      items = [...items, { ...item.data(), id: item.id }]
-    })
-    yield put(SET_ITEMS({ payload: items }))
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingProcessItem', value: false }
-      })
-    )
-  } catch (err) {
-    yield put(
-      SET_IS_FETCHING_DATA({
-        payload: { type: 'isFetchingProcessItem', value: false }
-      })
-    )
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Getting items list failed',
-          status: 'error'
-        }
-      })
-    )
+}
+
+function* getFirebaseItems() {
+  const snapshot = yield call(Firebase.getCollection, 'items')
+  let items = []
+  snapshot.forEach(item => {
+    items = [...items, { ...item.data(), id: item.id }]
+  })
+  yield put(SET_ITEMS({ payload: items }))
+}
+
+function* addItem(action) {
+  const messageOnError = {
+    content: 'Item adding failed',
+    status: 'error'
   }
+  yield requestWithFetchingData(
+    action,
+    addFirebaseItem,
+    'isFetchingProcessItem',
+    messageOnError
+  )
+}
+
+function* getItems(action) {
+  const messageOnError = {
+    content: 'Getting items list failed',
+    status: 'error'
+  }
+  yield requestWithFetchingData(
+    action,
+    getFirebaseItems,
+    'isFetchingProcessItem',
+    messageOnError
+  )
 }
 
 export default function* itemsSaga() {
