@@ -27,7 +27,6 @@ const PasswordChangeForm = props => {
 
   const [itemName, setItemName] = useState('')
   const [itemDescription, setItemDescription] = useState('')
-  const [itemPrice, setItemPrice] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
@@ -68,23 +67,9 @@ const PasswordChangeForm = props => {
     }),
     error: errors.passwordOne
   }
-  const itemPriceInputProps = {
-    id: 'itemPrice-input',
-    label: 'Item price',
-    variant: 'outlined',
-    name: 'item price',
-    value: itemPrice,
-    onChange: event => setItemPrice(event.target.value),
-    type: 'number',
-    placeholder: 'Type item price...',
-    register: register({
-      required: 'Required'
-    }),
-    error: errors.passwordTwo
-  }
 
   const onSubmit = () => {
-    addItem(itemName, itemDescription, itemPrice, { setError })
+    addItem(itemName, itemDescription, { setError })
   }
 
   return (
@@ -95,7 +80,6 @@ const PasswordChangeForm = props => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>{AppInput(itemNameInputProps)}</div>
           <div>{AppInput(itemDescriptionInputProps)}</div>
-          <div>{AppInput(itemPriceInputProps)}</div>
           <ButtonWithProgress
             variant="contained"
             color="primary"
@@ -121,10 +105,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (name, description, price, callbacks) =>
+    addItem: (name, description, callbacks) =>
       dispatch(
         ADD_ITEM_REQUEST({
-          payload: { name, description, price, callbacks }
+          payload: { name, description, callbacks }
         })
       )
   }

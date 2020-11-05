@@ -10,15 +10,16 @@ import { getCurrentUser } from '../selectors'
 import { isFetchingData, requestWithFetchingData } from './SagasHelper'
 
 function* addFirebaseItem(action) {
-  const { name, description, price } = action.payload
+  const { name, description } = action.payload
   const currentUser = yield select(getCurrentUser)
   const seller = Firebase.transformStateUserToSafeUser(currentUser)
+  const createdAt = new Date()
 
   yield call(Firebase.addDocument, 'items', {
     name,
     description,
-    price,
-    seller
+    seller,
+    createdAt
   })
   yield put(
     SET_APP_MESSAGE({
