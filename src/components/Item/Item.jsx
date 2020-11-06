@@ -16,31 +16,34 @@ const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
     height: '400px',
-    padding: '2rem',
     boxSizing: 'border-box',
     margin: theme.spacing(1),
+    padding: '1rem',
     background: "url('https://source.unsplash.com/600x400/?thing')",
     backgroundSize: 'cover',
     '&:hover': {
-      '& span': {
+      '& div': {
         opacity: 1
       }
     }
+  },
+  texts: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline'
   },
   headLine: {
     ...paperTextStyles,
     backgroundColor: theme.palette.secondary.dark,
     fontSize: '30px',
-    fontWeight: '600'
+    fontWeight: '600',
+    marginBottom: '2rem'
   },
   description: {
     ...paperTextStyles,
     backgroundColor: theme.palette.primary.dark
   },
   shoppingCardIcon: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
     '&:hover': {
       '& svg': {
         color: theme.palette.primary.main,
@@ -54,20 +57,21 @@ export default function Item(prop) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  const { name, description } = prop.item
+  const { name, description, seller } = prop.item
 
   return (
     <Grid item xs={12} md={4}>
       <Paper className={classes.root} elevation={3}>
-        <div style={{ marginBottom: '2rem' }}>
-          <span className={classes.headLine}>{name}</span>
+        <div className={classes.texts}>
+          <div className={classes.headLine}>
+            <div>{name}</div>
+            <div style={{ fontSize: '1rem' }}>by {seller.displayName}</div>
+          </div>
+          <IconButton className={classes.shoppingCardIcon}>
+            <ShoppingCartIcon color="secondary" fontSize="large" />
+          </IconButton>
         </div>
-        <div>
-          <span className={classes.description}>{description}</span>
-        </div>
-        <IconButton className={classes.shoppingCardIcon}>
-          <ShoppingCartIcon color="secondary" fontSize="large" />
-        </IconButton>
+        <div className={classes.description}>{description}</div>
       </Paper>
     </Grid>
   )

@@ -25,7 +25,7 @@ function ItemsList(props) {
   }, [])
 
   return (
-    <Grid container>
+    <Grid container style={{ marginTop: '2rem' }}>
       <Backdrop className={classes.backdrop} open={isFetchingProcessItem}>
         <CircularProgress color="secondary" />
       </Backdrop>
