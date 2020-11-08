@@ -65,6 +65,11 @@ class Firebase {
 
   getCollection = collectionName => this.db.getCollection(collectionName)
 
+  getCollectionRef = () => this.db.getCollection
+
+  getFirestoreCollectionOrder = (collectionName, prop) =>
+    firebase.firestore().collection(collectionName).orderBy(prop)
+
   // Utils API
   transformFirebaseUserToStateUser = firebaseUser => {
     const userProperties = [

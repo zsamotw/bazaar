@@ -32,7 +32,10 @@ function* addFirebaseItem(action) {
 }
 
 function* getFirebaseItems() {
-  const snapshot = yield call(Firebase.getCollection, 'items')
+  const snapshot = yield call(
+    Firebase.getCollectionRef(),
+    Firebase.getFirestoreCollectionOrder('items', 'createdAt')
+  )
   let items = []
   snapshot.forEach(item => {
     items = [...items, { ...item.data(), id: item.id }]
