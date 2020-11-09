@@ -1,3 +1,5 @@
+import { List } from 'immutable'
+
 export const handleSetAuthUser = (state, user) => {
   const nextState = state.set('currentUser', user)
   return nextState
@@ -16,6 +18,9 @@ export const handleSetIsFetchingData = (state, data) => {
 }
 
 export const handleSetItems = (state, items) => {
-  const nextState = state.set('items', items)
+  const nextItems = List(items)
+    .sortBy(item => item.createdAt.seconds)
+    .reverse()
+  const nextState = state.set('items', nextItems)
   return nextState
 }

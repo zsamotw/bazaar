@@ -33,13 +33,14 @@ const useStyles = makeStyles(theme => ({
   texts: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'baseline'
+    alignItems: 'flex-start'
   },
   headLine: {
     ...paperTextStyles,
     backgroundColor: theme.palette.secondary.dark,
     fontWeight: '600',
-    marginBottom: '2rem'
+    marginBottom: '2rem',
+    marginTop: '0'
   },
   description: {
     ...paperTextStyles,
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   recipient: {
     ...paperTextStyles,
+    marginLeft: '1rem',
     backgroundColor: '#f40b0b'
   },
   shoppingCardIcon: {
@@ -69,7 +71,7 @@ function Item(prop) {
   const handleSetRecipient = () => setRecipient(id)
 
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item sm={12} md={6} lg={4}>
       <Paper className={classes.root} elevation={3}>
         <div className={classes.texts}>
           <h1 className={classes.headLine}>

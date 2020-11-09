@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Record } from 'immutable'
+import { Record, List } from 'immutable'
 import {
   handleSetAuthUser,
   handleSetAppMessage,
@@ -25,7 +25,7 @@ const makeInitialState = Record({
     isFetchingProcessItem: false
   },
   appMessage: { content: '', type: null },
-  items: []
+  items: List([])
 })
 
 const initialState = makeInitialState()
