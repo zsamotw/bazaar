@@ -3,10 +3,11 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { connect } from 'react-redux'
 import { SET_RECIPIENT_REQUEST } from '../../store/actions'
-import { getIsFetchingData } from '../../store/selectors'
+import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
 
 const paperTextStyles = {
   color: 'white',
@@ -44,12 +45,24 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     ...paperTextStyles,
+    opacity: 0,
     backgroundColor: theme.palette.primary.dark
   },
   recipient: {
     ...paperTextStyles,
     marginLeft: '1rem',
-    backgroundColor: '#f40b0b'
+    backgroundColor: theme.palette.error.dark
+  },
+  deleteIcon: {
+    '& svg': {
+      color: theme.palette.error.main
+    },
+    '&:hover': {
+      '& svg': {
+        color: theme.palette.error.dark,
+        cursor: 'pointer'
+      }
+    }
   },
   shoppingCardIcon: {
     '&:hover': {
@@ -65,10 +78,35 @@ function Item(prop) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  const { setRecipient } = prop
-  const { name, description, seller, recipient, id } = prop.item
+  const { item, setRecipient, currentUser } = prop
+  const { name, description, seller, recipient, id } = item
 
   const handleSetRecipient = () => setRecipient(id)
+
+  const getIcon = () => {
+    if (item.seller.uid === currentUser.uid) {
+      return (
+        <IconButton className={classes.deleteIcon}>
+          <DeleteIcon fontSize="large" />
+        </IconButton>
+      )
+    }
+    if (!item.recipient) {
+      return (
+        <IconButton
+          className={classes.shoppingCardIcon}
+          onClick={handleSetRecipient}
+        >
+          <ShoppingCartIcon color="secondary" fontSize="large" />
+        </IconButton>
+      )
+    }
+    return (
+      <div className={classes.recipient}>
+        Goes to happy {recipient.displayName}
+      </div>
+    )
+  }
 
   return (
     <Grid item sm={12} md={6} lg={4}>
@@ -80,18 +118,7 @@ function Item(prop) {
               by {seller ? seller.displayName : ''}
             </div>
           </h1>
-          {!recipient ? (
-            <IconButton
-              className={classes.shoppingCardIcon}
-              onClick={handleSetRecipient}
-            >
-              <ShoppingCartIcon color="secondary" fontSize="large" />
-            </IconButton>
-          ) : (
-            <div className={classes.recipient}>
-              Goes to happy: {recipient.displayName}
-            </div>
-          )}
+          {getIcon(item, currentUser)}
         </div>
         <div className={classes.description}>{description}</div>
       </Paper>
@@ -101,7 +128,8 @@ function Item(prop) {
 
 function mapStateToProps(state) {
   const { isFetchingProcessItem } = getIsFetchingData(state)
-  return { isFetchingProcessItem }
+  const currentUser = getCurrentUser(state)
+  return { isFetchingProcessItem, currentUser }
 }
 
 function mapDispatchToState(dispatch) {
