@@ -24,7 +24,8 @@ function* requestWithFetchingData(action, func, fetchingType, messageOnError) {
       })
     )
   } catch (err) {
-    const { callbacks } = action ? action.payload : {}
+    const payload = action ? action.payload : null
+    const callbacks = payload ? payload.callbacks : null
     if (callbacks && callbacks.setError) {
       callbacks.setError(err)
     }

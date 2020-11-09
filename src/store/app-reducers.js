@@ -10,7 +10,8 @@ import {
   SET_AUTH_USER,
   SET_APP_MESSAGE,
   SET_IS_FETCHING_DATA,
-  SET_ITEMS
+  SET_ITEMS,
+  SYNC_ITEMS
 } from './actions'
 
 const makeInitialState = Record({
@@ -40,6 +41,9 @@ const appReducers = createReducer(initialState, {
     return handleSetIsFetchingData(state, action.payload)
   },
   [SET_ITEMS.type]: (state, action) => {
+    return handleSetItems(state, action.payload)
+  },
+  [SYNC_ITEMS.type]: (state, action) => {
     return handleSetItems(state, action.payload)
   }
 })

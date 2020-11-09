@@ -65,10 +65,22 @@ class Firebase {
 
   getCollection = collectionName => this.db.getCollection(collectionName)
 
+  getChannel = ref => this.db.channel(ref)
+
+  syncCollection = (ref, options) => this.db.syncCollection(ref, options)
+  
+  syncCollectionRef = () => this.db.syncCollection
+
   getCollectionRef = () => this.db.getCollection
 
   getFirestoreCollectionOrder = (collectionName, prop) =>
     firebase.firestore().collection(collectionName).orderBy(prop)
+
+  setDocument = (docRef, data, options) =>
+    this.db.setDocument(docRef, data, options)
+
+  updateDocument = (docRef, prop, value) =>
+    this.db.updateDocument(docRef, prop, value)
 
   // Utils API
   transformFirebaseUserToStateUser = firebaseUser => {

@@ -1,9 +1,10 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects'
+import { call, fork, put, select, takeLatest } from 'redux-saga/effects'
 import {
   SET_APP_MESSAGE,
-  SET_ITEMS,
   ADD_ITEM_REQUEST,
-  GET_ITEMS_REQUEST
+  GET_ITEMS_REQUEST,
+  SET_RECIPIENT_REQUEST,
+  SYNC_ITEMS_CREATION
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
@@ -31,16 +32,26 @@ function* addFirebaseItem(action) {
   )
 }
 
-function* getFirebaseItems() {
-  const snapshot = yield call(
-    Firebase.getCollectionRef(),
-    Firebase.getFirestoreCollectionOrder('items', 'createdAt')
+function* setRecipient(action) {
+  const { id } = action.payload
+  const currentUser = yield select(getCurrentUser)
+  const recipient = Firebase.transformStateUserToSafeUser(currentUser)
+  const takeAt = new Date()
+
+  yield call(
+    Firebase.setDocument,
+    `items/${id}`,
+    { recipient, takeAt },
+    { merge: true }
   )
-  let items = []
-  snapshot.forEach(item => {
-    items = [...items, { ...item.data(), id: item.id }]
-  })
-  yield put(SET_ITEMS({ payload: items }))
+  yield put(
+    SET_APP_MESSAGE({
+      payload: {
+        content: 'Item has been taken ',
+        status: 'success'
+      }
+    })
+  )
 }
 
 function* addItemRequest(action) {
@@ -56,14 +67,35 @@ function* addItemRequest(action) {
   )
 }
 
-function* getItemsRequest(action) {
+function* getFirebaseSyncItems() {
+  const itemsTransformer = snapshot => {
+    const items = []
+    snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }))
+    return items
+  }
+
+  try {
+    yield fork(Firebase.syncCollectionRef(), 'items', {
+      successActionCreator: SYNC_ITEMS_CREATION,
+      transform: itemsTransformer
+    })
+  } catch {
+    yield put(
+      SET_APP_MESSAGE({
+        payload: { content: 'Cannot sync items', status: 'error' }
+      })
+    )
+  }
+}
+
+function* setRecipientRequest(action) {
   const messageOnError = {
-    content: 'Getting items list failed',
+    content: 'Taking item failed',
     status: 'error'
   }
   yield requestWithFetchingData(
     action,
-    getFirebaseItems,
+    setRecipient,
     isFetchingData.isFetchingProcessItem,
     messageOnError
   )
@@ -71,5 +103,6 @@ function* getItemsRequest(action) {
 
 export default function* itemsSaga() {
   yield takeLatest(ADD_ITEM_REQUEST.type, addItemRequest)
-  yield takeLatest(GET_ITEMS_REQUEST.type, getItemsRequest)
+  yield takeLatest(GET_ITEMS_REQUEST.type, getFirebaseSyncItems)
+  yield takeLatest(SET_RECIPIENT_REQUEST.type, setRecipientRequest)
 }

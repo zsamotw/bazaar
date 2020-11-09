@@ -11,6 +11,9 @@ export const SET_IS_FETCHING_DATA = createAction(
 )
 export const SET_ITEMS = createAction('SET ITEMS', items => items)
 
+export const SYNC_ITEMS = createAction('SYNC ITEMS')
+export const SYNC_ITEMS_CREATION = items => SYNC_ITEMS(items)
+
 // account actions
 export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
@@ -35,3 +38,7 @@ export const DELETE_USER_REQUEST = createAction(
 // user items actions
 export const ADD_ITEM_REQUEST = createAction('ADD ITEM REQUEST', data => data)
 export const GET_ITEMS_REQUEST = createAction('GET ITEMS REQUEST')
+export const SET_RECIPIENT_REQUEST = createAction(
+  'SET RECIPIENT REQUEST',
+  data => data
+)
