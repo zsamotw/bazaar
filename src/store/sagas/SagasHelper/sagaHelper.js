@@ -7,7 +7,8 @@ const isFetchingData = {
   isFetchingSignOutData: 'isFetchingSignOutData',
   isFetchingUpdateUserAccountData: 'isFetchingUpdateUserAccountData',
   isFetchingChangePasswordData: 'isFetchingChangePasswordData',
-  isFetchingProcessItem: 'isFetchingProcessItem'
+  isFetchingProcessItem: 'isFetchingProcessItem',
+  isFetchingTransactions: 'isFetchingTransactions'
 }
 
 function* requestWithFetchingData(action, func, fetchingType, messageOnError) {

@@ -24,3 +24,16 @@ export const handleSetItems = (state, items) => {
   const nextState = state.set('items', nextItems)
   return nextState
 }
+
+export const handleSetRecipientTransactions = (
+  state,
+  recipientTransactions,
+  donorTransactions
+) => {
+  const nextRecipientTransactions = List(recipientTransactions)
+  const nextDonorTransactions = List(donorTransactions)
+  const nextState = state
+    .set('recipientTransactions', nextRecipientTransactions)
+    .set('donorTransactions', nextDonorTransactions)
+  return nextState
+}

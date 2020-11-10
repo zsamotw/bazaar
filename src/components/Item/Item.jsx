@@ -79,12 +79,12 @@ function Item(prop) {
   const classes = useStyles(theme)
 
   const { item, setRecipient, currentUser } = prop
-  const { name, description, seller, recipient, id } = item
+  const { name, description, donor, recipient, id } = item
 
   const handleSetRecipient = () => setRecipient(id)
 
   const getIcon = () => {
-    if (item.seller.uid === currentUser.uid) {
+    if (item.donor.uid === currentUser.uid && !item.recipient) {
       return (
         <IconButton className={classes.deleteIcon}>
           <DeleteIcon fontSize="large" />
@@ -115,7 +115,7 @@ function Item(prop) {
           <h1 className={classes.headLine}>
             <div>{name}</div>
             <div style={{ fontSize: '1rem' }}>
-              by {seller ? seller.displayName : ''}
+              by {donor ? donor.displayName : ''}
             </div>
           </h1>
           {getIcon(item, currentUser)}

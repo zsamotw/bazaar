@@ -14,6 +14,8 @@ export const SET_ITEMS = createAction('SET ITEMS', items => items)
 export const SYNC_ITEMS = createAction('SYNC ITEMS')
 export const SYNC_ITEMS_CREATION = items => SYNC_ITEMS(items)
 
+export const SET_TRANSACTIONS = createAction('SET TRANSACTIONS', items => items)
+
 // account actions
 export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
@@ -42,3 +44,4 @@ export const SET_RECIPIENT_REQUEST = createAction(
   'SET RECIPIENT REQUEST',
   data => data
 )
+export const GET_TRANSACTIONS_REQUEST = createAction('GET TRANSACTIONS REQUEST')

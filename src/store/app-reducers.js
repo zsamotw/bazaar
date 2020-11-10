@@ -4,14 +4,16 @@ import {
   handleSetAuthUser,
   handleSetAppMessage,
   handleSetIsFetchingData,
-  handleSetItems
+  handleSetItems,
+  handleSetRecipientTransactions
 } from './action-handlers'
 import {
   SET_AUTH_USER,
   SET_APP_MESSAGE,
   SET_IS_FETCHING_DATA,
   SET_ITEMS,
-  SYNC_ITEMS
+  SYNC_ITEMS,
+  SET_TRANSACTIONS
 } from './actions'
 
 const makeInitialState = Record({
@@ -22,10 +24,13 @@ const makeInitialState = Record({
     isFetchingSignOutData: false,
     isFetchingUpdateUserAccountData: false,
     isFetchingChangePasswordData: false,
-    isFetchingProcessItem: false
+    isFetchingProcessItem: false,
+    isFetchingTransactions: false
   },
   appMessage: { content: '', type: null },
-  items: List([])
+  items: List([]),
+  recipientTransactions: List([]),
+  donorTransactions: List([])
 })
 
 const initialState = makeInitialState()
@@ -45,6 +50,14 @@ const appReducers = createReducer(initialState, {
   },
   [SYNC_ITEMS.type]: (state, action) => {
     return handleSetItems(state, action.payload)
+  },
+  [SET_TRANSACTIONS.type]: (state, action) => {
+    const { recipientTransactions, donorTransactions } = action.payload
+    return handleSetRecipientTransactions(
+      state,
+      recipientTransactions,
+      donorTransactions
+    )
   }
 })
 

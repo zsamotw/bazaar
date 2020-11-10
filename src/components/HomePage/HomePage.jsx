@@ -9,6 +9,7 @@ import MenuAppBar from '../MenuAppBar'
 import MainPage from '../MainPage'
 import AddItem from '../AddItem'
 import ItemsList from '../ItemsList'
+import Transactions from '../Transactions'
 
 const HomePage = props => {
   const { currentUser } = props
@@ -29,6 +30,9 @@ const HomePage = props => {
         </Route>
         <Route path={`${path}${ROUTES.ITEMS}`}>
           <ItemsList />
+        </Route>
+        <Route path={`${path}${ROUTES.TRANSACTIONS}`}>
+          <Transactions />
         </Route>
         <Route path={path}>
           <MainPage />

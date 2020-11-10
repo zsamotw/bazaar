@@ -94,6 +94,17 @@ function MenuAppBar(props) {
             >
               Find
             </Link>
+            <Link
+              to={ROUTES.HOME + ROUTES.TRANSACTIONS}
+              style={{
+                textDecoration: 'none',
+                color: '#fff',
+                fontSize: '15px',
+                marginLeft: '15px'
+              }}
+            >
+              Transactions
+            </Link>
           </Typography>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
