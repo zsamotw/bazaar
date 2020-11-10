@@ -17,3 +17,13 @@ export const getItems = state => {
   const items = state.get('items')
   return items
 }
+
+export const getDonorTransactions = state => {
+  const items = state.get('donorTransactions')
+  return items
+}
+
+export const getRecipientTransactions = state => {
+  const items = state.get('recipientTransactions')
+  return items
+}

@@ -5,6 +5,8 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { GET_TRANSACTIONS_REQUEST } from '../../store/actions'
 import { getIsFetchingData } from '../../store/selectors'
+import RecipientTransactions from './RecipientTransactions'
+import DonorTransactions from './DonorTransactions'
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -18,6 +20,7 @@ function Transactions(props) {
 
   const theme = useTheme()
   const classes = useStyles(theme)
+
   useEffect(() => {
     getTransactions()
   }, [])
@@ -27,7 +30,8 @@ function Transactions(props) {
       <Backdrop className={classes.backdrop} open={isFetchingTransactions}>
         <CircularProgress color="secondary" />
       </Backdrop>
-      <div>Transactons:</div>
+      <RecipientTransactions />
+      <DonorTransactions />
     </>
   )
 }
