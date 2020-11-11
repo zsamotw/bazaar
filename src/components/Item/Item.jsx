@@ -2,12 +2,18 @@ import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { connect } from 'react-redux'
-import { SET_RECIPIENT_REQUEST } from '../../store/actions'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
+import { REMOVE_ITEM_REQUEST, SET_RECIPIENT_REQUEST } from '../../store/actions'
 
 const paperTextStyles = {
   color: 'white',
@@ -78,15 +84,33 @@ function Item(prop) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  const { item, setRecipient, currentUser } = prop
+  const { item, removeItem, setRecipient, currentUser } = prop
   const { name, description, donor, recipient, id } = item
 
+  const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false)
+
+  const handleRemoveItem = () => {
+    removeItem(id)
+    setOpenRemoveDialog(false)
+  }
+
   const handleSetRecipient = () => setRecipient(id)
+
+  const handleClickOpenRemoveDialog = () => {
+    setOpenRemoveDialog(true)
+  }
+
+  const handleCloseRemoveDialog = () => {
+    setOpenRemoveDialog(false)
+  }
 
   const getIcon = () => {
     if (item.donor.uid === currentUser.uid && !item.recipient) {
       return (
-        <IconButton className={classes.deleteIcon}>
+        <IconButton
+          className={classes.deleteIcon}
+          onClick={handleClickOpenRemoveDialog}
+        >
           <DeleteIcon fontSize="large" />
         </IconButton>
       )
@@ -110,6 +134,22 @@ function Item(prop) {
 
   return (
     <Grid item sm={12} md={6} lg={4}>
+      <Dialog open={openRemoveDialog} onClose={handleCloseRemoveDialog}>
+        <DialogTitle>Remove item</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Do you want to delete this item?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRemoveDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleRemoveItem} color="secondary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Paper className={classes.root} elevation={3}>
         <div className={classes.texts}>
           <h1 className={classes.headLine}>
@@ -134,6 +174,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
+    removeItem: itemId =>
+      dispatch(REMOVE_ITEM_REQUEST({ payload: { id: itemId } })),
     setRecipient: itemId =>
       dispatch(SET_RECIPIENT_REQUEST({ payload: { id: itemId } }))
   }

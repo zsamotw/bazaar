@@ -6,7 +6,8 @@ import {
   SET_RECIPIENT_REQUEST,
   SYNC_ITEMS_CREATION,
   GET_TRANSACTIONS_REQUEST,
-  SET_TRANSACTIONS
+  SET_TRANSACTIONS,
+  REMOVE_ITEM_REQUEST
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
@@ -27,7 +28,20 @@ function* addFirebaseItem(action) {
   yield put(
     SET_APP_MESSAGE({
       payload: {
-        content: 'Item has been added ',
+        content: 'Item has been added',
+        status: 'success'
+      }
+    })
+  )
+}
+
+function* removeFirebaseItem(action) {
+  const { id } = action.payload
+  yield call(Firebase.removeDocument, `items/${id}`)
+  yield put(
+    SET_APP_MESSAGE({
+      payload: {
+        content: 'Item has been removed',
         status: 'success'
       }
     })
@@ -108,6 +122,20 @@ function* addItemRequest(action) {
   )
 }
 
+function* removeItemRequest(action) {
+  const messageOnError = {
+    content: 'Item removing failed',
+    status: 'error'
+  }
+  yield requestWithFetchingData(
+    action,
+    removeFirebaseItem,
+    isFetchingData.isFetchingProcessItem,
+    messageOnError
+  )
+
+}
+
 function* getFirebaseSyncItems() {
   const itemsTransformer = snapshot => {
     const items = []
@@ -157,6 +185,7 @@ function* getTransactionsRequest(action) {
 
 export default function* itemsSaga() {
   yield takeLatest(ADD_ITEM_REQUEST.type, addItemRequest)
+  yield takeLatest(REMOVE_ITEM_REQUEST.type, removeItemRequest)
   yield takeLatest(GET_ITEMS_REQUEST.type, getFirebaseSyncItems)
   yield takeLatest(SET_RECIPIENT_REQUEST.type, setRecipientRequest)
   yield takeLatest(GET_TRANSACTIONS_REQUEST.type, getTransactionsRequest)

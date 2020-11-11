@@ -39,6 +39,7 @@ export const DELETE_USER_REQUEST = createAction(
 
 // user items actions
 export const ADD_ITEM_REQUEST = createAction('ADD ITEM REQUEST', data => data)
+export const REMOVE_ITEM_REQUEST = createAction('REMOVE ITEM REQUEST', id => id)
 export const GET_ITEMS_REQUEST = createAction('GET ITEMS REQUEST')
 export const SET_RECIPIENT_REQUEST = createAction(
   'SET RECIPIENT REQUEST',
