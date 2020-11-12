@@ -15,7 +15,7 @@ import { isFetchingData, requestWithFetchingData } from './SagasHelper'
 
 function* addFirebaseItem(action) {
   const { name, description } = action.payload
-  const currentUser = yield select(getCurrentUser)
+  const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   const createdAt = new Date()
 
@@ -36,42 +36,69 @@ function* addFirebaseItem(action) {
 }
 
 function* removeFirebaseItem(action) {
-  const { id } = action.payload
-  yield call(Firebase.removeDocument, `items/${id}`)
-  yield put(
-    SET_APP_MESSAGE({
-      payload: {
-        content: 'Item has been removed',
-        status: 'success'
-      }
-    })
-  )
+  const {
+    item: { id, donor: itemDonor }
+  } = action.payload
+  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const donor = Firebase.transformStateUserToSafeUser(currentUser)
+  if (donor.uid === itemDonor.uid) {
+    yield call(Firebase.removeDocument, `items/${id}`)
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Item has been removed',
+          status: 'success'
+        }
+      })
+    )
+  } else {
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'You cannot remove this item',
+          status: 'warring'
+        }
+      })
+    )
+  }
 }
 
 function* setRecipient(action) {
-  const { id } = action.payload
+  const {
+    item: { id, recipient: itemRecipient, donor: itemDonor }
+  } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const recipient = Firebase.transformStateUserToSafeUser(currentUser)
   const takeAt = new Date()
 
-  yield call(
-    Firebase.setDocument,
-    `items/${id}`,
-    { recipient, takeAt },
-    { merge: true }
-  )
-  yield put(
-    SET_APP_MESSAGE({
-      payload: {
-        content: 'Item has been taken ',
-        status: 'success'
-      }
-    })
-  )
+  if (!itemRecipient || recipient.uid === itemDonor.uid) {
+    yield call(
+      Firebase.setDocument,
+      `items/${id}`,
+      { recipient, takeAt },
+      { merge: true }
+    )
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Item has been taken ',
+          status: 'success'
+        }
+      })
+    )
+  } else {
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'This item cannot be taken by You',
+          status: 'warring'
+        }
+      })
+    )
+  }
 }
 
 function* getTransactions() {
-  // const currentUser = yield call(Firebase.doGetCurrentUser)
   const currentUser = yield select(getCurrentUser)
   if (currentUser) {
     const snapshot = yield call(
