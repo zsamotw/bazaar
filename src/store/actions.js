@@ -16,7 +16,7 @@ export const SYNC_ITEMS_CREATION = items => SYNC_ITEMS(items)
 
 export const SET_TRANSACTIONS = createAction('SET TRANSACTIONS', items => items)
 
-// account actions
+// account async actions
 export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
   credential => credential
@@ -37,7 +37,7 @@ export const DELETE_USER_REQUEST = createAction(
   credential => credential
 )
 
-// user items actions
+// user items async actions
 export const ADD_ITEM_REQUEST = createAction('ADD ITEM REQUEST', data => data)
 export const REMOVE_ITEM_REQUEST = createAction('REMOVE ITEM REQUEST', id => id)
 export const GET_ITEMS_REQUEST = createAction('GET ITEMS REQUEST')

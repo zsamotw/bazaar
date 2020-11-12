@@ -12,6 +12,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Divider from '@material-ui/core/Divider'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import CloseIcon from '@material-ui/icons/Close'
+import Slide from '@material-ui/core/Slide'
 import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
 import { REMOVE_ITEM_REQUEST, SET_RECIPIENT_REQUEST } from '../../store/actions'
 
@@ -77,8 +83,26 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer'
       }
     }
+  },
+  dialogBar: {
+    position: 'relative'
+  },
+  dialogTitle: {
+    marginLeft: theme.spacing(2),
+    flex: 1
+  },
+  dialogDivider: {
+    margin: '1rem 0'
+  },
+  dialogActions: {
+    display: 'flex',
+    justifyContent: 'flex-start'
   }
 }))
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 function Item(prop) {
   const theme = useTheme()
@@ -88,13 +112,17 @@ function Item(prop) {
   const { name, description, donor, recipient, id } = item
 
   const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false)
+  const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
 
   const handleRemoveItem = () => {
     removeItem(id)
     setOpenRemoveDialog(false)
   }
 
-  const handleSetRecipient = () => setRecipient(id)
+  const handleSetRecipient = () => {
+    setRecipient(id)
+    setOpenConfirmDialog(false)
+  }
 
   const handleClickOpenRemoveDialog = () => {
     setOpenRemoveDialog(true)
@@ -102,6 +130,14 @@ function Item(prop) {
 
   const handleCloseRemoveDialog = () => {
     setOpenRemoveDialog(false)
+  }
+
+  const handleClickOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true)
+  }
+
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false)
   }
 
   const getIcon = () => {
@@ -119,7 +155,7 @@ function Item(prop) {
       return (
         <IconButton
           className={classes.shoppingCardIcon}
-          onClick={handleSetRecipient}
+          onClick={handleClickOpenConfirmDialog}
         >
           <ShoppingCartIcon color="secondary" fontSize="large" />
         </IconButton>
@@ -138,7 +174,7 @@ function Item(prop) {
         <DialogTitle>Remove item</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Do you want to delete this item?
+            Do you want to remove this item?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -146,7 +182,53 @@ function Item(prop) {
             Cancel
           </Button>
           <Button onClick={handleRemoveItem} color="secondary" autoFocus>
-            Delete
+            Remove
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        fullScreen
+        open={openConfirmDialog}
+        onClose={handleCloseConfirmDialog}
+        TransitionComponent={Transition}
+      >
+        <AppBar className={classes.dialogBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleCloseConfirmDialog}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.dialogTitle}>
+              Confirm taking item
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleSetRecipient}>
+              Take
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <DialogContent className={classes.dialogContent}>
+          <img
+            src="https://source.unsplash.com/600x400/?thing"
+            alt="item"
+            height="400px"
+          />
+          <h1>{name}</h1>
+          <div>{description}</div>
+          <Divider className={classes.dialogDivider} />
+          <div style={{ textTransform: 'uppercase' }}>From:</div>
+          <div>{donor.displayName}</div>
+          <div>{donor.email}</div>
+        </DialogContent>
+        <DialogActions style={{ justifyContent: 'flex-start' }}>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSetRecipient} color="secondary" autoFocus>
+            Take
           </Button>
         </DialogActions>
       </Dialog>

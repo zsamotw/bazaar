@@ -133,7 +133,6 @@ function* removeItemRequest(action) {
     isFetchingData.isFetchingProcessItem,
     messageOnError
   )
-
 }
 
 function* getFirebaseSyncItems() {
