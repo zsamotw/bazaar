@@ -50,9 +50,9 @@ function DonorTransactions(props) {
           <div>{transaction.description}</div>
           <Divider className={classes.divider} />
           <div className={classes.donorData}>
-            <div style={{ textTransform: 'uppercase' }}>To:</div>
-            <div>{transaction.recipient.displayName}</div>
-            <div>{transaction.recipient.email}</div>
+            <div style={{ textTransform: 'uppercase' }}>From:</div>
+            <div>{transaction.donor.displayName}</div>
+            <div>{transaction.donor.email}</div>
           </div>
         </Paper>
       ))}

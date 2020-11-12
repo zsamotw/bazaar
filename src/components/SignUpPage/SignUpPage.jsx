@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { getIsFetchingData } from '../../store/selectors'
+import { getIsAsyncRequest } from '../../store/selectors'
 import { SIGNUP_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
@@ -129,7 +129,7 @@ const SignUpFormBase = props => {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingSignUpData } = getIsFetchingData(state)
+  const { isFetchingSignUpData } = getIsAsyncRequest(state)
   return { isFetchingSignUpData }
 }
 

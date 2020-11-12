@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
 import { ADD_ITEM_REQUEST } from '../../store/actions'
-import { getIsFetchingData } from '../../store/selectors'
+import { getIsAsyncRequest } from '../../store/selectors'
 
 const useStyles = makeStyles({
   wrapper: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 })
 
 const PasswordChangeForm = props => {
-  const { addItem, isFetchingProcessItem } = props
+  const { addItem, isProcessingItem } = props
 
   const [itemName, setItemName] = useState('')
   const [itemDescription, setItemDescription] = useState('')
@@ -35,8 +35,8 @@ const PasswordChangeForm = props => {
   const classes = useStyles()
 
   useEffect(() => {
-    setIsLoading(isFetchingProcessItem)
-  }, [isFetchingProcessItem])
+    setIsLoading(isProcessingItem)
+  }, [isProcessingItem])
 
   const itemNameInputProps = {
     id: 'itemName-input',
@@ -99,8 +99,8 @@ const PasswordChangeForm = props => {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingProcessItem } = getIsFetchingData(state)
-  return { isFetchingProcessItem }
+  const { isProcessingItem } = getIsAsyncRequest(state)
+  return { isProcessingItem }
 }
 
 function mapDispatchToState(dispatch) {

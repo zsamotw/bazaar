@@ -18,13 +18,13 @@ import {
 
 const makeInitialState = Record({
   currentUser: null,
-  isFetchingData: {
+  isAsyncRequest: {
     isFetchingLoginData: false,
     isFetchingSignUpdData: false,
     isFetchingSignOutData: false,
     isFetchingUpdateUserAccountData: false,
     isFetchingChangePasswordData: false,
-    isFetchingProcessItem: false,
+    isProcessingItem: false,
     isFetchingTransactions: false
   },
   appMessage: { content: '', type: null },

@@ -5,7 +5,7 @@ import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { GET_ITEMS_REQUEST } from '../../store/actions'
-import { getIsFetchingData, getItems } from '../../store/selectors'
+import { getIsAsyncRequest, getItems } from '../../store/selectors'
 import Item from '../Item'
 
 const useStyles = makeStyles(theme => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function ItemsList(props) {
-  const { getItemsList, items, isFetchingProcessItem } = props
+  const { getItemsList, items, isProcessingItem } = props
   const theme = useTheme()
   const classes = useStyles(theme)
 
@@ -26,7 +26,7 @@ function ItemsList(props) {
 
   return (
     <Grid container style={{ marginTop: '2rem' }}>
-      <Backdrop className={classes.backdrop} open={isFetchingProcessItem}>
+      <Backdrop className={classes.backdrop} open={isProcessingItem}>
         <CircularProgress color="secondary" />
       </Backdrop>
       {items ? items.map(item => <Item item={item} key={item.id} />) : null}
@@ -35,9 +35,9 @@ function ItemsList(props) {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingProcessItem } = getIsFetchingData(state)
+  const { isProcessingItem } = getIsAsyncRequest(state)
   const items = getItems(state)
-  return { isFetchingProcessItem, items }
+  return { isProcessingItem, items }
 }
 
 function mapDispatchToState(dispatch) {

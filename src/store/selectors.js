@@ -8,9 +8,9 @@ export const getAppMessage = state => {
   return message
 }
 
-export const getIsFetchingData = state => {
-  const isFetchingData = state.get('isFetchingData')
-  return isFetchingData
+export const getIsAsyncRequest = state => {
+  const isAsyncRequest = state.get('isAsyncRequest')
+  return isAsyncRequest
 }
 
 export const getItems = state => {

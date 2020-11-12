@@ -6,7 +6,7 @@ import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
 import { CHANGE_USER_PASSWORD_REQUEST } from '../../store/actions'
 import { getAuthUserFromLocalStorage } from '../LocalStorage'
-import { getIsFetchingData } from '../../store/selectors'
+import { getIsAsyncRequest } from '../../store/selectors'
 
 const useStyles = makeStyles({
   form: {
@@ -113,7 +113,7 @@ const PasswordChangeForm = props => {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingChangePasswordData } = getIsFetchingData(state)
+  const { isFetchingChangePasswordData } = getIsAsyncRequest(state)
   return { isFetchingChangePasswordData }
 }
 

@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { connect } from 'react-redux'
 import Dialogs from './Dialogs'
-import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
+import { getCurrentUser, getIsAsyncRequest } from '../../store/selectors'
 import { REMOVE_ITEM_REQUEST, SET_RECIPIENT_REQUEST } from '../../store/actions'
 
 const paperTextStyles = {
@@ -80,7 +80,7 @@ function Item(prop) {
   const classes = useStyles(theme)
 
   const { item, removeItem, setRecipient, currentUser } = prop
-  const { name, description, donor, recipient, id } = item
+  const { name, description, donor, recipient } = item
 
   const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false)
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
@@ -167,9 +167,9 @@ function Item(prop) {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingProcessItem } = getIsFetchingData(state)
+  const { isProcessingItem } = getIsAsyncRequest(state)
   const currentUser = getCurrentUser(state)
-  return { isFetchingProcessItem, currentUser }
+  return { isProcessingItem, currentUser }
 }
 
 function mapDispatchToState(dispatch) {

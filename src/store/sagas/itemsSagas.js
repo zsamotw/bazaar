@@ -11,11 +11,12 @@ import {
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
-import { isFetchingData, requestWithFetchingData } from './SagasHelper'
+import requestWithFetchingData from './SagasHelper'
+import isAsyncRequest from '../../constants/asyncRequests'
 
 function* addFirebaseItem(action) {
   const { name, description } = action.payload
-  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = yield select(getCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   const createdAt = new Date()
 
@@ -144,7 +145,7 @@ function* addItemRequest(action) {
   yield requestWithFetchingData(
     action,
     addFirebaseItem,
-    isFetchingData.isFetchingProcessItem,
+    isAsyncRequest.isProcessingItem,
     messageOnError
   )
 }
@@ -157,7 +158,7 @@ function* removeItemRequest(action) {
   yield requestWithFetchingData(
     action,
     removeFirebaseItem,
-    isFetchingData.isFetchingProcessItem,
+    isAsyncRequest.isProcessingItem,
     messageOnError
   )
 }
@@ -191,7 +192,7 @@ function* setRecipientRequest(action) {
   yield requestWithFetchingData(
     action,
     setRecipient,
-    isFetchingData.isFetchingProcessItem,
+    isAsyncRequest.isProcessingItem,
     messageOnError
   )
 }
@@ -204,7 +205,7 @@ function* getTransactionsRequest(action) {
   yield requestWithFetchingData(
     action,
     getTransactions,
-    isFetchingData.isFetchingTransactions,
+    isAsyncRequest.isFetchingTransactions,
     messageOnError
   )
 }

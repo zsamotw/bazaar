@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { getIsFetchingData } from '../../store/selectors'
+import { getIsAsyncRequest } from '../../store/selectors'
 import { LOGIN_REQUEST } from '../../store/actions'
 import AppInput from '../AppInput'
 
@@ -92,7 +92,7 @@ const SignInFormBase = props => {
 }
 
 function mapStateToProps(state) {
-  const { isFetchingLoginData } = getIsFetchingData(state)
+  const { isFetchingLoginData } = getIsAsyncRequest(state)
   return { isFetchingLoginData }
 }
 

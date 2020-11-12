@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../ButtonWithProgress'
-import { getCurrentUser, getIsFetchingData } from '../../store/selectors'
+import { getCurrentUser, getIsAsyncRequest } from '../../store/selectors'
 import AppInput from '../AppInput'
 import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../store/actions'
 
@@ -79,7 +79,7 @@ function AccountDetailsChange(props) {
 
 function mapStateToProps(state) {
   const currentUser = getCurrentUser(state)
-  const { isFetchingUpdateUserAccountData } = getIsFetchingData(state)
+  const { isFetchingUpdateUserAccountData } = getIsAsyncRequest(state)
   return { currentUser, isFetchingUpdateUserAccountData }
 }
 

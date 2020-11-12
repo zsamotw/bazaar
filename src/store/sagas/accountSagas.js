@@ -13,7 +13,8 @@ import {
   DELETE_USER_REQUEST
 } from '../actions'
 import Firebase from '../../components/Firebase'
-import { isFetchingData, requestWithFetchingData } from './SagasHelper'
+import requestWithFetchingData from './SagasHelper'
+import isAsyncRequest from '../../constants/asyncRequests'
 
 function* signInWithFirebase(action) {
   const { email, password } = action.payload
@@ -74,7 +75,7 @@ function* changeFirebasePassword(action) {
   yield put(
     SET_IS_FETCHING_DATA({
       payload: {
-        type: isFetchingData.isFetchingChangePasswordData,
+        type: isAsyncRequest.isFetchingChangePasswordData,
         value: true
       }
     })
@@ -110,7 +111,7 @@ function* singInRequest(action) {
   yield requestWithFetchingData(
     action,
     signInWithFirebase,
-    isFetchingData.isFetchingLoginData,
+    isAsyncRequest.isFetchingLoginData,
     null
   )
 }
@@ -119,7 +120,7 @@ function* reLoginRequest() {
   yield requestWithFetchingData(
     null,
     relogin,
-    isFetchingData.isFetchingLoginData,
+    isAsyncRequest.isFetchingLoginData,
     null
   )
 }
@@ -134,7 +135,7 @@ function* signUpRequest(action) {
   yield requestWithFetchingData(
     action,
     signUpWithFirebase,
-    isFetchingData.isFetchingSignUpData,
+    isAsyncRequest.isFetchingSignUpData,
     null
   )
 }
@@ -147,7 +148,7 @@ function* updateUserAccountDetailsRequest(action) {
   yield requestWithFetchingData(
     action,
     updateFirebaseUserAccount,
-    isFetchingData.isFetchingUpdateUserAccountData,
+    isAsyncRequest.isFetchingUpdateUserAccountData,
     messageOnError
   )
 }
@@ -160,7 +161,7 @@ function* changePasswordRequest(action) {
   yield requestWithFetchingData(
     action,
     changeFirebasePassword,
-    isFetchingData.isFetchingChangePasswordData,
+    isAsyncRequest.isFetchingChangePasswordData,
     messageOnError
   )
 }
@@ -169,7 +170,7 @@ function* deleteUserRequest(action) {
   yield requestWithFetchingData(
     action,
     deleteFirebaseUser,
-    isFetchingData.isFetchingLoginData,
+    isAsyncRequest.isFetchingLoginData,
     null
   )
 }

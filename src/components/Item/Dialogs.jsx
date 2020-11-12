@@ -106,10 +106,10 @@ export default function Dialogs(props) {
           <div>{donor.email}</div>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'flex-start' }}>
-          <Button onClick={handleCloseConfirmDialog} color="primary">
+          <Button onClick={handleCloseConfirmDialog} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSetRecipient} color="secondary" autoFocus>
+          <Button onClick={handleSetRecipient} color="primary" autoFocus>
             Take
           </Button>
         </DialogActions>

@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { GET_TRANSACTIONS_REQUEST } from '../../store/actions'
-import { getIsFetchingData } from '../../store/selectors'
+import { getIsAsyncRequest } from '../../store/selectors'
 import RecipientTransactions from './RecipientTransactions'
 import DonorTransactions from './DonorTransactions'
 
@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
+  },
+  tabPanel: {
+    margin: '0 1rem'
   }
 }))
 
@@ -23,20 +26,12 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`tabpanel-${index}`}
       {...other}
     >
       {value === index && <div>{children}</div>}
     </div>
   )
-}
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  }
 }
 
 function Transactions(props) {
@@ -45,10 +40,10 @@ function Transactions(props) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  const [value, setValue] = React.useState(0)
+  const [tabValue, setTabValue] = React.useState(0)
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
+  const handleChangeTab = (event, newValue) => {
+    setTabValue(newValue)
   }
 
   useEffect(() => {
@@ -61,25 +56,25 @@ function Transactions(props) {
         <CircularProgress color="secondary" />
       </Backdrop>
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={tabValue}
+        onChange={handleChangeTab}
         aria-label="simple tabs example"
       >
-        <Tab label="Things I was given" {...a11yProps(0)} />
-        <Tab label="Things I gave" {...a11yProps(1)} />
+        <Tab label="Gifts" />
+        <Tab label="Given away" />
       </Tabs>
-      <TabPanel value={value} index={0} style={{ margin: '0 1rem' }}>
-        <RecipientTransactions />
-      </TabPanel>
-      <TabPanel value={value} index={1} style={{ margin: '0 1rem' }}>
+      <TabPanel value={tabValue} index={0} className={classes.tabPanel}>
         <DonorTransactions />
+      </TabPanel>
+      <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
+        <RecipientTransactions />
       </TabPanel>
     </>
   )
 }
 
 function mapStateToProps(state) {
-  const { isFetchingTransactions } = getIsFetchingData(state)
+  const { isFetchingTransactions } = getIsAsyncRequest(state)
   return { isFetchingTransactions }
 }
 

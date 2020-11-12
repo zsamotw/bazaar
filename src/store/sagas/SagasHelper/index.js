@@ -1,3 +1,3 @@
-import { isFetchingData, requestWithFetchingData } from './sagaHelper'
+import requestWithFetchingData from './sagaHelper'
 
-export { isFetchingData, requestWithFetchingData }
+export default requestWithFetchingData

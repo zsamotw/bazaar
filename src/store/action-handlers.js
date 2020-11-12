@@ -12,8 +12,8 @@ export const handleSetAppMessage = (state, message) => {
 
 export const handleSetIsFetchingData = (state, data) => {
   const { type, value } = data
-  const fetchingData = { ...state.get('isFetchingData'), [type]: value }
-  const nextState = state.set('isFetchingData', fetchingData)
+  const fetchingData = { ...state.get('isAsyncRequest'), [type]: value }
+  const nextState = state.set('isAsyncRequest', fetchingData)
   return nextState
 }
 
