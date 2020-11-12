@@ -65,7 +65,7 @@ function mapStateToProps(state) {
   return { transactions }
 }
 
-function mapDispatchToState(dispatch) {
+function mapDispatchToState() {
   return {}
 }
 
