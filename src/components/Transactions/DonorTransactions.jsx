@@ -1,19 +1,29 @@
 import React from 'react'
+import Paper from '@material-ui/core/Paper'
+import Divider from '@material-ui/core/Divider'
 import { connect } from 'react-redux'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { getDonorTransactions } from '../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
   transaction: {
-    display: 'flex'
+    padding: '1rem',
+    marginTop: '2rem'
   },
-  itemData: {
-    width: '50%',
+  itemHeader: {
     display: 'flex',
-    flexDirection: 'column'
+    alignItems: 'center'
+  },
+  itemImage: {
+    width: '3rem',
+    height: '3rem',
+    borderRadius: '25px',
+    marginRight: '3rem'
+  },
+  divider: {
+    margin: '1rem 0'
   },
   donorData: {
-    width: '50%',
     display: 'flex',
     flexDirection: 'column'
   }
@@ -27,21 +37,25 @@ function DonorTransactions(props) {
 
   return (
     <>
-      <h1>Things I gave:</h1>
-      <div className={classes.transaction}>
-        {transactions.map(transaction => (
-          <>
-            <div className={classes.itemData}>
-              <h3>{transaction.name}</h3>
-              <div>{transaction.description}</div>
-            </div>
-            <div className={classes.donorData}>
-              <h3>{transaction.donor.displayName}</h3>
-              <div>{transaction.donor.email}</div>
-            </div>
-          </>
-        ))}
-      </div>
+      {transactions.map(transaction => (
+        <Paper className={classes.transaction}>
+          <div className={classes.itemHeader}>
+            <img
+              src="https://source.unsplash.com/600x400/?thing"
+              alt="item"
+              className={classes.itemImage}
+            />
+            <h3>{transaction.name}</h3>
+          </div>
+          <div>{transaction.description}</div>
+          <Divider className={classes.divider} />
+          <div className={classes.donorData}>
+            <div style={{ textTransform: 'uppercase' }}>To:</div>
+            <div>{transaction.recipient.displayName}</div>
+            <div>{transaction.recipient.email}</div>
+          </div>
+        </Paper>
+      ))}
     </>
   )
 }
