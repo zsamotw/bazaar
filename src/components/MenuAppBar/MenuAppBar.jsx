@@ -24,6 +24,12 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(5),
     textTransform: 'uppercase',
     backgroundColor: theme.palette.secondary.main
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#fff',
+    fontSize: '15px',
+    marginLeft: '15px'
   }
 }))
 
@@ -72,36 +78,15 @@ function MenuAppBar(props) {
             >
               Bazaar
             </Link>
-            <Link
-              to={ROUTES.HOME + ROUTES.ADD_ITEM}
-              style={{
-                textDecoration: 'none',
-                color: '#fff',
-                fontSize: '15px',
-                marginLeft: '15px'
-              }}
-            >
+            <Link to={ROUTES.HOME + ROUTES.ADD_ITEM} className={classes.link}>
               Add
             </Link>
-            <Link
-              to={ROUTES.HOME + ROUTES.ITEMS}
-              style={{
-                textDecoration: 'none',
-                color: '#fff',
-                fontSize: '15px',
-                marginLeft: '15px'
-              }}
-            >
+            <Link to={ROUTES.HOME + ROUTES.ITEMS} className={classes.link}>
               Find
             </Link>
             <Link
               to={ROUTES.HOME + ROUTES.TRANSACTIONS}
-              style={{
-                textDecoration: 'none',
-                color: '#fff',
-                fontSize: '15px',
-                marginLeft: '15px'
-              }}
+              className={classes.link}
             >
               Transactions
             </Link>
