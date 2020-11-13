@@ -19,7 +19,7 @@ export const handleSetIsFetchingData = (state, data) => {
 
 export const handleSetItems = (state, items) => {
   const nextItems = List(items)
-    .sortBy(item => item.createdAt.seconds)
+    .sortBy(item => new Date(item.createdAt))
     .reverse()
   const nextState = state.set('items', nextItems)
   return nextState
@@ -31,7 +31,11 @@ export const handleSetRecipientTransactions = (
   donorTransactions
 ) => {
   const nextRecipientTransactions = List(recipientTransactions)
+    .sortBy(item => new Date(item.takeAt))
+    .reverse()
   const nextDonorTransactions = List(donorTransactions)
+    .sortBy(item => new Date(item.takeAt))
+    .reverse()
   const nextState = state
     .set('recipientTransactions', nextRecipientTransactions)
     .set('donorTransactions', nextDonorTransactions)

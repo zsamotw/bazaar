@@ -4,26 +4,32 @@ import Divider from '@material-ui/core/Divider'
 import { connect } from 'react-redux'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { getDonorTransactions } from '../../store/selectors'
+import { formattedDateTime } from '../../helpers/dateHelper'
 
 const useStyles = makeStyles(theme => ({
   transaction: {
-    padding: '1rem',
-    marginTop: '2rem'
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(3)
   },
   itemHeader: {
     display: 'flex',
     alignItems: 'center'
   },
   itemImage: {
-    width: '3rem',
-    height: '3rem',
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     borderRadius: '25px',
-    marginRight: '3rem'
+    marginRight: theme.spacing(5)
   },
   divider: {
     margin: '1rem 0'
   },
-  donorData: {
+  detailsWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  recipientData: {
     display: 'flex',
     flexDirection: 'column'
   }
@@ -49,10 +55,13 @@ function DonorTransactions(props) {
           </div>
           <div>{transaction.description}</div>
           <Divider className={classes.divider} />
-          <div className={classes.donorData}>
-            <div style={{ textTransform: 'uppercase' }}>From:</div>
-            <div>{transaction.donor.displayName}</div>
-            <div>{transaction.donor.email}</div>
+          <div className={classes.detailsWrapper}>
+            <div className={classes.recipientData}>
+              <div style={{ textTransform: 'uppercase' }}>To:</div>
+              <div>{transaction.recipient.displayName}</div>
+              <div>{transaction.recipient.email}</div>
+            </div>
+            <div>{formattedDateTime(new Date(transaction.takeAt))}</div>
           </div>
         </Paper>
       ))}

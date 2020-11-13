@@ -18,7 +18,7 @@ function* addFirebaseItem(action) {
   const { name, description } = action.payload
   const currentUser = yield select(getCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
-  const createdAt = new Date()
+  const createdAt = new Date().toString()
 
   yield call(Firebase.addDocument, 'items', {
     name,
@@ -70,7 +70,7 @@ function* setRecipient(action) {
   } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const recipient = Firebase.transformStateUserToSafeUser(currentUser)
-  const takeAt = new Date()
+  const takeAt = new Date().toString()
 
   if (!itemRecipient || recipient.uid === itemDonor.uid) {
     yield call(
@@ -166,7 +166,11 @@ function* removeItemRequest(action) {
 function* getFirebaseSyncItems() {
   const itemsTransformer = snapshot => {
     const items = []
-    snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }))
+    snapshot.forEach(doc => {
+      if (!doc.data().recipient) {
+        items.push({ id: doc.id, ...doc.data() })
+      }
+    })
     return items
   }
 

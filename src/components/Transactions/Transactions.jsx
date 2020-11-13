@@ -15,8 +15,22 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
   },
+  tabsContainer: {
+    minHeight: 'calc(100vh - 64px)',
+    backgroundColor: theme.palette.grey['200']
+  },
+  tabs: {
+    backgroundColor: theme.palette.grey['200']
+  },
   tabPanel: {
-    margin: '0 1rem'
+    backgroundColor: theme.palette.grey['200'],
+    padding: '1rem 15rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '1rem 3rem'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '1rem 1rem'
+    }
   }
 }))
 
@@ -51,25 +65,25 @@ function Transactions(props) {
   }, [])
 
   return (
-    <>
+    <div className={classes.tabsContainer}>
       <Backdrop className={classes.backdrop} open={isFetchingTransactions}>
         <CircularProgress color="secondary" />
       </Backdrop>
       <Tabs
         value={tabValue}
         onChange={handleChangeTab}
-        aria-label="simple tabs example"
+        className={classes.tabs}
       >
         <Tab label="Gifts" />
         <Tab label="Given away" />
       </Tabs>
       <TabPanel value={tabValue} index={0} className={classes.tabPanel}>
-        <DonorTransactions />
-      </TabPanel>
-      <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
         <RecipientTransactions />
       </TabPanel>
-    </>
+      <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
+        <DonorTransactions />
+      </TabPanel>
+    </div>
   )
 }
 
