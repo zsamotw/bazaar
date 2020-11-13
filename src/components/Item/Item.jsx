@@ -26,11 +26,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     height: '400px',
     boxSizing: 'border-box',
-    margin: theme.spacing(1),
     padding: '1rem',
+    margin: '0 16px 8px 0',
     background: "url('https://source.unsplash.com/600x400/?thing')",
     backgroundSize: 'cover',
     '&:hover': {
+      border: `5px solid ${theme.palette.secondary.main}`,
       '& div,h1,h2,h3,h4,h5': {
         opacity: 1
       }
