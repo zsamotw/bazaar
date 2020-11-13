@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
 import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
 import { ADD_ITEM_REQUEST } from '../../store/actions'
 import { getIsAsyncRequest } from '../../store/selectors'
+import categories from '../../constants/categories'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
     alignItems: 'center',
@@ -19,14 +23,22 @@ const useStyles = makeStyles({
   },
   errorBar: {
     color: 'red'
+  },
+  formControl: {
+    minWidth: 120,
+    margin: '8px 8px 20px 0'
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
   }
-})
+}))
 
-const PasswordChangeForm = props => {
+const AddItemForm = props => {
   const { addItem, isProcessingItem } = props
 
   const [itemName, setItemName] = useState('')
   const [itemDescription, setItemDescription] = useState('')
+  const [itemCategory, setItemCategory] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
@@ -42,7 +54,7 @@ const PasswordChangeForm = props => {
     id: 'itemName-input',
     label: 'Name',
     variant: 'outlined',
-    name: 'name',
+    name: 'itemName',
     value: itemName,
     onChange: event => setItemName(event.target.value),
     type: 'text',
@@ -56,7 +68,7 @@ const PasswordChangeForm = props => {
     id: 'itemDescription-input',
     label: 'Description',
     variant: 'outlined',
-    name: 'description',
+    name: 'itemDescription',
     value: itemDescription,
     onChange: event => setItemDescription(event.target.value),
     type: 'text',
@@ -65,11 +77,13 @@ const PasswordChangeForm = props => {
     register: register({
       required: 'Required'
     }),
-    error: errors.passwordOne
+    error: errors.itemDescription
   }
 
+  const handleCategoryChange = event => setItemCategory(event.target.value)
+
   const onSubmit = () => {
-    addItem(itemName, itemDescription, { setError })
+    addItem(itemName, itemDescription, itemCategory, { setError })
   }
 
   return (
@@ -80,6 +94,35 @@ const PasswordChangeForm = props => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>{AppInput(itemNameInputProps)}</div>
           <div>{AppInput(itemDescriptionInputProps)}</div>
+          <div>
+            <FormControl
+              variant="outlined"
+              name="itemCategory"
+              error={errors.itemCategory}
+              className={classes.formControl}
+            >
+              <InputLabel
+                htmlFor="itemCategories"
+                style={{ transform: 'translate(14px, -11px) scale(0.75)' }}
+              >
+                Category
+              </InputLabel>
+              <Select
+                id="categories-select"
+                name="itemCategories"
+                native
+                value={itemCategory}
+                onChange={handleCategoryChange}
+                inputRef={register({ required: true })}
+              >
+                {categories.map(category => (
+                  <option value={category.name} key={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
           <ButtonWithProgress
             variant="contained"
             color="primary"
@@ -105,13 +148,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (name, description, callbacks) =>
+    addItem: (name, description, category, callbacks) =>
       dispatch(
         ADD_ITEM_REQUEST({
-          payload: { name, description, callbacks }
+          payload: { name, description, category, callbacks }
         })
       )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToState)(PasswordChangeForm)
+export default connect(mapStateToProps, mapDispatchToState)(AddItemForm)

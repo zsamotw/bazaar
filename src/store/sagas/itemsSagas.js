@@ -15,7 +15,7 @@ import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 
 function* addFirebaseItem(action) {
-  const { name, description } = action.payload
+  const { name, description, category } = action.payload
   const currentUser = yield select(getCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   const createdAt = new Date().toString()
@@ -23,6 +23,7 @@ function* addFirebaseItem(action) {
   yield call(Firebase.addDocument, 'items', {
     name,
     description,
+    category,
     donor,
     createdAt
   })
