@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
+import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -20,6 +21,9 @@ const paperTextStyles = {
 const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: '400px',
     boxSizing: 'border-box',
     margin: theme.spacing(1),
@@ -32,27 +36,36 @@ const useStyles = makeStyles(theme => ({
       }
     }
   },
-  texts: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start'
+  icon: {
+    position: 'absolute',
+    top: 10,
+    right: 10
   },
   headLine: {
-    ...paperTextStyles,
-    backgroundColor: theme.palette.secondary.dark,
     fontWeight: '600',
-    marginBottom: '2rem',
-    marginTop: '0'
+    marginBottom: '.5rem'
   },
   description: {
     ...paperTextStyles,
     opacity: 0,
-    backgroundColor: theme.palette.primary.dark
+    backgroundColor: theme.palette.grey.A200
   },
   recipient: {
     ...paperTextStyles,
     marginLeft: '1rem',
     backgroundColor: theme.palette.error.dark
+  },
+  donor: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0 0 0 0'
+  },
+  avatar: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    textTransform: 'uppercase',
+    backgroundColor: theme.palette.secondary.main,
+    marginRight: theme.spacing(1)
   },
   deleteIcon: {
     '& svg': {
@@ -140,7 +153,7 @@ function Item(prop) {
   }
 
   return (
-    <Grid item sm={12} md={6} lg={4}>
+    <Grid item xs={12} sm={6} lg={4} xl={3}>
       <Dialogs
         openRemoveDialog={openRemoveDialog}
         handleCloseRemoveDialog={handleCloseRemoveDialog}
@@ -150,18 +163,17 @@ function Item(prop) {
         handleSetRecipient={handleSetRecipient}
         item={item}
       />
+      <h3 className={classes.headLine}>{name}</h3>
       <Paper className={classes.root} elevation={3}>
-        <div className={classes.texts}>
-          <h1 className={classes.headLine}>
-            <div>{name}</div>
-            <div style={{ fontSize: '1rem' }}>
-              by {donor ? donor.displayName : ''}
-            </div>
-          </h1>
-          {getIcon(item, currentUser)}
-        </div>
+        <div className={classes.icon}>{getIcon(item, currentUser)}</div>
         <div className={classes.description}>{description}</div>
       </Paper>
+      <h5 className={classes.donor}>
+        <Avatar className={classes.avatar}>
+          {donor.displayName.charAt(0)}
+        </Avatar>
+        {donor ? donor.displayName : ''}
+      </h5>
     </Grid>
   )
 }

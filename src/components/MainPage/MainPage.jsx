@@ -12,10 +12,10 @@ export default function MainPage() {
       }}
     >
       <div style={{ fontSize: '40px' }}>The most</div>
-      <div style={{ fontSize: '30px' }}>fashion</div>
+      <div style={{ fontSize: '30px' }}>fashionable</div>
       <div style={{ fontSize: '60px' }}>
-        <span style={{ color: 'green' }}>market</span>
-        <span> in</span>
+        <span style={{ color: '#4caf50' }}>marketplace</span>
+        <span style={{ color: '#fbc02d' }}> in</span>
       </div>
       <div style={{ fontSize: '40px' }}>your</div>
       <div style={{ fontSize: '30px' }}>neighborhood</div>

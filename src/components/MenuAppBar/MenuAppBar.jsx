@@ -54,6 +54,16 @@ function MenuAppBar(props) {
     setAnchorEl(null)
   }
 
+  const handleNavigateAddItem = () => {
+    history.push(`${path}${ROUTES.ADD_ITEM}`)
+    setAnchorEl(null)
+  }
+
+  const handleNavigateTransaction = () => {
+    history.push(`${path}${ROUTES.TRANSACTIONS}`)
+    setAnchorEl(null)
+  }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -78,18 +88,6 @@ function MenuAppBar(props) {
             >
               Bazaar
             </Link>
-            <Link to={ROUTES.HOME + ROUTES.ADD_ITEM} className={classes.link}>
-              Add
-            </Link>
-            <Link to={ROUTES.HOME + ROUTES.ITEMS} className={classes.link}>
-              Find
-            </Link>
-            <Link
-              to={ROUTES.HOME + ROUTES.TRANSACTIONS}
-              className={classes.link}
-            >
-              Transactions
-            </Link>
           </Typography>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
@@ -108,6 +106,10 @@ function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
+              <MenuItem onClick={handleNavigateAddItem}>Add new item</MenuItem>
+              <MenuItem onClick={handleNavigateTransaction}>
+                Your transactions
+              </MenuItem>
               <MenuItem onClick={handleNavigateAccount}>Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>

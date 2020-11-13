@@ -12,6 +12,19 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
+  },
+  gridContainer: {
+    marginTop: '2rem',
+    padding: '0 15rem',
+    [theme.breakpoints.down('lg')]: {
+      padding: '0 10rem'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 3rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 1rem'
+    }
   }
 }))
 
@@ -25,7 +38,7 @@ function ItemsList(props) {
   }, [])
 
   return (
-    <Grid container style={{ marginTop: '2rem' }}>
+    <Grid container className={classes.gridContainer}>
       <Backdrop className={classes.backdrop} open={isProcessingItem}>
         <CircularProgress color="secondary" />
       </Backdrop>

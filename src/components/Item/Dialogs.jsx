@@ -9,14 +9,13 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Divider from '@material-ui/core/Divider'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 
 const useStyles = makeStyles(theme => ({
   dialogBar: {
-    position: 'relative'
+    position: 'relative',
+    marginBottom: theme.spacing(3)
   },
   dialogTitle: {
     marginLeft: theme.spacing(2),
@@ -76,22 +75,26 @@ export default function Dialogs(props) {
       >
         <AppBar className={classes.dialogBar}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleCloseConfirmDialog}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
             <Typography variant="h6" className={classes.dialogTitle}>
               Confirm taking item
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleSetRecipient}>
-              Take
-            </Button>
           </Toolbar>
         </AppBar>
+        <DialogActions
+          style={{ justifyContent: 'flex-start', padding: '8px 24px' }}
+        >
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={handleSetRecipient}
+            autoFocus
+          >
+            Take now
+          </Button>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
         <DialogContent className={classes.dialogContent}>
           <img
             src="https://source.unsplash.com/600x400/?thing"
@@ -105,14 +108,6 @@ export default function Dialogs(props) {
           <div>{donor.displayName}</div>
           <div>{donor.email}</div>
         </DialogContent>
-        <DialogActions style={{ justifyContent: 'flex-start' }}>
-          <Button onClick={handleCloseConfirmDialog} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSetRecipient} color="primary" autoFocus>
-            Take
-          </Button>
-        </DialogActions>
       </Dialog>
     </>
   )

@@ -16,11 +16,11 @@ const HomePage = props => {
   const { path } = useRouteMatch()
 
   return (
-    <>
+    <div>
       <MenuAppBar currentUser={currentUser} />
       <Switch>
         <Route exact path={path}>
-          <MainPage />
+          <ItemsList />
         </Route>
         <Route path={`${path}${ROUTES.ACCOUNT}`}>
           <AccountProfile />
@@ -38,7 +38,7 @@ const HomePage = props => {
           <MainPage />
         </Route>
       </Switch>
-    </>
+    </div>
   )
 }
 
