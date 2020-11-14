@@ -25,6 +25,12 @@ export const handleSetItems = (state, items) => {
   return nextState
 }
 
+export const handleSetItemQueryFilter = (state, query) => {
+  const nextFilters = { ...state.get('itemFilters'), query }
+  const nextState = state.set('itemFilters', nextFilters)
+  return nextState
+}
+
 export const handleSetRecipientTransactions = (
   state,
   recipientTransactions,

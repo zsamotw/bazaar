@@ -5,7 +5,8 @@ import {
   handleSetAppMessage,
   handleSetIsFetchingData,
   handleSetItems,
-  handleSetRecipientTransactions
+  handleSetRecipientTransactions,
+  handleSetItemQueryFilter
 } from './action-handlers'
 import {
   SET_AUTH_USER,
@@ -13,7 +14,8 @@ import {
   SET_IS_FETCHING_DATA,
   SET_ITEMS,
   SYNC_ITEMS,
-  SET_TRANSACTIONS
+  SET_TRANSACTIONS,
+  SET_ITEM_QUERY_FILTER
 } from './actions'
 
 const makeInitialState = Record({
@@ -29,6 +31,7 @@ const makeInitialState = Record({
   },
   appMessage: { content: '', type: null },
   items: List([]),
+  itemFilters: { query: '' },
   recipientTransactions: List([]),
   donorTransactions: List([])
 })
@@ -58,6 +61,9 @@ const appReducers = createReducer(initialState, {
       recipientTransactions,
       donorTransactions
     )
+  },
+  [SET_ITEM_QUERY_FILTER.type]: (state, action) => {
+    return handleSetItemQueryFilter(state, action.payload)
   }
 })
 

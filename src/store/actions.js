@@ -16,6 +16,11 @@ export const SYNC_ITEMS_CREATION = items => SYNC_ITEMS(items)
 
 export const SET_TRANSACTIONS = createAction('SET TRANSACTIONS', items => items)
 
+export const SET_ITEM_QUERY_FILTER = createAction(
+  'SET ITEM QUERY FILTER',
+  query => ({ payload: query })
+)
+
 // account async actions
 export const LOGIN_REQUEST = createAction(
   'LOGIN REQUEST',
