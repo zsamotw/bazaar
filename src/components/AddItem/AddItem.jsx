@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
 import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
+import AppSelect from '../AppSelect'
 import { ADD_ITEM_REQUEST } from '../../store/actions'
 import { getIsAsyncRequest } from '../../store/selectors'
 import categories from '../../constants/categories'
@@ -36,13 +34,10 @@ const useStyles = makeStyles(theme => ({
 const AddItemForm = props => {
   const { addItem, isProcessingItem } = props
 
-  const [itemName, setItemName] = useState('')
-  const [itemDescription, setItemDescription] = useState('')
-  const [itemCategory, setItemCategory] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, control } = useForm()
 
   const classes = useStyles()
 
@@ -54,36 +49,30 @@ const AddItemForm = props => {
     id: 'itemName-input',
     label: 'Name',
     variant: 'outlined',
-    name: 'itemName',
-    value: itemName,
-    onChange: event => setItemName(event.target.value),
+    name: 'name',
     type: 'text',
     placeholder: 'Type item name...',
     register: register({
       required: 'Required'
     }),
-    error: errors.itemName
+    error: errors.name
   }
   const itemDescriptionInputProps = {
     id: 'itemDescription-input',
     label: 'Description',
     variant: 'outlined',
-    name: 'itemDescription',
-    value: itemDescription,
-    onChange: event => setItemDescription(event.target.value),
+    name: 'description',
     type: 'text',
     isMultiline: true,
     placeholder: 'Type item description...',
     register: register({
       required: 'Required'
     }),
-    error: errors.itemDescription
+    error: errors.description
   }
 
-  const handleCategoryChange = event => setItemCategory(event.target.value)
-
-  const onSubmit = () => {
-    addItem(itemName, itemDescription, itemCategory, { setError })
+  const onSubmit = ({ name, description, category }) => {
+    addItem(name, description, category, { setError })
   }
 
   return (
@@ -95,33 +84,13 @@ const AddItemForm = props => {
           <div>{AppInput(itemNameInputProps)}</div>
           <div>{AppInput(itemDescriptionInputProps)}</div>
           <div>
-            <FormControl
-              variant="outlined"
-              name="itemCategory"
-              error={errors.itemCategory}
-              className={classes.formControl}
-            >
-              <InputLabel
-                htmlFor="itemCategories"
-                style={{ transform: 'translate(14px, -11px) scale(0.75)' }}
-              >
-                Category
-              </InputLabel>
-              <Select
-                id="categories-select"
-                name="itemCategories"
-                native
-                value={itemCategory}
-                onChange={handleCategoryChange}
-                inputRef={register({ required: true })}
-              >
-                {categories.map(category => (
-                  <option value={category.name} key={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
+            <AppSelect
+              name="category"
+              menuItems={categories}
+              control={control}
+              label="category"
+              error={errors.category}
+            />
           </div>
           <ButtonWithProgress
             variant="contained"
@@ -131,7 +100,6 @@ const AddItemForm = props => {
             text="Add"
             isLoading={isLoading}
           />
-
           <div className={classes.errorBar}>
             {error && <p>{error.message}</p>}
           </div>

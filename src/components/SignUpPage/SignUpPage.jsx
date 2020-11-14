@@ -23,8 +23,6 @@ const useStyles = makeStyles({
 const SignUpFormBase = props => {
   const { isFetchingSignUpData, signUp } = props
 
-  const [displayName, setDisplayName] = useState('')
-  const [email, setEmail] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
@@ -38,8 +36,9 @@ const SignUpFormBase = props => {
     setIsLoading(isFetchingSignUpData)
   }, [isFetchingSignUpData])
 
-  const onSubmit = () => {
-    signUp(displayName, email, passwordOne, {
+  const onSubmit = data => {
+    const { displayName, email, passwordOne: password } = data
+    signUp(displayName, email, password, {
       setError
     })
   }
@@ -48,9 +47,7 @@ const SignUpFormBase = props => {
     id: 'userName-input',
     label: 'User Name',
     variant: 'outlined',
-    name: 'userName',
-    value: displayName,
-    onChange: event => setDisplayName(event.target.value),
+    name: 'displayName',
     type: 'text',
     placeholder: 'Type your name...',
     register: register({
@@ -63,8 +60,6 @@ const SignUpFormBase = props => {
     label: 'Email',
     variant: 'outlined',
     name: 'email',
-    value: email,
-    onChange: event => setEmail(event.target.value),
     type: 'text',
     placeholder: 'Type your email...',
     register: register({

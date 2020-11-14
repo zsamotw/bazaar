@@ -38,7 +38,7 @@ function ItemsList(props) {
   }, [])
 
   return (
-    <Grid container className={classes.gridContainer}>
+    <Grid container>
       <Backdrop className={classes.backdrop} open={isProcessingItem}>
         <CircularProgress color="secondary" />
       </Backdrop>

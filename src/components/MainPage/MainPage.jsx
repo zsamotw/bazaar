@@ -1,24 +1,33 @@
 import React from 'react'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import ItemList from '../ItemsList'
+
+import SearchBar from '../SearchBar'
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    marginTop: '2rem',
+    padding: '0 15rem',
+    [theme.breakpoints.down('lg')]: {
+      padding: '0 10rem'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 3rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 1rem'
+    }
+  }
+}))
 
 export default function MainPage() {
+  const theme = useTheme()
+  const classes = useStyles(theme)
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        height: '80vh'
-      }}
-    >
-      <div style={{ fontSize: '40px' }}>The most</div>
-      <div style={{ fontSize: '30px' }}>fashionable</div>
-      <div style={{ fontSize: '60px' }}>
-        <span style={{ color: '#4caf50' }}>marketplace</span>
-        <span style={{ color: '#fbc02d' }}> in</span>
-      </div>
-      <div style={{ fontSize: '40px' }}>your</div>
-      <div style={{ fontSize: '30px' }}>neighborhood</div>
+    <div className={classes.container}>
+      <SearchBar />
+      <ItemList />
     </div>
   )
 }

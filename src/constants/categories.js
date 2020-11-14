@@ -1,11 +1,11 @@
-const none = { id: 0, name: '' }
-const home = { id: 1, name: 'Home' }
-const motors = { id: 2, name: 'Motors' }
-const fashion = { id: 3, name: 'Fashion' }
-const electronics = { id: 4, name: 'Electronics' }
-const sporting = { id: 5, name: 'Sporting' }
-const toys = { id: 6, name: 'Toys' }
-const art = { id: 7, name: 'Art' }
+const none = { id: 0, value: '' }
+const home = { id: 1, value: 'Home' }
+const motors = { id: 2, value: 'Motors' }
+const fashion = { id: 3, value: 'Fashion' }
+const electronics = { id: 4, value: 'Electronics' }
+const sporting = { id: 5, value: 'Sporting' }
+const toys = { id: 6, value: 'Toys' }
+const art = { id: 7, value: 'Art' }
 
 const categories = [
   none,

@@ -20,7 +20,8 @@ const HomePage = props => {
       <MenuAppBar currentUser={currentUser} />
       <Switch>
         <Route exact path={path}>
-          <ItemsList />
+          {/* <ItemsList /> */}
+          <MainPage />
         </Route>
         <Route path={`${path}${ROUTES.ACCOUNT}`}>
           <AccountProfile />
