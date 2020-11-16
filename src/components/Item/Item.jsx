@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: '16px',
     '&:hover': {
       '& $imageWrapper': {
-        outline: `5px solid ${theme.palette.secondary.main}`,
+        outline: `5px solid ${theme.palette.secondary.main}`
       },
       '& img': {
         opacity: '.7'

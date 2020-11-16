@@ -21,7 +21,8 @@ export default function AppInput(props) {
     placeholder,
     register,
     error,
-    isMultiline
+    isMultiline,
+    fullWidth
   } = props
 
   return (
@@ -39,6 +40,7 @@ export default function AppInput(props) {
       error={!!error}
       helperText={error ? error.message : ''}
       multiline={isMultiline}
+      fullWidth={fullWidth}
     />
   )
 }

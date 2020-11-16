@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
 import AppSelect from '../AppSelect'
@@ -13,8 +14,8 @@ import FileUpload from '../FileUpload'
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    margin: '0 auto'
   },
   form: {
     display: 'flex',
@@ -53,6 +54,7 @@ const AddItemForm = props => {
     variant: 'outlined',
     name: 'name',
     type: 'text',
+    fullWidth: true,
     placeholder: 'Type item name...',
     register: register({
       required: 'Required'
@@ -65,6 +67,7 @@ const AddItemForm = props => {
     variant: 'outlined',
     name: 'description',
     type: 'text',
+    fullWidth: true,
     isMultiline: true,
     placeholder: 'Type item description...',
     register: register({
@@ -73,8 +76,8 @@ const AddItemForm = props => {
     error: errors.description
   }
 
-  const handleUploadFile = event => {
-    setFile(event.target.files[0])
+  const handleUploadFile = files => {
+    setFile(files[0])
   }
   const onSubmit = ({ name, description, categoryId }) => {
     const category = categories.find(c => c.id === categoryId)
@@ -82,8 +85,8 @@ const AddItemForm = props => {
   }
 
   return (
-    <>
-      <div className={classes.wrapper}>
+    <Grid container>
+      <Grid item className={classes.wrapper} xs={12} lg={6}>
         <h3>Add item</h3>
         <h5>Describe what you want to share</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +102,17 @@ const AddItemForm = props => {
             />
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <FileUpload onChange={handleUploadFile} />
+            <FileUpload
+              id="image-upload-control"
+              name="imageUpload"
+              onChange={handleUploadFile}
+              accept="image/*"
+              multiple={false}
+              register={register({
+                required: true
+              })}
+              error={errors.imageUpload}
+            />
           </div>
           <ButtonWithProgress
             variant="contained"
@@ -113,8 +126,8 @@ const AddItemForm = props => {
             {error && <p>{error.message}</p>}
           </div>
         </form>
-      </div>
-    </>
+      </Grid>
+    </Grid>
   )
 }
 
