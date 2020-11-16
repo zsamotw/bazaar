@@ -1,6 +1,5 @@
 import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
@@ -19,20 +18,13 @@ const paperTextStyles = {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '400px',
-    boxSizing: 'border-box',
-    padding: '1rem',
-    margin: '0 16px 8px 0',
-    background: "url('https://source.unsplash.com/600x400/?thing')",
-    backgroundSize: 'cover',
+  gridItem: {
+    marginRight: '16px',
     '&:hover': {
-      border: `5px solid ${theme.palette.secondary.main}`,
-      '& div,h1,h2,h3,h4,h5': {
+      '& $imageWrapper': {
+        outline: `5px solid ${theme.palette.secondary.main}`
+      },
+      '& $description': {
         opacity: 1
       }
     }
@@ -48,13 +40,28 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     ...paperTextStyles,
+    position: 'absolute',
     opacity: 0,
-    backgroundColor: theme.palette.grey.A200
+    backgroundColor: 'black'
   },
   recipient: {
     ...paperTextStyles,
     marginLeft: '1rem',
     backgroundColor: theme.palette.error.dark
+  },
+  imageWrapper: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '400px',
+    boxSizing: 'border-box',
+    padding: '1rem',
+    marginBottom: '8px',
+    overflow: 'hidden'
+  },
+  image: {
+    height: '400px'
   },
   donor: {
     display: 'flex',
@@ -154,7 +161,7 @@ function Item(prop) {
   }
 
   return (
-    <Grid item xs={12} sm={6} lg={4} xl={3}>
+    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4} xl={3}>
       <Dialogs
         openRemoveDialog={openRemoveDialog}
         handleCloseRemoveDialog={handleCloseRemoveDialog}
@@ -165,10 +172,11 @@ function Item(prop) {
         item={item}
       />
       <h3 className={classes.headLine}>{name}</h3>
-      <Paper className={classes.root} elevation={3}>
-        <div className={classes.icon}>{getIcon(item, currentUser)}</div>
+      <div className={classes.imageWrapper}>
         <div className={classes.description}>{description}</div>
-      </Paper>
+        <img src={item.imgURL} alt="i" className={classes.image} />
+        <div className={classes.icon}>{getIcon(item, currentUser)}</div>
+      </div>
       <h5 className={classes.donor}>
         <Avatar className={classes.avatar}>
           {donor.displayName.charAt(0)}

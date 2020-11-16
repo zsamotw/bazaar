@@ -1,21 +1,11 @@
-const none = { id: 0, value: '' }
-const home = { id: 1, value: 'Home' }
-const motors = { id: 2, value: 'Motors' }
-const fashion = { id: 3, value: 'Fashion' }
-const electronics = { id: 4, value: 'Electronics' }
-const sporting = { id: 5, value: 'Sporting' }
-const toys = { id: 6, value: 'Toys' }
-const art = { id: 7, value: 'Art' }
+const home = { id: 1, label: 'Home' }
+const motors = { id: 2, label: 'Motors' }
+const fashion = { id: 3, label: 'Fashion' }
+const electronics = { id: 4, label: 'Electronics' }
+const sporting = { id: 5, label: 'Sporting' }
+const toys = { id: 6, label: 'Toys' }
+const art = { id: 7, label: 'Art' }
 
-const categories = [
-  none,
-  home,
-  motors,
-  fashion,
-  electronics,
-  sporting,
-  toys,
-  art
-]
+const categories = [home, motors, fashion, electronics, sporting, toys, art]
 
 export default categories

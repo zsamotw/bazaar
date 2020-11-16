@@ -1,4 +1,5 @@
-import { call, fork, put, select, takeLatest } from 'redux-saga/effects'
+import { call, fork, put, select, takeLatest, take } from 'redux-saga/effects'
+import { eventChannel } from 'redux-saga'
 import {
   SET_APP_MESSAGE,
   ADD_ITEM_REQUEST,
@@ -14,17 +15,32 @@ import { getCurrentUser } from '../selectors'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 
+function* uploadFile(file, folder) {
+  const fileRef = Firebase.storageRef().child(`${folder}/${file.name}`)
+  const task = Firebase.uploadFile(fileRef, file)
+  const channel = eventChannel(emit => task.on('state_changed', emit))
+
+  yield take(channel)
+  yield task
+}
+
 function* addFirebaseItem(action) {
-  const { name, description, category } = action.payload
+  const { name, description, category, file } = action.payload
   const currentUser = yield select(getCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
+  const imgStoragePath = `images/${file.name}`
   const createdAt = new Date().toString()
 
+  yield call(uploadFile, file, 'images')
+  const fileRef = Firebase.storageRef().child(`images/${file.name}`)
+  const imgURL = yield call(Firebase.getDownloadURL, fileRef)
   yield call(Firebase.addDocument, 'items', {
     name,
     description,
     category,
     donor,
+    imgStoragePath,
+    imgURL,
     createdAt
   })
   yield put(

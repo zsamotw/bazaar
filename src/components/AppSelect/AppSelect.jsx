@@ -5,19 +5,19 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { Controller } from 'react-hook-form'
 
-export default ({ name, menuItems, control, label, error }) => (
+export default ({ name, menuItems, control, inputLabel, error }) => (
   <FormControl
     variant="outlined"
     error={Boolean(error)}
     style={{ width: '100%', marginBottom: '20px' }}
   >
-    <InputLabel htmlFor={name}>{label}</InputLabel>
+    <InputLabel htmlFor={name}>{inputLabel}</InputLabel>
     <Controller
       as={
         <Select>
-          {menuItems.map(({ id, value }) => (
-            <MenuItem key={id} value={value}>
-              {value}
+          {menuItems.map(({ id, label }) => (
+            <MenuItem key={id} value={id}>
+              {label}
             </MenuItem>
           ))}
         </Select>

@@ -47,7 +47,7 @@ function DonorTransactions(props) {
         <Paper className={classes.transaction} key={transaction.id}>
           <div className={classes.itemHeader}>
             <img
-              src="https://source.unsplash.com/600x400/?thing"
+              src={transaction.imgURL}
               alt="item"
               className={classes.itemImage}
             />

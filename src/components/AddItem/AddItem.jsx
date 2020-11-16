@@ -8,6 +8,7 @@ import AppSelect from '../AppSelect'
 import { ADD_ITEM_REQUEST } from '../../store/actions'
 import { getIsAsyncRequest } from '../../store/selectors'
 import categories from '../../constants/categories'
+import FileUpload from '../FileUpload'
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -36,6 +37,7 @@ const AddItemForm = props => {
 
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [file, setFile] = useState({})
 
   const { register, handleSubmit, errors, control } = useForm()
 
@@ -45,7 +47,7 @@ const AddItemForm = props => {
     setIsLoading(isProcessingItem)
   }, [isProcessingItem])
 
-  const itemNameInputProps = {
+  const nameInputProps = {
     id: 'itemName-input',
     label: 'Name',
     variant: 'outlined',
@@ -57,7 +59,7 @@ const AddItemForm = props => {
     }),
     error: errors.name
   }
-  const itemDescriptionInputProps = {
+  const descriptionInputProps = {
     id: 'itemDescription-input',
     label: 'Description',
     variant: 'outlined',
@@ -71,8 +73,12 @@ const AddItemForm = props => {
     error: errors.description
   }
 
-  const onSubmit = ({ name, description, category }) => {
-    addItem(name, description, category, { setError })
+  const handleUploadFile = event => {
+    setFile(event.target.files[0])
+  }
+  const onSubmit = ({ name, description, categoryId }) => {
+    const category = categories.find(c => c.id === categoryId)
+    addItem(name, description, category, file, { setError })
   }
 
   return (
@@ -81,16 +87,19 @@ const AddItemForm = props => {
         <h3>Add item</h3>
         <h5>Describe what you want to share</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>{AppInput(itemNameInputProps)}</div>
-          <div>{AppInput(itemDescriptionInputProps)}</div>
+          <div>{AppInput(nameInputProps)}</div>
+          <div>{AppInput(descriptionInputProps)}</div>
           <div>
             <AppSelect
-              name="category"
+              name="categoryId"
               menuItems={categories}
               control={control}
-              label="category"
-              error={errors.category}
+              inputLabel="category"
+              error={errors.categoryId}
             />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <FileUpload onChange={handleUploadFile} />
           </div>
           <ButtonWithProgress
             variant="contained"
@@ -116,10 +125,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (name, description, category, callbacks) =>
+    addItem: (name, description, category, file, callbacks) =>
       dispatch(
         ADD_ITEM_REQUEST({
-          payload: { name, description, category, callbacks }
+          payload: { name, description, category, file, callbacks }
         })
       )
   }

@@ -47,7 +47,7 @@ export default function Dialogs(props) {
     handleSetRecipient,
     item
   } = props
-  const { name, description, donor } = item
+  const { name, description, donor, imgURL } = item
 
   return (
     <>
@@ -96,11 +96,7 @@ export default function Dialogs(props) {
           </Button>
         </DialogActions>
         <DialogContent className={classes.dialogContent}>
-          <img
-            src="https://source.unsplash.com/600x400/?thing"
-            alt="item"
-            height="400px"
-          />
+          <img src={imgURL} alt="item" height="400px" />
           <h1>{name}</h1>
           <div>{description}</div>
           <Divider className={classes.dialogDivider} />

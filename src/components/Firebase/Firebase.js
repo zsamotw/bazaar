@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage';
 import ReduxSagaFirebase from 'redux-saga-firebase'
 
 const config = {
@@ -20,6 +21,7 @@ class Firebase {
     this.rsf = new ReduxSagaFirebase(firebaseApp)
     this.auth = this.rsf.auth
     this.db = this.rsf.firestore
+    this.storage = this.rsf.storage
   }
 
   // Auth API
@@ -83,6 +85,15 @@ class Firebase {
 
   updateDocument = (docRef, prop, value) =>
     this.db.updateDocument(docRef, prop, value)
+
+  // Storage API
+  uploadFile = (path, file) => {
+    return this.storage.uploadFile(path, file)
+  }
+
+  getDownloadURL = fileRef => this.storage.getDownloadURL(fileRef)
+
+  storageRef = () => firebase.storage().ref()
 
   // Utils API
   transformFirebaseUserToStateUser = firebaseUser => {
