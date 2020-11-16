@@ -22,10 +22,13 @@ const useStyles = makeStyles(theme => ({
     marginRight: '16px',
     '&:hover': {
       '& $imageWrapper': {
-        outline: `5px solid ${theme.palette.secondary.main}`
+        outline: `5px solid ${theme.palette.secondary.main}`,
+      },
+      '& img': {
+        opacity: '.7'
       },
       '& $description': {
-        opacity: 1
+        opacity: '1'
       }
     }
   },
@@ -40,6 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     ...paperTextStyles,
+    padding: '1.5rem',
     position: 'absolute',
     opacity: 0,
     backgroundColor: 'black'
@@ -58,7 +62,8 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     padding: '1rem',
     marginBottom: '8px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    transition: 'opacity .3s ease'
   },
   image: {
     height: '400px'
@@ -173,9 +178,9 @@ function Item(prop) {
       />
       <h3 className={classes.headLine}>{name}</h3>
       <div className={classes.imageWrapper}>
-        <div className={classes.description}>{description}</div>
         <img src={item.imgURL} alt="i" className={classes.image} />
         <div className={classes.icon}>{getIcon(item, currentUser)}</div>
+        <div className={classes.description}>{description}</div>
       </div>
       <h5 className={classes.donor}>
         <Avatar className={classes.avatar}>
