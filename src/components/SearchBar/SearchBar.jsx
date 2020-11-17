@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { SET_ITEM_QUERY_FILTER } from '../../store/actions'
+import { getItemFilters } from '../../store/selectors'
 
 function SearchBar(props) {
-  const { setQueryFilter } = props
-  const [query, setQuery] = useState('')
+  const { setQueryFilter, query } = props
 
   const handleQueryChange = event => {
-    setQuery(event.target.value)
     setQueryFilter(event.target.value)
   }
 
@@ -31,7 +30,8 @@ function SearchBar(props) {
 }
 
 function mapStateToProps(state) {
-  return {}
+  const { query } = getItemFilters(state)
+  return { query }
 }
 
 function mapDispatchToState(dispatch) {

@@ -36,3 +36,8 @@ export const getRecipientTransactions = state => {
   const items = state.get('recipientTransactions')
   return items
 }
+
+export const getItemFilters = state => {
+  const filters = state.get('itemFilters')
+  return filters
+}
