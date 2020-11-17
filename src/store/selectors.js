@@ -15,10 +15,14 @@ export const getIsAsyncRequest = state => {
 
 export const getItems = state => {
   const { query } = state.get('itemFilters')
+  const lowerCaseQuery = query.toLowerCase()
   const items = state
     .get('items')
     .filter(item =>
-      query ? item.name.toLowerCase().includes(query.toLowerCase()) : true
+      query
+        ? item.name.toLowerCase().includes(lowerCaseQuery) ||
+          item.donor.displayName.toLowerCase().includes(lowerCaseQuery)
+        : true
     )
   return items
 }
