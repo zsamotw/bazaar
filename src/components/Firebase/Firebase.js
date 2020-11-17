@@ -91,6 +91,8 @@ class Firebase {
     return this.storage.uploadFile(path, file)
   }
 
+  deleteFile = path => this.storage.deleteFile(path)
+
   getDownloadURL = fileRef => this.storage.getDownloadURL(fileRef)
 
   storageRef = () => firebase.storage().ref()

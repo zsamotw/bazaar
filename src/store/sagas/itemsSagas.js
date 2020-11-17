@@ -24,6 +24,11 @@ function* uploadFile(file, folder) {
   yield task
 }
 
+function* deleteFile(filePath) {
+  const fileRef = Firebase.storageRef().child(filePath)
+  yield call(Firebase.deleteFile, fileRef)
+}
+
 function* addFirebaseItem(action) {
   const { name, description, category, file } = action.payload
   const currentUser = yield select(getCurrentUser)
@@ -54,12 +59,12 @@ function* addFirebaseItem(action) {
 }
 
 function* removeFirebaseItem(action) {
-  const {
-    item: { id, donor: itemDonor }
-  } = action.payload
+  const { item } = action.payload
+  const { id, donor: itemDonor } = item
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   if (donor.uid === itemDonor.uid) {
+    yield call(deleteFile, item.imgStoragePath)
     yield call(Firebase.removeDocument, `items/${id}`)
     yield put(
       SET_APP_MESSAGE({
