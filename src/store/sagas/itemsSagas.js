@@ -16,17 +16,40 @@ import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 
 function* uploadFile(file, folder) {
-  const fileRef = Firebase.storageRef().child(`${folder}/${file.name}`)
-  const task = Firebase.uploadFile(fileRef, file)
-  const channel = eventChannel(emit => task.on('state_changed', emit))
+  try {
+    const fileRef = Firebase.storageRef().child(`${folder}/${file.name}`)
+    const task = Firebase.uploadFile(fileRef, file)
+    const channel = eventChannel(emit => task.on('state_changed', emit))
 
-  yield take(channel)
-  yield task
+    yield take(channel)
+    yield task
+  } catch {
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Cannot upload file due to error',
+          status: 'error'
+        }
+      })
+    )
+  }
 }
 
 function* deleteFile(filePath) {
-  const fileRef = Firebase.storageRef().child(filePath)
-  yield call(Firebase.deleteFile, fileRef)
+  try {
+    const fileRef = Firebase.storageRef().child(filePath)
+
+    yield call(Firebase.deleteFile, fileRef)
+  } catch {
+    yield put(
+      SET_APP_MESSAGE({
+        payload: {
+          content: 'Cannot delete file due to error',
+          status: 'error'
+        }
+      })
+    )
+  }
 }
 
 function* addFirebaseItem(action) {
