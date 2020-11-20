@@ -54,6 +54,7 @@ function DonorTransactions(props) {
             <h3>{transaction.name}</h3>
           </div>
           <div>{transaction.description}</div>
+          <div style={{ fontWeight: 'bold' }}>{transaction.category.label}</div>
           <Divider className={classes.divider} />
           <div className={classes.detailsWrapper}>
             <div className={classes.recipientData}>

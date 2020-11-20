@@ -177,6 +177,7 @@ function Item(prop) {
         item={item}
       />
       <h3 className={classes.headLine}>{name}</h3>
+      <div style={{ marginBottom: '.07rem' }}>{item.category.label}</div>
       <div className={classes.imageWrapper}>
         <img src={item.imgURL} alt="i" className={classes.image} />
         <div className={classes.icon}>{getIcon(item, currentUser)}</div>
