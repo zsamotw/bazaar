@@ -27,7 +27,9 @@ const DeleteUserFormBase = props => {
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: { email: '' }
+  })
 
   const classes = useStyles()
 

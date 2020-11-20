@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import ButtonWithProgress from '../ButtonWithProgress'
 import AppInput from '../AppInput'
@@ -36,13 +37,17 @@ const useStyles = makeStyles(theme => ({
 const AddItemForm = props => {
   const { addItem, isProcessingItem } = props
 
+  const classes = useStyles()
+
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState({})
 
-  const { register, handleSubmit, errors, control } = useForm()
+  const { register, handleSubmit, errors, control } = useForm({
+    defaultValues: { name: '', description: '', category: '', FileUpload: null }
+  })
 
-  const classes = useStyles()
+  const history = useHistory()
 
   useEffect(() => {
     setIsLoading(isProcessingItem)
@@ -81,7 +86,7 @@ const AddItemForm = props => {
   }
   const onSubmit = ({ name, description, categoryId }) => {
     const category = categories.find(c => c.id === categoryId)
-    addItem(name, description, category, file, { setError })
+    addItem(name, description, category, file, history, { setError })
   }
 
   return (
@@ -138,10 +143,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (name, description, category, file, callbacks) =>
+    addItem: (name, description, category, file, history, callbacks) =>
       dispatch(
         ADD_ITEM_REQUEST({
-          payload: { name, description, category, file, callbacks }
+          payload: { name, description, category, file, history, callbacks }
         })
       )
   }

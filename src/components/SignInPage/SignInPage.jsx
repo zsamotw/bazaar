@@ -23,12 +23,12 @@ const useStyles = makeStyles({
 const SignInFormBase = props => {
   const { isFetchingLoginData, login } = props
 
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: { email: '', password: '' }
+  })
 
   const classes = useStyles()
 
@@ -46,8 +46,6 @@ const SignInFormBase = props => {
     label: 'Email',
     variant: 'outlined',
     name: 'email',
-    // value: email,
-    // onChange: event => setEmail(event.target.value),
     type: 'text',
     placeholder: 'Type your email...',
     register: register({
@@ -64,8 +62,6 @@ const SignInFormBase = props => {
     label: 'Password',
     variant: 'outlined',
     name: 'password',
-    // value: password,
-    // onChange: event => setPassword(event.target.value),
     type: 'password',
     placeholder: 'Type your password...',
     register: register({

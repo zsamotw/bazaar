@@ -28,7 +28,14 @@ const SignUpFormBase = props => {
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: {
+      displayName: '',
+      email: '',
+      passwordOne: '',
+      passwordTwo: ''
+    }
+  })
 
   const classes = useStyles()
 
