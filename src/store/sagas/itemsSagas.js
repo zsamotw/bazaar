@@ -14,6 +14,7 @@ import Firebase from '../../components/Firebase'
 import { getCurrentUser } from '../selectors'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
+import * as ROUTES from '../../constants/routes'
 
 function* uploadFile(file, folder) {
   try {
@@ -53,7 +54,7 @@ function* deleteFile(filePath) {
 }
 
 function* addFirebaseItem(action) {
-  const { name, description, category, file } = action.payload
+  const { name, description, category, file, history } = action.payload
   const currentUser = yield select(getCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   const imgStoragePath = `images/${file.name}`
@@ -79,6 +80,7 @@ function* addFirebaseItem(action) {
       }
     })
   )
+  history.push(ROUTES.HOME)
 }
 
 function* removeFirebaseItem(action) {
