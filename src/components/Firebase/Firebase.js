@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
-import 'firebase/storage';
+import 'firebase/storage'
 import ReduxSagaFirebase from 'redux-saga-firebase'
 
 const config = {
@@ -85,6 +85,41 @@ class Firebase {
 
   updateDocument = (docRef, prop, value) =>
     this.db.updateDocument(docRef, prop, value)
+
+  updateItemsUsersDisplayNameOnUpdateProfile = (
+    collectionName,
+    userId,
+    displayName
+  ) => {
+    const collection = firebase.firestore().collection(collectionName)
+
+    collection.get().then(response => {
+      const batch = firebase.firestore().batch()
+      response.docs.forEach(doc => {
+        const item = { id: doc.id, ...doc.data() }
+        if (item.donor.uid === userId) {
+          const donor = { ...item.donor, displayName }
+          const docRef = firebase
+            .firestore()
+            .collection(collectionName)
+            .doc(doc.id)
+          batch.update(docRef, { ...item, donor })
+        }
+        if (item.recipient && item.recipient.uid === userId) {
+          const recipient = { ...item.recipient, displayName }
+          const docRef = firebase
+            .firestore()
+            .collection(collectionName)
+            .doc(doc.id)
+          batch.update(docRef, { ...item, recipient })
+        }
+      })
+
+      batch.commit().then(() => {
+        console.log(`updated all documents inside ${collectionName}`)
+      })
+    })
+  }
 
   // Storage API
   uploadFile = (path, file) => {

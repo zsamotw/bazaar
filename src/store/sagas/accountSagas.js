@@ -54,8 +54,15 @@ function* relogin() {
 function* updateFirebaseUserAccount(action) {
   const { displayName } = action.payload
   const loggedUser = yield call(Firebase.doGetCurrentUser)
+
   if (loggedUser) {
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
+    yield call(
+      Firebase.updateItemsUsersDisplayNameOnUpdateProfile,
+      'items',
+      loggedUser.uid,
+      displayName
+    )
     const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
     setAuthUserInLocalStorage(currentUser)
