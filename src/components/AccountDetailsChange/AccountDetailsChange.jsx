@@ -20,11 +20,10 @@ function AccountDetailsChange(props) {
     updateUserProfile
   } = props
 
-  const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, setValue } = useForm()
 
   const classes = useStyles()
 
@@ -32,7 +31,8 @@ function AccountDetailsChange(props) {
     setIsLoading(isFetchingUpdateUserAccountData)
   }, [isFetchingUpdateUserAccountData])
 
-  const onSubmit = () => {
+  const onSubmit = data => {
+    const { displayName } = data
     updateUserProfile(displayName, { setError })
   }
 
@@ -41,8 +41,6 @@ function AccountDetailsChange(props) {
     label: 'Display Name',
     variant: 'outlined',
     name: 'displayName',
-    value: displayName,
-    onChange: event => setDisplayName(event.target.value),
     type: 'text',
     placeholder: 'Type your email...',
     register: register({
@@ -52,8 +50,8 @@ function AccountDetailsChange(props) {
   }
 
   useEffect(() => {
-    setDisplayName(currentUser.displayName)
-  }, [currentUser])
+    setValue('displayName', currentUser.displayName)
+  }, [currentUser, setValue])
 
   return (
     <>
