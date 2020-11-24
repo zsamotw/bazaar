@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
+export const RESET_STATE = createAction('RESET STATE')
 export const SET_AUTH_USER = createAction('SET AUTH USER', user => user)
 export const SET_APP_MESSAGE = createAction(
   'SET APP MESSAGE',

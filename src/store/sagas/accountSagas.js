@@ -10,7 +10,8 @@ import {
   SET_IS_FETCHING_DATA,
   UPDATE_USER_ACCOUNT_DETAILS_REQUEST,
   CHANGE_USER_PASSWORD_REQUEST,
-  DELETE_USER_REQUEST
+  DELETE_USER_REQUEST,
+  RESET_STATE
 } from '../actions'
 import Firebase from '../../components/Firebase'
 import requestWithFetchingData from './SagasHelper'
@@ -134,7 +135,7 @@ function* reLoginRequest() {
 
 function* logoutRequest() {
   yield call(Firebase.doSignOut)
-  yield put(SET_AUTH_USER({ payload: null }))
+  yield put(RESET_STATE())
   setAuthUserInLocalStorage(null)
 }
 

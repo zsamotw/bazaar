@@ -9,6 +9,7 @@ import {
   handleSetItemQueryFilter
 } from './action-handlers'
 import {
+  RESET_STATE,
   SET_AUTH_USER,
   SET_APP_MESSAGE,
   SET_IS_FETCHING_DATA,
@@ -39,6 +40,7 @@ const makeInitialState = Record({
 const initialState = makeInitialState()
 
 const appReducers = createReducer(initialState, {
+  [RESET_STATE.type]: () => initialState,
   [SET_AUTH_USER.type]: (state, action) => {
     return handleSetAuthUser(state, action.payload)
   },
