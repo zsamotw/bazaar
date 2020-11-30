@@ -10,7 +10,7 @@ import {
   SET_TRANSACTIONS,
   REMOVE_ITEM_REQUEST
 } from '../actions'
-import Firebase from '../../components/Firebase'
+import Firebase from '../../firebase'
 import { getCurrentUser } from '../selectors'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'

@@ -1,0 +1,82 @@
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import Snackbar from '@material-ui/core/Snackbar'
+import * as ROUTES from '../../../constants/routes'
+import HomePage from '../../items/HomePage'
+import SignInPage from '../SignInPage'
+import SignUpPage from '../SignUpPage'
+import LandingPage from '../LandingPage'
+import PrivateRoute from '../../../components/PrivateRoute'
+import PublicRoute from '../../../components/PublicRoute'
+import Alert from '../../../components/Alert'
+import withAuthentication from '../Session'
+import { getAppMessage } from '../../../store/selectors'
+import { SET_APP_MESSAGE } from '../../../store/actions'
+
+function RootComponent(props) {
+  const [openSnackBar, setOpenSnackBar] = useState(false)
+
+  const { appMessage } = props
+  const { content: appMessageContent } = appMessage
+
+  useEffect(() => {
+    if (appMessageContent) {
+      setOpenSnackBar(true)
+    }
+  }, [appMessageContent])
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpenSnackBar(false)
+    props.setAppMessage({ content: '', type: null })
+  }
+
+  return (
+    <div>
+      <Router>
+        <Switch>
+          <PublicRoute
+            exact
+            path={ROUTES.LANDING_PAGE}
+            component={LandingPage}
+          />
+          <PrivateRoute path={ROUTES.HOME} component={HomePage} />
+          <PublicRoute path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <PublicRoute path={ROUTES.SIGN_IN} component={SignInPage} />
+          <PublicRoute patch="*" component={LandingPage} />
+        </Switch>
+      </Router>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+        open={openSnackBar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackBar}
+      >
+        <Alert onClose={handleCloseSnackBar} severity={appMessage.status}>
+          {appMessage.content}
+        </Alert>
+      </Snackbar>
+    </div>
+  )
+}
+
+const mapStateToProps = state => {
+  const appMessage = getAppMessage(state)
+  return { appMessage }
+}
+
+const mapDispatchToState = dispatch => {
+  return {
+    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
+  }
+}
+
+export default withAuthentication(
+  connect(mapStateToProps, mapDispatchToState)(RootComponent)
+)

@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { setAuthUserInLocalStorage } from '../../components/LocalStorage'
+import { setAuthUserInLocalStorage } from '../../services/local-storage-service'
 import {
   SET_APP_MESSAGE,
   LOGIN_REQUEST,
@@ -13,7 +13,7 @@ import {
   DELETE_USER_REQUEST,
   RESET_STATE
 } from '../actions'
-import Firebase from '../../components/Firebase'
+import Firebase from '../../firebase'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 
