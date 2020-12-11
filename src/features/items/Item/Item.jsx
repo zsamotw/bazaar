@@ -146,6 +146,7 @@ function Item(prop) {
         <IconButton
           className={classes.deleteIcon}
           onClick={handleClickOpenRemoveDialog}
+          data-testid="removeIcon"
         >
           <DeleteIcon fontSize="large" />
         </IconButton>
@@ -156,6 +157,7 @@ function Item(prop) {
         <IconButton
           className={classes.shoppingCardIcon}
           onClick={handleClickOpenConfirmDialog}
+          data-testid="confirmIcon"
         >
           <ShoppingCartIcon color="secondary" fontSize="large" />
         </IconButton>

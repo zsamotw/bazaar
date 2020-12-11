@@ -62,7 +62,12 @@ export default function Dialogs(props) {
           <Button onClick={handleCloseRemoveDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleRemoveItem} color="secondary" autoFocus>
+          <Button
+            onClick={handleRemoveItem}
+            color="secondary"
+            autoFocus
+            data-testid="buttonToRemove"
+          >
             Remove
           </Button>
         </DialogActions>
