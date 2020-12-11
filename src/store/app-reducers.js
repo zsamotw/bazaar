@@ -1,5 +1,4 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Record, List } from 'immutable'
 import {
   handleSetAuthUser,
   handleSetAppMessage,
@@ -18,26 +17,7 @@ import {
   SET_TRANSACTIONS,
   SET_ITEM_QUERY_FILTER
 } from './actions'
-
-const makeInitialState = Record({
-  currentUser: null,
-  isAsyncRequest: {
-    isFetchingLoginData: false,
-    isFetchingSignUpdData: false,
-    isFetchingSignOutData: false,
-    isFetchingUpdateUserAccountData: false,
-    isFetchingChangePasswordData: false,
-    isProcessingItem: false,
-    isFetchingTransactions: false
-  },
-  appMessage: { content: '', type: null },
-  items: List([]),
-  itemFilters: { query: '' },
-  recipientTransactions: List([]),
-  donorTransactions: List([])
-})
-
-const initialState = makeInitialState()
+import initialState from './initial-state'
 
 const appReducers = createReducer(initialState, {
   [RESET_STATE.type]: () => initialState,
