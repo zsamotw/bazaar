@@ -6,16 +6,15 @@ import SearchBar from '../SearchBar'
 
 const useStyles = makeStyles(theme => ({
   container: {
-    marginTop: '2rem',
-    padding: '0 15rem',
+    padding: '2rem 15rem',
     [theme.breakpoints.down('lg')]: {
-      padding: '0 10rem'
+      padding: '2rem 10rem'
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '0 3rem'
+      padding: '2rem 3rem'
     },
     [theme.breakpoints.down('xs')]: {
-      padding: '0 1rem'
+      padding: '1rem 1rem'
     }
   }
 }))

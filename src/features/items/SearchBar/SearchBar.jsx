@@ -13,7 +13,12 @@ function SearchBar(props) {
 
   return (
     <div
-      style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '1rem 0',
+        paddingRight: '16px'
+      }}
     >
       <TextField
         id="item-search"

@@ -22,7 +22,6 @@ const paperTextStyles = {
 
 const useStyles = makeStyles(theme => ({
   gridItem: {
-    marginRight: '16px',
     '&:hover': {
       '& $imageWrapper': {
         outline: `5px solid ${theme.palette.secondary.main}`
@@ -63,13 +62,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     height: '400px',
     boxSizing: 'border-box',
-    padding: '1rem',
-    marginBottom: '8px',
+    margin: '8px 16px 8px 0',
     overflow: 'hidden',
-    transition: 'opacity .3s ease'
+    transition: 'opacity .3s ease',
+    backgroundColor: '#e5b74c29'
   },
   image: {
-    height: '400px'
+    height: '100%'
   },
   donor: {
     display: 'flex',
@@ -171,7 +170,7 @@ function Item(prop) {
   }
 
   return (
-    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4} xl={3}>
+    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4}>
       <Dialogs
         openRemoveDialog={openRemoveDialog}
         handleCloseRemoveDialog={handleCloseRemoveDialog}

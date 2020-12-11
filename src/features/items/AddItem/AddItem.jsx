@@ -91,7 +91,7 @@ const AddItemForm = props => {
 
   return (
     <Grid container>
-      <Grid item className={classes.wrapper} xs={12} lg={6}>
+      <Grid item className={classes.wrapper} xs={10} md={8} lg={4}>
         <h3>Add item</h3>
         <h5>Describe what you want to share</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
