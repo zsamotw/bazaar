@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Snackbar from '@material-ui/core/Snackbar'
-import * as ROUTES from '../../../constants/routes'
-import HomePage from '../../items/HomePage'
-import SignInPage from '../SignInPage'
-import SignUpPage from '../SignUpPage'
-import LandingPage from '../LandingPage'
 import PrivateRoute from '../../../components/PrivateRoute'
 import PublicRoute from '../../../components/PublicRoute'
 import Alert from '../../../components/Alert'
 import withAuthentication from '../Session'
 import { getAppMessage } from '../../../store/selectors'
 import { SET_APP_MESSAGE } from '../../../store/actions'
+import routes from './routes'
 
 function RootComponent(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false)
@@ -38,15 +34,21 @@ function RootComponent(props) {
     <div>
       <Router>
         <Switch>
-          <PublicRoute
-            exact
-            path={ROUTES.LANDING_PAGE}
-            component={LandingPage}
-          />
-          <PrivateRoute path={ROUTES.HOME} component={HomePage} />
-          <PublicRoute path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <PublicRoute path={ROUTES.SIGN_IN} component={SignInPage} />
-          <PublicRoute patch="*" component={LandingPage} />
+          {routes.map(route =>
+            route.isPrivate ? (
+              <PrivateRoute
+                exact={route.exact}
+                path={route.path}
+                component={route.component}
+              />
+            ) : (
+              <PublicRoute
+                exact={route.exact}
+                path={route.path}
+                component={route.component}
+              />
+            )
+          )}
         </Switch>
       </Router>
       <Snackbar
