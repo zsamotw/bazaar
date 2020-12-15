@@ -1,3 +1,3 @@
-import Transactions from './Transactions'
+import TransactionsTabs from './TransactionsTabs'
 
-export default Transactions
+export default TransactionsTabs

@@ -3,7 +3,7 @@ import * as ROUTES from '../../../constants/routes'
 import MainPage from '../MainPage'
 import AddItem from '../AddItem'
 import ItemsList from '../ItemsList'
-import Transactions from '../Transactions'
+import TransactionsTabs from '../Transactions'
 
 const routes = path => [
   {
@@ -29,7 +29,7 @@ const routes = path => [
   {
     path: `${path}${ROUTES.TRANSACTIONS}`,
     exact: false,
-    component: Transactions
+    component: TransactionsTabs
   },
   {
     path,

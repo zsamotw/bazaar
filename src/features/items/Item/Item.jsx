@@ -180,7 +180,7 @@ function Item(prop) {
   }
 
   return (
-    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4}>
+    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4} xl={3}>
       <Dialogs
         openRemoveDialog={openRemoveDialog}
         handleCloseRemoveDialog={handleCloseRemoveDialog}

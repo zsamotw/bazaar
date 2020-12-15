@@ -1,101 +1,79 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import Backdrop from '@material-ui/core/Backdrop'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import React from 'react'
+import Paper from '@material-ui/core/Paper'
+import Divider from '@material-ui/core/Divider'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import { GET_TRANSACTIONS_REQUEST } from '../../../store/actions'
-import { getIsAsyncRequest } from '../../../store/selectors'
-import RecipientTransactions from './RecipientTransactions'
-import DonorTransactions from './DonorTransactions'
+import { formattedDateTime } from '../../../services/date-service'
 
 const useStyles = makeStyles(theme => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff'
+  transaction: {
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(3)
   },
-  tabsContainer: {
-    minHeight: 'calc(100vh - 64px)',
-    backgroundColor: theme.palette.grey['200']
+  itemHeader: {
+    display: 'flex',
+    alignItems: 'center'
   },
-  tabs: {
-    backgroundColor: theme.palette.grey['200']
+  itemImage: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    borderRadius: '25px',
+    marginRight: theme.spacing(5)
   },
-  tabPanel: {
-    backgroundColor: theme.palette.grey['200'],
-    padding: '1rem 15rem',
-    [theme.breakpoints.down('md')]: {
-      padding: '1rem 3rem'
-    },
-    [theme.breakpoints.down('sm')]: {
-      padding: '1rem 1rem'
-    }
+  divider: {
+    margin: '1rem 0'
+  },
+  detailsWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  recipientData: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 }))
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      {...other}
-    >
-      {value === index && <div>{children}</div>}
-    </div>
-  )
-}
-
-function Transactions(props) {
-  const { getTransactions, isFetchingTransactions } = props
+export default function Transactions(props) {
+  const { transactions, isDonor } = props
 
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  const [tabValue, setTabValue] = React.useState(0)
-
-  const handleChangeTab = (event, newValue) => {
-    setTabValue(newValue)
-  }
-
-  useEffect(() => {
-    getTransactions()
-  }, [])
-
   return (
-    <div className={classes.tabsContainer}>
-      <Backdrop className={classes.backdrop} open={isFetchingTransactions}>
-        <CircularProgress color="secondary" />
-      </Backdrop>
-      <Tabs
-        value={tabValue}
-        onChange={handleChangeTab}
-        className={classes.tabs}
-      >
-        <Tab label="Gifts" />
-        <Tab label="Given away" />
-      </Tabs>
-      <TabPanel value={tabValue} index={0} className={classes.tabPanel}>
-        <RecipientTransactions />
-      </TabPanel>
-      <TabPanel value={tabValue} index={1} className={classes.tabPanel}>
-        <DonorTransactions />
-      </TabPanel>
-    </div>
+    <>
+      {transactions.map(transaction => (
+        <Paper className={classes.transaction} key={transaction.id}>
+          <div className={classes.itemHeader}>
+            <img
+              src={transaction.imgURL}
+              alt="item"
+              className={classes.itemImage}
+            />
+            <h3>{transaction.name}</h3>
+          </div>
+          <div>{transaction.description}</div>
+          <div style={{ fontWeight: 'bold' }}>{transaction.category.label}</div>
+          <Divider className={classes.divider} />
+          <div className={classes.detailsWrapper}>
+            <div className={classes.recipientData}>
+              <div style={{ textTransform: 'uppercase' }}>
+                {isDonor ? 'To:' : 'From:'}
+              </div>
+              <div>
+                {isDonor
+                  ? transaction.recipient.displayName
+                  : transaction.donor.displayName}
+              </div>
+              <div>
+                {isDonor
+                  ? transaction.recipient.email
+                  : transaction.donor.email}
+              </div>
+            </div>
+            <div>{formattedDateTime(new Date(transaction.takeAt))}</div>
+          </div>
+        </Paper>
+      ))}
+    </>
   )
 }
-
-function mapStateToProps(state) {
-  const { isFetchingTransactions } = getIsAsyncRequest(state)
-  return { isFetchingTransactions }
-}
-
-function mapDispatchToState(dispatch) {
-  return {
-    getTransactions: () => dispatch(GET_TRANSACTIONS_REQUEST())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToState)(Transactions)
