@@ -18,16 +18,24 @@ const donorItem = {
   imgURL: ''
 }
 
+const donorItemWithNulls = {
+  id: 'KlYH2A8gw3SFcjpqOxcY',
+  name: null,
+  imgStoragePath: '',
+  donor: null,
+  description: null,
+  category: {
+    id: 2,
+    label: null
+  },
+  createdAt: null,
+  imgURL: ''
+}
+
 const itemToTake = {
   id: 'KlYH2A8gw3SFcjpqOxcY',
   name: 'rower',
   imgStoragePath: '',
-  donor: {
-    photoURL: null,
-    displayName: 'otherUser',
-    uid: '001',
-    email: 'other@t.com'
-  },
   description: 'fajny',
   category: {
     id: 2,
@@ -50,6 +58,16 @@ describe('Item component tests', () => {
     expect(getByText(description)).toBeInTheDocument()
     expect(getByText(category)).toBeInTheDocument()
     expect(getByText(donorDisplayName)).toBeInTheDocument()
+  })
+
+  it('Should render Item component with not proper item data', () => {
+    const { getByText, getByTestId } = render(
+      <Item item={donorItemWithNulls} />
+    )
+    const uncategorizedCategory = new RegExp('Uncategorized')
+
+    expect(getByText(uncategorizedCategory)).toBeInTheDocument()
+    expect(getByTestId('avatar')).toHaveTextContent('?')
   })
 
   it('should render remove button for donor', () => {

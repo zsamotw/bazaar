@@ -106,8 +106,8 @@ export default function Dialogs(props) {
           <div>{description}</div>
           <Divider className={classes.dialogDivider} />
           <div style={{ textTransform: 'uppercase' }}>From:</div>
-          <div>{donor.displayName}</div>
-          <div>{donor.email}</div>
+          <div>{donor && donor.displayName ? donor.displayName : ''}</div>
+          <div>{donor && donor.email ? donor.email : ''}</div>
         </DialogContent>
       </Dialog>
     </>

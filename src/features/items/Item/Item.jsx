@@ -22,12 +22,15 @@ const paperTextStyles = {
 
 const useStyles = makeStyles(theme => ({
   gridItem: {
+    marginBottom: '1rem',
     '&:hover': {
       '& $imageWrapper': {
-        outline: `5px solid ${theme.palette.secondary.main}`
+        border: `5px solid ${theme.palette.primary.main}`,
+        backgroundImage: 'linear-gradient(to left,#045f0e8a, #045f0e8a)'
       },
       '& img': {
-        opacity: '.7'
+        transform: 'scale(1.2)',
+        zIndex: '-1'
       },
       '& $description': {
         opacity: '1'
@@ -41,14 +44,15 @@ const useStyles = makeStyles(theme => ({
   },
   headLine: {
     fontWeight: '600',
-    marginBottom: '.5rem'
+    marginBottom: '.1rem'
   },
   description: {
     ...paperTextStyles,
     padding: '1.5rem',
     position: 'absolute',
     opacity: 0,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    overflowY: 'auto'
   },
   recipient: {
     ...paperTextStyles,
@@ -64,10 +68,11 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box',
     margin: '8px 16px 8px 0',
     overflow: 'hidden',
-    transition: 'opacity .3s ease',
-    backgroundColor: '#e5b74c29'
+    border: `5px solid ${theme.palette.secondary.main}`,
+    borderRadius: '15px'
   },
   image: {
+    transition: 'all .3s',
     height: '100%'
   },
   donor: {
@@ -140,7 +145,12 @@ function Item(prop) {
   }
 
   const getIcon = () => {
-    if (item.donor.uid === currentUser.uid && !item.recipient) {
+    if (
+      item &&
+      item.donor &&
+      item.donor.uid === currentUser.uid &&
+      !item.recipient
+    ) {
       return (
         <IconButton
           className={classes.deleteIcon}
@@ -151,7 +161,7 @@ function Item(prop) {
         </IconButton>
       )
     }
-    if (!item.recipient) {
+    if (item && !item.recipient) {
       return (
         <IconButton
           className={classes.shoppingCardIcon}
@@ -180,16 +190,20 @@ function Item(prop) {
         handleSetRecipient={handleSetRecipient}
         item={item}
       />
-      <h3 className={classes.headLine}>{name}</h3>
-      <div style={{ marginBottom: '.07rem' }}>{item.category.label}</div>
+      <h3 className={classes.headLine}>{name || ''}</h3>
+      <div style={{ marginBottom: '.07rem' }}>
+        {item && item.category && item.category.label
+          ? item.category.label
+          : 'Uncategorized'}
+      </div>
       <div className={classes.imageWrapper}>
         <img src={item.imgURL} alt="i" className={classes.image} />
         <div className={classes.icon}>{getIcon(item, currentUser)}</div>
-        <div className={classes.description}>{description}</div>
+        <div className={classes.description}>{description || ''}</div>
       </div>
       <h5 className={classes.donor}>
-        <Avatar className={classes.avatar}>
-          {donor.displayName.charAt(0)}
+        <Avatar className={classes.avatar} data-testid="avatar">
+          {donor && donor.displayName ? donor.displayName.charAt(0) : '?'}
         </Avatar>
         {donor ? donor.displayName : ''}
       </h5>
