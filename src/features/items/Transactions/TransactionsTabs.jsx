@@ -68,9 +68,7 @@ function TransactionsTabs(props) {
     setTabValue(newValue)
   }
 
-  useEffect(() => {
-    getTransactions()
-  }, [])
+  useEffect(getTransactions, [getTransactions])
 
   return (
     <div className={classes.tabsContainer}>
