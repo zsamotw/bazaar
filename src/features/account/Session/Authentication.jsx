@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { SET_AUTH_USER } from '../../../store/actions'
-import { getCurrentUser } from '../../../store/selectors'
-import firebase from '../../../firebase'
+import Firebase from '../../../firebase'
 
 const withAuthentication = Component => {
   const WithAuthentication = props => {
     const { setAuthUser } = props
 
     useEffect(() => {
-      const unsubscribe = firebase.onAuthUserListener(
+      const unsubscribe = Firebase.onAuthUserListener(
         user => {
-          setAuthUser(user)
+          const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+          setAuthUser(currentUser)
         },
 
         () => {
@@ -26,18 +26,13 @@ const withAuthentication = Component => {
     return <Component {...props} />
   }
 
-  function mapStateToProps(state) {
-    const currentUser = getCurrentUser(state)
-    return { currentUser }
-  }
-
   function mapDispatchToState(dispatch) {
     return {
       setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser }))
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToState)(WithAuthentication)
+  return connect(null, mapDispatchToState)(WithAuthentication)
 }
 
 export default withAuthentication

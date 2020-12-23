@@ -1,4 +1,4 @@
-import { call, fork, put, select, takeLatest, take } from 'redux-saga/effects'
+import { call, fork, put, takeLatest, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import {
   SET_APP_MESSAGE,
@@ -11,7 +11,6 @@ import {
   REMOVE_ITEM_REQUEST
 } from '../actions'
 import Firebase from '../../firebase'
-import { getCurrentUser } from '../selectors'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 import * as ROUTES from '../../constants/routes'
@@ -55,7 +54,7 @@ function* deleteFile(filePath) {
 
 function* addFirebaseItem(action) {
   const { name, description, category, file, history } = action.payload
-  const currentUser = yield select(getCurrentUser)
+  const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = Firebase.transformStateUserToSafeUser(currentUser)
   const imgStoragePath = `images/${file.name}`
   const createdAt = new Date().toString()
@@ -147,7 +146,7 @@ function* setRecipient(action) {
 }
 
 function* getTransactions() {
-  const currentUser = yield select(getCurrentUser)
+  const currentUser = yield call(Firebase.doGetCurrentUser)
   if (currentUser) {
     const snapshot = yield call(
       Firebase.getCollectionRef(),

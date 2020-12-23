@@ -49,6 +49,7 @@ const useStyles = makeStyles(theme => ({
   description: {
     ...paperTextStyles,
     padding: '1.5rem',
+    margin: '1.5rem',
     position: 'absolute',
     opacity: 0,
     backgroundColor: 'black',

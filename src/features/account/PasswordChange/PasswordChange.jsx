@@ -5,8 +5,7 @@ import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import AppInput from '../../../components/AppInput'
 import { CHANGE_USER_PASSWORD_REQUEST } from '../../../store/actions'
-import { getAuthUserFromLocalStorage } from '../../../services/local-storage-service'
-import { getIsAsyncRequest } from '../../../store/selectors'
+import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
 
 const useStyles = makeStyles({
   form: {
@@ -19,7 +18,7 @@ const useStyles = makeStyles({
 })
 
 const PasswordChangeForm = props => {
-  const { changePassword, isFetchingChangePasswordData } = props
+  const { changePassword, isFetchingChangePasswordData, email } = props
 
   const [passwordOld, setPasswordOld] = useState('')
   const [passwordOne, setPasswordOne] = useState('')
@@ -86,7 +85,6 @@ const PasswordChangeForm = props => {
   }
 
   const onSubmit = () => {
-    const { email } = getAuthUserFromLocalStorage()
     changePassword(email, passwordOld, passwordOne, { setError })
   }
 
@@ -116,7 +114,8 @@ const PasswordChangeForm = props => {
 
 function mapStateToProps(state) {
   const { isFetchingChangePasswordData } = getIsAsyncRequest(state)
-  return { isFetchingChangePasswordData }
+  const { email } = getCurrentUser(state)
+  return { isFetchingChangePasswordData, email }
 }
 
 function mapDispatchToState(dispatch) {

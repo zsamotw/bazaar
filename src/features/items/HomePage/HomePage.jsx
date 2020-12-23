@@ -17,6 +17,7 @@ const HomePage = props => {
       <Switch>
         {routes(path).map(route => (
           <PrivateRoute
+            key={route.path}
             path={route.path}
             exact={route.exact}
             component={route.component}

@@ -37,12 +37,14 @@ function RootComponent(props) {
           {routes.map(route =>
             route.isPrivate ? (
               <PrivateRoute
+                key={route.path}
                 exact={route.exact}
                 path={route.path}
                 component={route.component}
               />
             ) : (
               <PublicRoute
+                key={route.path}
                 exact={route.exact}
                 path={route.path}
                 component={route.component}
