@@ -33,7 +33,9 @@ function ItemsList(props) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
-  useEffect(getItemsList, [getItemsList])
+  useEffect(() => {
+    getItemsList()
+  }, [getItemsList])
 
   return (
     <Grid container>

@@ -1,9 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { setAuthUserInLocalStorage } from '../../services/local-storage-service'
 import {
   SET_APP_MESSAGE,
   LOGIN_REQUEST,
-  RE_LOGIN_REQUEST,
   LOGOUT_REQUEST,
   SIGNUP_REQUEST,
   SET_AUTH_USER,
@@ -26,7 +24,6 @@ function* signInWithFirebase(action) {
   )
   const currentUser = Firebase.transformFirebaseUserToStateUser(user)
   yield put(SET_AUTH_USER({ payload: currentUser }))
-  setAuthUserInLocalStorage(currentUser)
 }
 
 function* signUpWithFirebase(action) {
@@ -41,15 +38,7 @@ function* signUpWithFirebase(action) {
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
     const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
-    setAuthUserInLocalStorage(currentUser)
   }
-}
-
-function* relogin() {
-  const loggedUser = yield call(Firebase.doGetCurrentUser)
-  const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
-  yield put(SET_AUTH_USER({ payload: currentUser }))
-  setAuthUserInLocalStorage(currentUser)
 }
 
 function* updateFirebaseUserAccount(action) {
@@ -66,7 +55,6 @@ function* updateFirebaseUserAccount(action) {
     )
     const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
-    setAuthUserInLocalStorage(currentUser)
     yield put(
       SET_APP_MESSAGE({
         payload: {
@@ -111,7 +99,6 @@ function* deleteFirebaseUser() {
   if (loggedUser) {
     yield call(loggedUser.delete.bind(loggedUser))
     yield put(SET_AUTH_USER({ payload: null }))
-    setAuthUserInLocalStorage(null)
   }
 }
 
@@ -124,19 +111,9 @@ function* singInRequest(action) {
   )
 }
 
-function* reLoginRequest() {
-  yield requestWithFetchingData(
-    null,
-    relogin,
-    isAsyncRequest.isFetchingLoginData,
-    null
-  )
-}
-
 function* logoutRequest() {
   yield call(Firebase.doSignOut)
   yield put(RESET_STATE())
-  setAuthUserInLocalStorage(null)
 }
 
 function* signUpRequest(action) {
@@ -185,7 +162,6 @@ function* deleteUserRequest(action) {
 
 export default function* accountSaga() {
   yield takeLatest(LOGIN_REQUEST.type, singInRequest)
-  yield takeLatest(RE_LOGIN_REQUEST.type, reLoginRequest)
   yield takeLatest(LOGOUT_REQUEST.type, logoutRequest)
   yield takeLatest(SIGNUP_REQUEST.type, signUpRequest)
   yield takeLatest(

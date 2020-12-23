@@ -39,7 +39,7 @@ class Firebase {
 
   doGetCurrentUser = () => firebase.auth().currentUser
 
-  doOnAuthStateChange = () => firebase.auth().onAuthStateChanged
+  doOnAuthStateChange = user => firebase.auth().onAuthStateChanged(user)
 
   doDeleteUser = () => firebase.auth().currentUser.delete()
 
@@ -52,7 +52,7 @@ class Firebase {
   }
 
   onAuthUserListener = (next, fallback) => {
-    this.doOnAuthStateChange(authUser => {
+    return this.doOnAuthStateChange(authUser => {
       if (authUser) {
         next(authUser)
       } else {
