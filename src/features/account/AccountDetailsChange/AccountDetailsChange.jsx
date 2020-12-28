@@ -57,7 +57,7 @@ function AccountDetailsChange(props) {
     <>
       <h3>Account details:</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>{AppInput(displayNameInputProps)}</div>
+        {AppInput(displayNameInputProps)}
         <ButtonWithProgress
           variant="contained"
           color="primary"

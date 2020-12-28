@@ -92,9 +92,9 @@ const PasswordChangeForm = props => {
     <>
       <h3>Reset Password:</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>{AppInput(passwordOldInputProps)}</div>
-        <div>{AppInput(passwordOneInputProps)}</div>
-        <div>{AppInput(passwordTwoInputProps)}</div>
+        {AppInput(passwordOldInputProps)}
+        {AppInput(passwordOneInputProps)}
+        {AppInput(passwordTwoInputProps)}
         <ButtonWithProgress
           variant="contained"
           color="primary"

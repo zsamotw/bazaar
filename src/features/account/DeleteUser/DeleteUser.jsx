@@ -66,7 +66,7 @@ const DeleteUserFormBase = props => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>{AppInput(emailInputProps)}</div>
+      {AppInput(emailInputProps)}
       <ButtonWithProgress
         variant="contained"
         color="primary"

@@ -113,10 +113,10 @@ const SignUpFormBase = props => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>{AppInput(userNameInputProps)}</div>
-      <div>{AppInput(emailInputProps)}</div>
-      <div>{AppInput(passwordOneInputProps)}</div>
-      <div>{AppInput(passwordTwoInputProps)}</div>
+      {AppInput(userNameInputProps)}
+      {AppInput(emailInputProps)}
+      {AppInput(passwordOneInputProps)}
+      {AppInput(passwordTwoInputProps)}
       <ButtonWithProgress
         variant="contained"
         color="primary"

@@ -95,15 +95,17 @@ const AddItemForm = props => {
         <h3>Add item</h3>
         <h5>Describe what you want to share</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>{AppInput(nameInputProps)}</div>
-          <div>{AppInput(descriptionInputProps)}</div>
-          <div>
+          {AppInput(nameInputProps)}
+          {AppInput(descriptionInputProps)}
+          <div style={{ width: '33%', marginBottom: '20px' }}>
             <AppSelect
-              name="categoryId"
+              id="category-select"
+              labelId="category-select-label"
+              name="category"
               menuItems={categories}
               control={control}
-              inputLabel="category"
-              error={errors.categoryId}
+              inputLabel="Category"
+              error={errors.category}
             />
           </div>
           <div style={{ marginBottom: '20px' }}>
@@ -114,7 +116,7 @@ const AddItemForm = props => {
               accept="image/*"
               multiple={false}
               register={register({
-                required: true
+                required: 'Required'
               })}
               error={errors.imageUpload}
             />
