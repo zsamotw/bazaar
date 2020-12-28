@@ -22,7 +22,7 @@ function* signInWithFirebase(action) {
     email,
     password
   )
-  const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+  const currentUser = Firebase.transformDbUserToSafeUser(user)
   yield put(SET_AUTH_USER({ payload: currentUser }))
 }
 
@@ -36,7 +36,7 @@ function* signUpWithFirebase(action) {
   if (user) {
     const loggedUser = yield call(Firebase.doGetCurrentUser)
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
-    const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
+    const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
   }
 }
@@ -53,7 +53,7 @@ function* updateFirebaseUserAccount(action) {
       loggedUser.uid,
       displayName
     )
-    const currentUser = Firebase.transformFirebaseUserToStateUser(loggedUser)
+    const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
     yield put(
       SET_APP_MESSAGE({

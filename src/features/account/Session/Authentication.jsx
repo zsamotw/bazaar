@@ -10,7 +10,7 @@ const withAuthentication = Component => {
     useEffect(() => {
       const unsubscribe = Firebase.onAuthUserListener(
         user => {
-          const currentUser = Firebase.transformFirebaseUserToStateUser(user)
+          const currentUser = Firebase.transformDbUserToSafeUser(user)
           setAuthUser(currentUser)
         },
 

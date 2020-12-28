@@ -133,26 +133,14 @@ class Firebase {
   storageRef = () => firebase.storage().ref()
 
   // Utils API
-  transformFirebaseUserToStateUser = firebaseUser => {
+  transformDbUserToSafeUser = firebaseUser => {
     const userProperties = [
       'displayName',
       'email',
-      'emailVerified',
-      'isAnonymous',
       'photoURL',
-      'providerId',
-      'refreshToken',
       'uid',
       'isAdmin'
     ]
-
-    return userProperties.reduce((obj, prop) => {
-      return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj
-    }, Object.create(null))
-  }
-
-  transformStateUserToSafeUser = firebaseUser => {
-    const userProperties = ['displayName', 'email', 'photoURL', 'uid']
 
     return userProperties.reduce((obj, prop) => {
       return prop in firebaseUser ? { ...obj, [prop]: firebaseUser[prop] } : obj
