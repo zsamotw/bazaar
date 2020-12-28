@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import { withTheme } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 
@@ -14,14 +16,15 @@ const useStyles = makeStyles({
     display: 'none'
   }
 })
-export default function AppFileUpload({
+const appFileUpload = function AppFileUpload({
   id,
   name,
   onChange,
   accept,
   multiple,
   register,
-  error
+  error,
+  theme
 }) {
   const classes = useStyles()
   const [fileList, setFileList] = useState([])
@@ -42,18 +45,23 @@ export default function AppFileUpload({
           <IconButton color="primary" component="span">
             <PhotoCamera />
           </IconButton>
+          <input
+            className={classes.input}
+            id={id}
+            name={name}
+            ref={register}
+            accept={accept}
+            multiple={multiple}
+            onChange={handleChange}
+            type="file"
+          />
         </label>
-        <input
-          className={classes.input}
-          id={id}
-          name={name}
-          ref={register}
-          accept={accept}
-          multiple={multiple}
-          onChange={handleChange}
-          type="file"
-        />
       </div>
+      {error && (
+        <FormHelperText style={{ color: theme.palette.error.main }}>
+          {error.message}
+        </FormHelperText>
+      )}
       <div>
         {fileList &&
           fileList.map(file => <div key={file.size}>{file.name}</div>)}
@@ -61,3 +69,5 @@ export default function AppFileUpload({
     </FormControl>
   )
 }
+
+export default withTheme(appFileUpload)
