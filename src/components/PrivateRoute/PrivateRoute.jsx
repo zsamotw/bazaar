@@ -11,7 +11,12 @@ const PrivateRoute = ({ component: Component, currentUser, ...rest }) => (
       currentUser ? (
         <Component {...props} />
       ) : (
-        <Redirect to={ROUTES.LANDING_PAGE} />
+        <Redirect
+          to={{
+            pathname: ROUTES.LANDING_PAGE,
+            state: { from: props.location }
+          }}
+        />
       )
     }
   />
