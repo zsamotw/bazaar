@@ -18,7 +18,22 @@ const donorItem = {
   imgURL: ''
 }
 
-const donorItemWithNulls = {
+const itemToTake = {
+  id: 'KlYH2A8gw3SFcjpqOxcY',
+  name: 'rower',
+  imgStoragePath: '',
+  description: 'fajny',
+  donor: { displayName: 'donor', email: 'donor@donor.com' },
+  category: {
+    id: 2,
+    label: 'Motors'
+  },
+  createdAt:
+    'Tue Dec 01 2020 14:28:20 GMT+0100 (Central European Standard Time)',
+  imgURL: ''
+}
+
+const itemWithNulls = {
   id: 'KlYH2A8gw3SFcjpqOxcY',
   name: null,
   imgStoragePath: '',
@@ -29,20 +44,6 @@ const donorItemWithNulls = {
     label: null
   },
   createdAt: null,
-  imgURL: ''
-}
-
-const itemToTake = {
-  id: 'KlYH2A8gw3SFcjpqOxcY',
-  name: 'rower',
-  imgStoragePath: '',
-  description: 'fajny',
-  category: {
-    id: 2,
-    label: 'Motors'
-  },
-  createdAt:
-    'Tue Dec 01 2020 14:28:20 GMT+0100 (Central European Standard Time)',
   imgURL: ''
 }
 
@@ -60,16 +61,6 @@ describe('Item component tests', () => {
     expect(getByText(donorDisplayName)).toBeInTheDocument()
   })
 
-  it('Should render Item component with not proper item data', () => {
-    const { getByText, getByTestId } = render(
-      <Item item={donorItemWithNulls} />
-    )
-    const uncategorizedCategory = new RegExp('Uncategorized')
-
-    expect(getByText(uncategorizedCategory)).toBeInTheDocument()
-    expect(getByTestId('avatar')).toHaveTextContent('?')
-  })
-
   it('should render remove button for donor', () => {
     const { getByTestId } = render(<Item item={donorItem} />)
     const button = getByTestId('removeIcon')
@@ -80,6 +71,11 @@ describe('Item component tests', () => {
     const { getByTestId } = render(<Item item={itemToTake} />)
     const button = getByTestId('confirmIcon')
     expect(button).toBeInTheDocument()
+  })
+
+  it('Should not render Item component with not proper item data', () => {
+    const item = render(<Item item={itemWithNulls} />)
+    expect(item.firstChild).toBeUndefined()
   })
 
   it('should dispatch state method when remove button has been clicked', () => {

@@ -114,7 +114,7 @@ function Item(prop) {
   const classes = useStyles(theme)
 
   const { item, removeItem, setRecipient, currentUser } = prop
-  const { name, description, donor, recipient } = item
+  const { id, name, description, category, donor, recipient, createdAt } = item
 
   const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false)
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
@@ -144,6 +144,16 @@ function Item(prop) {
   const handleCloseConfirmDialog = () => {
     setOpenConfirmDialog(false)
   }
+
+  const hasData = () =>
+    item &&
+    id &&
+    category &&
+    category.label &&
+    donor &&
+    donor.email &&
+    donor.displayName &&
+    createdAt
 
   const getIcon = () => {
     if (
@@ -181,34 +191,32 @@ function Item(prop) {
   }
 
   return (
-    <Grid className={classes.gridItem} item xs={12} sm={6} lg={4} xl={3}>
-      <Dialogs
-        openRemoveDialog={openRemoveDialog}
-        handleCloseRemoveDialog={handleCloseRemoveDialog}
-        openConfirmDialog={openConfirmDialog}
-        handleCloseConfirmDialog={handleCloseConfirmDialog}
-        handleRemoveItem={handleRemoveItem}
-        handleSetRecipient={handleSetRecipient}
-        item={item}
-      />
-      <h3 className={classes.headLine}>{name || ''}</h3>
-      <div style={{ marginBottom: '.07rem' }}>
-        {item && item.category && item.category.label
-          ? item.category.label
-          : 'Uncategorized'}
-      </div>
-      <div className={classes.imageWrapper}>
-        <img src={item.imgURL} alt="i" className={classes.image} />
-        <div className={classes.icon}>{getIcon(item, currentUser)}</div>
-        <div className={classes.description}>{description || ''}</div>
-      </div>
-      <h5 className={classes.donor}>
-        <Avatar className={classes.avatar} data-testid="avatar">
-          {donor && donor.displayName ? donor.displayName.charAt(0) : '?'}
-        </Avatar>
-        {donor ? donor.displayName : ''}
-      </h5>
-    </Grid>
+    hasData() && (
+      <Grid className={classes.gridItem} item xs={12} sm={6} lg={4} xl={3}>
+        <Dialogs
+          openRemoveDialog={openRemoveDialog}
+          handleCloseRemoveDialog={handleCloseRemoveDialog}
+          openConfirmDialog={openConfirmDialog}
+          handleCloseConfirmDialog={handleCloseConfirmDialog}
+          handleRemoveItem={handleRemoveItem}
+          handleSetRecipient={handleSetRecipient}
+          item={item}
+        />
+        <h3 className={classes.headLine}>{name || ''}</h3>
+        <div style={{ marginBottom: '.07rem' }}>{category.label}</div>
+        <div className={classes.imageWrapper}>
+          <img src={item.imgURL} alt="i" className={classes.image} />
+          <div className={classes.icon}>{getIcon(item, currentUser)}</div>
+          <div className={classes.description}>{description || ''}</div>
+        </div>
+        <h5 className={classes.donor}>
+          <Avatar className={classes.avatar} data-testid="avatar">
+            {donor.displayName.charAt(0)}
+          </Avatar>
+          {donor.displayName}
+        </h5>
+      </Grid>
+    )
   )
 }
 
