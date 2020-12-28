@@ -61,7 +61,8 @@ const DeleteUserFormBase = props => {
         message: 'Invalid email address'
       }
     }),
-    error: errors.email
+    error: errors.email,
+    fullWidth: true
   }
 
   return (

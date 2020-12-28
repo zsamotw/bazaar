@@ -55,8 +55,10 @@ const SignInFormBase = props => {
         message: 'Invalid email address'
       }
     }),
-    error: errors.email
+    error: errors.email,
+    fullWidth: true
   }
+
   const passwordInputProps = {
     id: 'password-input',
     label: 'Password',
@@ -68,7 +70,8 @@ const SignInFormBase = props => {
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' }
     }),
-    error: errors.password
+    error: errors.password,
+    fullWidth: true
   }
 
   return (

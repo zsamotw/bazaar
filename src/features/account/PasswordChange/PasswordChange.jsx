@@ -49,8 +49,10 @@ const PasswordChangeForm = props => {
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' }
     }),
-    error: errors.passwordOld
+    error: errors.passwordOld,
+    fullWidth: true
   }
+
   const passwordOneInputProps = {
     id: 'passwordOne-input',
     label: 'Password',
@@ -64,8 +66,10 @@ const PasswordChangeForm = props => {
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' }
     }),
-    error: errors.passwordOne
+    error: errors.passwordOne,
+    fullWidth: true
   }
+
   const passwordTwoInputProps = {
     id: 'passwordTwo-input',
     label: 'Password Confirmation',
@@ -81,7 +85,8 @@ const PasswordChangeForm = props => {
       validate: value =>
         value === passwordOne || 'Incorrect password confirmation'
     }),
-    error: errors.passwordTwo
+    error: errors.passwordTwo,
+    fullWidth: true
   }
 
   const onSubmit = () => {

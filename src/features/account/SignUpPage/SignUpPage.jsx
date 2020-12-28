@@ -60,8 +60,10 @@ const SignUpFormBase = props => {
     register: register({
       required: 'Required'
     }),
-    error: errors.userName
+    error: errors.userName,
+    fullWidth: true
   }
+
   const emailInputProps = {
     id: 'email-input',
     label: 'Email',
@@ -76,7 +78,8 @@ const SignUpFormBase = props => {
         message: 'Invalid email address'
       }
     }),
-    error: errors.email
+    error: errors.email,
+    fullWidth: true
   }
   const passwordOneInputProps = {
     id: 'passwordOne-input',
@@ -91,8 +94,10 @@ const SignUpFormBase = props => {
       required: 'Required',
       minLength: { value: 6, message: 'Password should have 6 letters' }
     }),
-    error: errors.passwordOne
+    error: errors.passwordOne,
+    fullWidth: true
   }
+
   const passwordTwoInputProps = {
     id: 'passwordTwo-input',
     label: 'Password Confirmation',
@@ -108,7 +113,8 @@ const SignUpFormBase = props => {
       validate: value =>
         value === passwordOne || 'Incorrect password confirmation'
     }),
-    error: errors.passwordTwo
+    error: errors.passwordTwo,
+    fullWidth: true
   }
 
   return (

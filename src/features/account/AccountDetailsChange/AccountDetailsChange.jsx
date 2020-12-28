@@ -46,7 +46,8 @@ function AccountDetailsChange(props) {
     register: register({
       required: 'Required'
     }),
-    error: errors.displayName
+    error: errors.displayName,
+    fullWidth: true
   }
 
   useEffect(() => {
