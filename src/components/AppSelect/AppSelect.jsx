@@ -15,19 +15,17 @@ export default ({
   inputLabel,
   error
 }) => (
-  <FormControl error={error} style={{ width: '100%'}}>
+  <FormControl error={error} style={{ width: '100%' }}>
+    <InputLabel id={labelId}>{inputLabel}</InputLabel>
     <Controller
       as={
-        <>
-          <InputLabel id={labelId}>{inputLabel}</InputLabel>
-          <Select labelId={labelId} id={id}>
-            {menuItems.map(({ id: menuItemId, label }) => (
-              <MenuItem key={menuItemId} value={id}>
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
-        </>
+        <Select labelId={labelId} id={id}>
+          {menuItems.map(({ id: menuItemId, label }) => (
+            <MenuItem key={menuItemId} value={menuItemId}>
+              {label}
+            </MenuItem>
+          ))}
+        </Select>
       }
       name={name}
       control={control}

@@ -55,13 +55,16 @@ function* deleteFile(filePath) {
 function* addFirebaseItem(action) {
   const { name, description, category, file, history } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
-  const donor = Firebase.transformStateUserToSafeUser(currentUser)
-  const imgStoragePath = `images/${file.name}`
-  const createdAt = new Date().toString()
+  const donor = Firebase.transformDbUserToSafeUser(currentUser)
+  const createdAt = new Date()
+  const folder = `images/${createdAt.getFullYear()}-${createdAt.getMonth()}/${createdAt.getTime()}`
 
-  yield call(uploadFile, file, 'images')
-  const fileRef = Firebase.storageRef().child(`images/${file.name}`)
+  yield call(uploadFile, file, folder)
+
+  const imgStoragePath = `${folder}/${file.name}`
+  const fileRef = Firebase.storageRef().child(imgStoragePath)
   const imgURL = yield call(Firebase.getDownloadURL, fileRef)
+
   yield call(Firebase.addDocument, 'items', {
     name,
     description,
@@ -69,7 +72,7 @@ function* addFirebaseItem(action) {
     donor,
     imgStoragePath,
     imgURL,
-    createdAt
+    createdAt: createdAt.toString()
   })
   yield put(
     SET_APP_MESSAGE({
@@ -86,7 +89,7 @@ function* removeFirebaseItem(action) {
   const { item } = action.payload
   const { id, donor: itemDonor } = item
   const currentUser = yield call(Firebase.doGetCurrentUser)
-  const donor = Firebase.transformStateUserToSafeUser(currentUser)
+  const donor = currentUser
   if (donor.uid === itemDonor.uid) {
     yield call(deleteFile, item.imgStoragePath)
     yield call(Firebase.removeDocument, `items/${id}`)

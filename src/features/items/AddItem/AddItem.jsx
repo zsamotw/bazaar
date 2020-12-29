@@ -66,6 +66,7 @@ const AddItemForm = props => {
     }),
     error: errors.name
   }
+
   const descriptionInputProps = {
     id: 'itemDescription-input',
     label: 'Description',
@@ -99,13 +100,13 @@ const AddItemForm = props => {
           {AppInput(descriptionInputProps)}
           <div style={{ width: '33%', marginBottom: '20px' }}>
             <AppSelect
-              id="category-select"
+              id="categoryId"
               labelId="category-select-label"
-              name="category"
+              name="categoryId"
               menuItems={categories}
               control={control}
               inputLabel="Category"
-              error={errors.category}
+              error={errors.categoryId}
             />
           </div>
           <div style={{ marginBottom: '20px' }}>
