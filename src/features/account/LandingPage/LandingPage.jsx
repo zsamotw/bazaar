@@ -1,9 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import Grid from '@material-ui/core/Grid'
-import SignInPage from '../SignInPage'
-import SignUpPage from '../SignUpPage'
+import SignInForm from '../SignInPage'
+import SignUpForm from '../SignUpPage'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -22,6 +23,7 @@ function TabPanel(props) {
 
 const LandingPage = () => {
   const [value, setValue] = React.useState(0)
+  const { t } = useTranslation('common')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -31,19 +33,23 @@ const LandingPage = () => {
     <div>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-          <h1 style={{ paddingLeft: '20px' }}>Bazaar</h1>
+          <h1 style={{ paddingLeft: '20px' }}>{t('landingPage.appTitle')}</h1>
         </Grid>
         <Grid item xs={2} md={4} lg={7} />
         <Grid item xs={8} md={4} lg={3}>
-          <Tabs value={value} onChange={handleChange}>
-            <Tab label="Sign In" />
-            <Tab label="Sign Up" />
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            style={{ marginBottom: '2rem' }}
+          >
+            <Tab label={t('landingPage.tab.signIn')} />
+            <Tab label={t('landingPage.tab.signUp')} />
           </Tabs>
           <TabPanel value={value} index={0}>
-            <SignInPage />
+            <SignInForm />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <SignUpPage />
+            <SignUpForm />
           </TabPanel>
         </Grid>
       </Grid>

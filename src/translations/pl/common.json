@@ -1,0 +1,67 @@
+{
+  "landingPage": {
+    "appTitle": "Bazaar",
+    "tab": {
+      "signIn": "Zaloguj sie",
+      "signUp": "Załóż konto"
+    }
+  },
+  "signInPage": {
+    "inputs": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Wpisz swój email...",
+        "error": {
+          "required": "Email jest wymagany",
+          "invalidPattern": "Email nie jest poprawny"
+        }
+      },
+      "password": {
+        "label": "Hasło",
+        "placeholder": "Wpisz swóje hasło...",
+        "error": {
+          "required": "Hasło jest wymagane",
+          "invalid": "Hasło musi składać się z minimum 6 znaków"
+        }
+      }
+    },
+    "button": "Zaloguj się"
+  },
+  "signUpPage": {
+    "inputs": {
+      "userName": {
+        "label": "Imię",
+        "placeholder": "Wpisz swóje imię...",
+        "error": {
+          "required": "Imię jest wymagane"
+        }
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Wpisz swój email...",
+        "error": {
+          "required": "Email jest wymagany",
+          "invalidPattern": "Email nie jest poprawny"
+        }
+      },
+      "passwordOne": {
+        "label": "Hasło",
+        "placeholder": "Wpisz swóje hasło...",
+        "error": {
+          "required": "Hasło jest wymagane",
+          "invalid": "Hasło musi składać się z minimum 6 znaków"
+        }
+      },
+      "passwordTwo": {
+        "label": "Powtórz hasło",
+        "placeholder": "Wpisz ponownie swoje hasło...",
+        "error": {
+          "required": "Hasło jest wymagane",
+          "invalid": "Hasło musi składać się z minimum 6 znaków",
+          "incorrect": "Niepoprawne hasło"
+        }
+      }
+    },
+    "button": "Załóż konto"
+  }
+}

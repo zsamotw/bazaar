@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
@@ -6,13 +7,6 @@ import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getIsAsyncRequest } from '../../../store/selectors'
 import { SIGNUP_REQUEST } from '../../../store/actions'
 import AppInput from '../../../components/AppInput'
-
-const SignUpPage = () => (
-  <div>
-    <h1>Sign Up</h1>
-    <SignUpForm />
-  </div>
-)
 
 const useStyles = makeStyles({
   errorBar: {
@@ -27,6 +21,8 @@ const SignUpFormBase = props => {
   const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const { t } = useTranslation('common')
 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
@@ -52,13 +48,13 @@ const SignUpFormBase = props => {
 
   const userNameInputProps = {
     id: 'userName-input',
-    label: 'User Name',
+    label: t('signUpPage.inputs.userName.label'),
     variant: 'outlined',
-    name: 'displayName',
+    name: 'userName',
     type: 'text',
-    placeholder: 'Type your name...',
+    placeholder: t('signUpPage.inputs.userName.placeholder'),
     register: register({
-      required: 'Required'
+      required: t('signUpPage.inputs.userName.error.required')
     }),
     error: errors.userName,
     fullWidth: true
@@ -66,16 +62,16 @@ const SignUpFormBase = props => {
 
   const emailInputProps = {
     id: 'email-input',
-    label: 'Email',
+    label: t('signUpPage.inputs.email.label'),
     variant: 'outlined',
     name: 'email',
     type: 'text',
-    placeholder: 'Type your email...',
+    placeholder: t('signUpPage.inputs.email.placeholder'),
     register: register({
-      required: 'Required',
+      required: t('signUpPage.inputs.email.error.required'),
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address'
+        message: t('signUpPage.inputs.email.error.invalidPattern')
       }
     }),
     error: errors.email,
@@ -83,16 +79,19 @@ const SignUpFormBase = props => {
   }
   const passwordOneInputProps = {
     id: 'passwordOne-input',
-    label: 'Password',
+    label: t('signUpPage.inputs.passwordOne.label'),
     variant: 'outlined',
     name: 'passwordOne',
     value: passwordOne,
     onChange: event => setPasswordOne(event.target.value),
     type: 'password',
-    placeholder: 'Type your password...',
+    placeholder: t('signUpPage.inputs.passwordOne.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' }
+      required: t('signUpPage.inputs.passwordOne.error.required'),
+      minLength: {
+        value: 6,
+        message: t('signUpPage.inputs.passwordOne.error.invalid')
+      }
     }),
     error: errors.passwordOne,
     fullWidth: true
@@ -100,18 +99,22 @@ const SignUpFormBase = props => {
 
   const passwordTwoInputProps = {
     id: 'passwordTwo-input',
-    label: 'Password Confirmation',
+    label: t('signUpPage.inputs.passwordTwo.label'),
     variant: 'outlined',
     name: 'passwordTwo',
     value: passwordTwo,
     onChange: event => setPasswordTwo(event.target.value),
     type: 'password',
-    placeholder: 'Confirm your password...',
+    placeholder: t('signUpPage.inputs.passwordTwo.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' },
+      required: t('signUpPage.inputs.passwordTwo.error.required'),
+      minLength: {
+        value: 6,
+        message: t('signUpPage.inputs.passwordTwo.error.invalid')
+      },
       validate: value =>
-        value === passwordOne || 'Incorrect password confirmation'
+        value === passwordOne ||
+        t('signUpPage.inputs.passwordTwo.error.incorrect')
     }),
     error: errors.passwordTwo,
     fullWidth: true
@@ -129,7 +132,7 @@ const SignUpFormBase = props => {
         type="submit"
         size="large"
         isLoading={isLoading}
-        text="Sign Up"
+        text={t('signUpPage.button')}
       />
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
@@ -152,4 +155,4 @@ function mapDispatchToState(dispatch) {
 
 const SignUpForm = connect(mapStateToProps, mapDispatchToState)(SignUpFormBase)
 
-export { SignUpForm, SignUpPage }
+export default SignUpForm

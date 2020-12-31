@@ -1,5 +1,3 @@
-import { SignUpPage, SignUpForm } from './SignUpPage'
+import SignUpForm from './SignUpPage'
 
-export default SignUpPage
-
-export { SignUpForm }
+export default SignUpForm

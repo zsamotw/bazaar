@@ -1,5 +1,3 @@
-import { SignInForm, SignInPage } from './SignInPage'
+import SignInForm from './SignInPage'
 
-export default SignInPage
-
-export { SignInForm }
+export default SignInForm

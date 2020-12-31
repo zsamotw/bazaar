@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
@@ -6,13 +7,6 @@ import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getIsAsyncRequest } from '../../../store/selectors'
 import { LOGIN_REQUEST } from '../../../store/actions'
 import AppInput from '../../../components/AppInput'
-
-const SignInPage = () => (
-  <div>
-    <h1>Sign In</h1>
-    <SignInForm />
-  </div>
-)
 
 const useStyles = makeStyles({
   errorBar: {
@@ -25,6 +19,8 @@ const SignInFormBase = props => {
 
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const { t } = useTranslation('common')
 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: { email: '', password: '' }
@@ -43,16 +39,16 @@ const SignInFormBase = props => {
 
   const emailInputProps = {
     id: 'email-input',
-    label: 'Email',
+    label: t('signInPage.inputs.email.label'),
     variant: 'outlined',
     name: 'email',
     type: 'text',
-    placeholder: 'Type your email...',
+    placeholder: t('signInPage.inputs.email.placeholder'),
     register: register({
-      required: 'Required',
+      required: t('signInPage.inputs.email.error.required'),
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address'
+        message: t('signInPage.inputs.email.error.invalidPattern')
       }
     }),
     error: errors.email,
@@ -61,14 +57,17 @@ const SignInFormBase = props => {
 
   const passwordInputProps = {
     id: 'password-input',
-    label: 'Password',
+    label: t('signInPage.inputs.password.label'),
     variant: 'outlined',
     name: 'password',
     type: 'password',
-    placeholder: 'Type your password...',
+    placeholder: t('signInPage.inputs.password.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' }
+      required: t('signInPage.inputs.password.error.required'),
+      minLength: {
+        value: 6,
+        message: t('signInPage.inputs.password.error.invalid')
+      }
     }),
     error: errors.password,
     fullWidth: true
@@ -84,7 +83,7 @@ const SignInFormBase = props => {
         type="submit"
         size="large"
         isLoading={isLoading}
-        text="Sign In"
+        text={t('signInPage.button')}
       />
       <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
     </form>
@@ -105,4 +104,4 @@ function mapDispatchToState(dispatch) {
 
 const SignInForm = connect(mapStateToProps, mapDispatchToState)(SignInFormBase)
 
-export { SignInForm, SignInPage }
+export default SignInForm
