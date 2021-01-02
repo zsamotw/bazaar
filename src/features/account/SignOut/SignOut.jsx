@@ -1,12 +1,17 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { LOGOUT_REQUEST } from '../../../store/actions'
 
-const SignOutButton = ({ logout }) => (
-  <button type="button" onClick={logout}>
-    Sign Out
-  </button>
-)
+const SignOutButton = ({ logout }) => {
+  const { t } = useTranslation('common')
+
+  return (
+    <button type="button" onClick={logout}>
+      {t('signOut.title')}
+    </button>
+  )
+}
 
 const mapDispatchToState = dispatch => {
   return {

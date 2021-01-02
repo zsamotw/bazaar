@@ -17,14 +17,12 @@ const useStyles = makeStyles({
 const SignUpFormBase = props => {
   const { isFetchingSignUpData, signUp } = props
 
-  const [passwordOne, setPasswordOne] = useState('')
-  const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, getValues } = useForm({
     defaultValues: {
       displayName: '',
       email: '',
@@ -82,8 +80,6 @@ const SignUpFormBase = props => {
     label: t('signUpPage.inputs.passwordOne.label'),
     variant: 'outlined',
     name: 'passwordOne',
-    value: passwordOne,
-    onChange: event => setPasswordOne(event.target.value),
     type: 'password',
     placeholder: t('signUpPage.inputs.passwordOne.placeholder'),
     register: register({
@@ -102,8 +98,6 @@ const SignUpFormBase = props => {
     label: t('signUpPage.inputs.passwordTwo.label'),
     variant: 'outlined',
     name: 'passwordTwo',
-    value: passwordTwo,
-    onChange: event => setPasswordTwo(event.target.value),
     type: 'password',
     placeholder: t('signUpPage.inputs.passwordTwo.placeholder'),
     register: register({
@@ -113,7 +107,7 @@ const SignUpFormBase = props => {
         message: t('signUpPage.inputs.passwordTwo.error.invalid')
       },
       validate: value =>
-        value === passwordOne ||
+        value === getValues('passwordOne') ||
         t('signUpPage.inputs.passwordTwo.error.incorrect')
     }),
     error: errors.passwordTwo,

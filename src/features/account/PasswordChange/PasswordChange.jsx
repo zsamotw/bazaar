@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
@@ -20,13 +21,12 @@ const useStyles = makeStyles({
 const PasswordChangeForm = props => {
   const { changePassword, isFetchingChangePasswordData, email } = props
 
-  const [passwordOld, setPasswordOld] = useState('')
-  const [passwordOne, setPasswordOne] = useState('')
-  const [passwordTwo, setPasswordTwo] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, errors } = useForm({
+  const { t } = useTranslation('common')
+
+  const { register, handleSubmit, errors, getValues } = useForm({
     defaultValues: { passwordOld: '', passwordOne: '', passwordTwo: '' }
   })
 
@@ -38,16 +38,17 @@ const PasswordChangeForm = props => {
 
   const passwordOldInputProps = {
     id: 'passwordOld-input',
-    label: 'Old Password',
+    label: t('passwordChange.inputs.passwordOld.label'),
     variant: 'outlined',
     name: 'passwordOld',
-    value: passwordOld,
-    onChange: event => setPasswordOld(event.target.value),
     type: 'password',
-    placeholder: 'Type your old password...',
+    placeholder: t('passwordChange.inputs.passwordOld.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' }
+      required: t('passwordChange.inputs.error.required'),
+      minLength: {
+        value: 6,
+        message: t('passwordChange.inputs.error.invalid')
+      }
     }),
     error: errors.passwordOld,
     fullWidth: true
@@ -55,16 +56,14 @@ const PasswordChangeForm = props => {
 
   const passwordOneInputProps = {
     id: 'passwordOne-input',
-    label: 'Password',
+    label: t('passwordChange.inputs.passwordOne.label'),
     variant: 'outlined',
     name: 'passwordOne',
-    value: passwordOne,
-    onChange: event => setPasswordOne(event.target.value),
     type: 'password',
-    placeholder: 'Type your password...',
+    placeholder: t('passwordChange.inputs.passwordOne.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' }
+      required: t('passwordChange.inputs.error.required'),
+      minLength: { value: 6, message: t('passwordChange.inputs.error.invalid') }
     }),
     error: errors.passwordOne,
     fullWidth: true
@@ -72,30 +71,33 @@ const PasswordChangeForm = props => {
 
   const passwordTwoInputProps = {
     id: 'passwordTwo-input',
-    label: 'Password Confirmation',
+    label: t('passwordChange.inputs.passwordTwo.label'),
     variant: 'outlined',
     name: 'passwordTwo',
-    value: passwordTwo,
-    onChange: event => setPasswordTwo(event.target.value),
     type: 'password',
-    placeholder: 'Confirm your password...',
+    placeholder: t('passwordChange.inputs.passwordTwo.placeholder'),
     register: register({
-      required: 'Required',
-      minLength: { value: 6, message: 'Password should have 6 letters' },
+      required: t('passwordChange.inputs.error.required'),
+      minLength: {
+        value: 6,
+        message: t('passwordChange.inputs.error.invalid')
+      },
       validate: value =>
-        value === passwordOne || 'Incorrect password confirmation'
+        value === getValues('passwordOne') ||
+        t('passwordChange.inputs.error.incorrect')
     }),
     error: errors.passwordTwo,
     fullWidth: true
   }
 
-  const onSubmit = () => {
+  const onSubmit = data => {
+    const { passwordOld, passwordOne } = data
     changePassword(email, passwordOld, passwordOne, { setError })
   }
 
   return (
     <>
-      <h3>Reset Password:</h3>
+      <h3>{t('passwordChange.title')}</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         {AppInput(passwordOldInputProps)}
         {AppInput(passwordOneInputProps)}
@@ -105,7 +107,7 @@ const PasswordChangeForm = props => {
           color="primary"
           size="large"
           type="submit"
-          text="Reset"
+          text={t('passwordChange.button')}
           isLoading={isLoading}
         />
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
@@ -6,13 +7,6 @@ import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
 import { DELETE_USER_REQUEST } from '../../../store/actions'
 import AppInput from '../../../components/AppInput'
-
-const DeleteUserPage = () => (
-  <div>
-    <h3>Delete User</h3>
-    <DeleteUserForm />
-  </div>
-)
 
 const useStyles = makeStyles({
   errorBar: {
@@ -23,9 +17,11 @@ const useStyles = makeStyles({
 const DeleteUserFormBase = props => {
   const { isFetchingLoginData, deleteUser, currentUser } = props
 
-  const [email, setEmail] = useState('')
+  // const [email, setEmail] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const { t } = useTranslation('common')
 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: { email: '' }
@@ -37,28 +33,29 @@ const DeleteUserFormBase = props => {
     setIsLoading(isFetchingLoginData)
   }, [isFetchingLoginData])
 
-  const onSubmit = () => {
+  const onSubmit = data => {
+    const { email } = data
     if (email === currentUser.email) {
       deleteUser({ setError })
     } else {
-      setError({ message: 'Confirm your decision with valid email' })
+      setError({ message: t('deleteUser.submissionError') })
     }
   }
 
   const emailInputProps = {
     id: 'email-input',
-    label: 'Email',
+    label: t('deleteUser.inputs.email.label'),
     variant: 'outlined',
     name: 'email',
-    value: email,
-    onChange: event => setEmail(event.target.value),
+    // value: email,
+    // onChange: event => setEmail(event.target.value),
     type: 'text',
-    placeholder: 'Type your email...',
+    placeholder: t('deleteUser.inputs.email.placeholder'),
     register: register({
-      required: 'Required',
+      required: t('deleteUser.inputs.email.error.required'),
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: 'Invalid email address'
+        message: t('deleteUser.inputs.email.error.invalid')
       }
     }),
     error: errors.email,
@@ -66,18 +63,23 @@ const DeleteUserFormBase = props => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {AppInput(emailInputProps)}
-      <ButtonWithProgress
-        variant="contained"
-        color="primary"
-        type="submit"
-        size="large"
-        isLoading={isLoading}
-        text="Delete user"
-      />
-      <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
-    </form>
+    <>
+      <h3>{t('deleteUser.title')}</h3>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {AppInput(emailInputProps)}
+        <ButtonWithProgress
+          variant="contained"
+          color="primary"
+          type="submit"
+          size="large"
+          isLoading={isLoading}
+          text={t('deleteUser.button')}
+        />
+        <div className={classes.errorBar}>
+          {error && <p>{error.message}</p>}
+        </div>
+      </form>
+    </>
   )
 }
 
@@ -99,4 +101,4 @@ const DeleteUserForm = connect(
   mapDispatchToState
 )(DeleteUserFormBase)
 
-export default DeleteUserPage
+export default DeleteUserForm

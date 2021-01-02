@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
@@ -23,6 +24,8 @@ function AccountDetailsChange(props) {
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
+  const { t } = useTranslation('common')
+
   const { register, handleSubmit, errors, setValue } = useForm()
 
   const classes = useStyles()
@@ -38,13 +41,13 @@ function AccountDetailsChange(props) {
 
   const displayNameInputProps = {
     id: 'displayName-input',
-    label: 'Display Name',
+    label: t('accountDetailsChange.inputs.displayName.label'),
     variant: 'outlined',
     name: 'displayName',
     type: 'text',
-    placeholder: 'Type your email...',
+    placeholder: t('accountDetailsChange.inputs.displayName.placeholder'),
     register: register({
-      required: 'Required'
+      required: t('accountDetailsChange.inputs.displayName.error.required')
     }),
     error: errors.displayName,
     fullWidth: true
@@ -56,7 +59,7 @@ function AccountDetailsChange(props) {
 
   return (
     <>
-      <h3>Account details:</h3>
+      <h3>{t('accountDetailsChange.title')}</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         {AppInput(displayNameInputProps)}
         <ButtonWithProgress
@@ -64,7 +67,7 @@ function AccountDetailsChange(props) {
           color="primary"
           type="submit"
           size="large"
-          text="Save"
+          text={t('accountDetailsChange.button')}
           isLoading={isLoading}
         />
 
