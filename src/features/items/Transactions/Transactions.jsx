@@ -72,7 +72,12 @@ export default function Transactions(props) {
                   : transaction.donor.email}
               </div>
             </div>
-            <div>{formattedDateTime(new Date(transaction.takeAt))}</div>
+            <div>
+              {formattedDateTime(
+                new Date(transaction.takeAt),
+                t('data.locales')
+              )}
+            </div>
           </div>
         </Paper>
       ))}
