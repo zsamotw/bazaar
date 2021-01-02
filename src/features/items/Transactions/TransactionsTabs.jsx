@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -64,6 +65,8 @@ function TransactionsTabs(props) {
 
   const [tabValue, setTabValue] = React.useState(0)
 
+  const { t } = useTranslation('common')
+
   const handleChangeTab = (event, newValue) => {
     setTabValue(newValue)
   }
@@ -82,8 +85,8 @@ function TransactionsTabs(props) {
         onChange={handleChangeTab}
         className={classes.tabs}
       >
-        <Tab label="Gifts" />
-        <Tab label="Given away" />
+        <Tab label={t('transactionsTabs.gifts')} />
+        <Tab label={t('transactionsTabs.givenAway')} />
       </Tabs>
       <TabPanel value={tabValue} index={0} className={classes.tabPanel}>
         <Transactions transactions={recipientTransactions} isDonor={false} />

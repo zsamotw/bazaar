@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
@@ -9,7 +10,7 @@ import AppInput from '../../../components/AppInput'
 import AppSelect from '../../../components/AppSelect'
 import { ADD_ITEM_REQUEST } from '../../../store/actions'
 import { getIsAsyncRequest } from '../../../store/selectors'
-import categories from '../../../constants/categories'
+import categories_ from '../../../constants/categories'
 import AppFileUpload from '../../../components/AppFileUpload'
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +40,8 @@ const AddItemForm = props => {
 
   const classes = useStyles()
 
+  const { t } = useTranslation('common')
+
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState({})
@@ -49,35 +52,39 @@ const AddItemForm = props => {
 
   const history = useHistory()
 
+  const categories = categories_.map(c => {
+    return { ...c, label: t(`data.categories.${c.slug}`) }
+  })
+
   useEffect(() => {
     setIsLoading(isProcessingItem)
   }, [isProcessingItem])
 
   const nameInputProps = {
     id: 'itemName-input',
-    label: 'Name',
+    label: t('addItem.inputs.name.label'),
     variant: 'outlined',
     name: 'name',
     type: 'text',
     fullWidth: true,
-    placeholder: 'Type item name...',
+    placeholder: t('addItem.inputs.name.placeholder'),
     register: register({
-      required: 'Required'
+      required: t('addItem.inputs.name.error.required')
     }),
     error: errors.name
   }
 
   const descriptionInputProps = {
     id: 'itemDescription-input',
-    label: 'Description',
+    label: t('addItem.inputs.description.label'),
     variant: 'outlined',
     name: 'description',
     type: 'text',
     fullWidth: true,
     isMultiline: true,
-    placeholder: 'Type item description...',
+    placeholder: t('addItem.inputs.description.placeholder'),
     register: register({
-      required: 'Required'
+      required: t('addItem.inputs.description.label')
     }),
     error: errors.description
   }
@@ -93,8 +100,8 @@ const AddItemForm = props => {
   return (
     <Grid container>
       <Grid item className={classes.wrapper} xs={10} md={8} lg={4}>
-        <h3>Add item</h3>
-        <h5>Describe what you want to share</h5>
+        <h3>{t('addItem.title')}</h3>
+        <h5>{t('addItem.description')}</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           {AppInput(nameInputProps)}
           {AppInput(descriptionInputProps)}
@@ -105,7 +112,8 @@ const AddItemForm = props => {
               name="categoryId"
               menuItems={categories}
               control={control}
-              inputLabel="Category"
+              inputLabel={t('addItem.inputs.category.label')}
+              rules={{ required: t('addItem.inputs.category.error.required') }}
               error={errors.categoryId}
             />
           </div>
@@ -117,7 +125,7 @@ const AddItemForm = props => {
               accept="image/*"
               multiple={false}
               register={register({
-                required: 'Required'
+                required: t('addItem.inputs.fileUpload.error.required')
               })}
               error={errors.imageUpload}
             />
@@ -127,7 +135,7 @@ const AddItemForm = props => {
             color="primary"
             size="large"
             type="submit"
-            text="Add"
+            text={t('addItem.button')}
             isLoading={isLoading}
           />
           <div className={classes.errorBar}>

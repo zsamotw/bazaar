@@ -1,4 +1,15 @@
 {
+  "data": {
+    "categories": {
+      "home": "Dom",
+      "motors": "Motoryzacja",
+      "fashion": "Moda",
+      "electronics": "Elektronika",
+      "sporting": "Sport",
+      "toys": "Zabawki",
+      "art": "Sztuka"
+    }
+  },
   "landingPage": {
     "appTitle": "Bazaar",
     "tab": {
@@ -29,7 +40,7 @@
   },
   "signUpPage": {
     "inputs": {
-      "userName": {
+      "displayName": {
         "label": "Imię",
         "placeholder": "Wpisz swóje imię...",
         "error": {
@@ -117,5 +128,75 @@
     "title": "Usuń konto",
     "button": "Usuń",
     "submissionError": "Potwierdź decyzję poprawnym emailem"
+  },
+  "addItem": {
+    "title": "Oddaj innym",
+    "description": "Podaj szczegóły przedmiotu",
+    "inputs": {
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Wpisz nazwę przedmiotu",
+        "error": {
+          "required": "Nazwa jest wymagana"
+        }
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Podaj  opis przedmiotu",
+        "error": {
+          "required": "Opis jest wymagany"
+        }
+      },
+      "category": {
+        "label": "Kategoria",
+        "error": {
+          "required": "Kategoria jest wymagana"
+        }
+      },
+      "fileUpload": {
+        "error": {
+          "required": "Zdjęcie jest wymagane"
+        }
+      }
+    },
+    "button": "Wystaw"
+  },
+  "menuAppBar": {
+    "menu": {
+      "addNewItem": "Dodaj przedmiot",
+      "transactions": "Twoje transakcje",
+      "profile": "Profil",
+      "logout": "Wyloguj"
+    }
+  },
+  "item": {
+    "dialogs": {
+      "remove": {
+        "title": "Usuń przedmiot",
+        "description": "Czy na pewno chcesz usunąć ten przedmiot?",
+        "cancelButton": "Nie",
+        "removeButton": "Usuń"
+      },
+      "take": {
+        "title": "Czy chcesz ten przedmiot?",
+        "cancelButton": "Nie, dziekuję",
+        "takeButton": "Tak. Poproszę o ten przedmiot",
+        "from": "Od"
+      }
+    }
+  },
+  "searchBar": {
+    "input": {
+      "label": "Czego szukasz?",
+      "placeholder": "Wpisz czego szukasz..."
+    }
+  },
+  "transactionsTabs": {
+    "gifts": "Podarowane",
+    "givenAway": "Oddane"
+  },
+  "transactions": {
+    "to": "dla",
+    "from": "od"
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -38,6 +39,7 @@ export default function Transactions(props) {
 
   const theme = useTheme()
   const classes = useStyles(theme)
+  const { t } = useTranslation('common')
 
   return (
     <>
@@ -57,7 +59,7 @@ export default function Transactions(props) {
           <div className={classes.detailsWrapper}>
             <div className={classes.recipientData}>
               <div style={{ textTransform: 'uppercase' }}>
-                {isDonor ? 'To:' : 'From:'}
+                {isDonor ? t('transactions.to') : t('transactions.from')}
               </div>
               <div>
                 {isDonor

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -38,6 +39,8 @@ export default function Dialogs(props) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
+  const { t } = useTranslation('common')
+
   const {
     openRemoveDialog,
     handleCloseRemoveDialog,
@@ -52,15 +55,15 @@ export default function Dialogs(props) {
   return (
     <>
       <Dialog open={openRemoveDialog} onClose={handleCloseRemoveDialog}>
-        <DialogTitle>Remove item</DialogTitle>
+        <DialogTitle>{t('item.dialogs.remove.title')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Do you want to remove this item?
+            {t('item.dialogs.remove.description')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseRemoveDialog} color="primary">
-            Cancel
+            {t('item.dialogs.remove.cancelButton')}
           </Button>
           <Button
             onClick={handleRemoveItem}
@@ -68,7 +71,7 @@ export default function Dialogs(props) {
             autoFocus
             data-testid="buttonToRemove"
           >
-            Remove
+            {t('item.dialogs.remove.removeButton')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -81,7 +84,7 @@ export default function Dialogs(props) {
         <AppBar className={classes.dialogBar}>
           <Toolbar>
             <Typography variant="h6" className={classes.dialogTitle}>
-              Confirm taking item
+              {t('item.dialogs.take.title')}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -94,10 +97,10 @@ export default function Dialogs(props) {
             onClick={handleSetRecipient}
             autoFocus
           >
-            Take now
+            {t('item.dialogs.take.takeButton')}
           </Button>
           <Button onClick={handleCloseConfirmDialog} color="primary">
-            Cancel
+            {t('item.dialogs.take.cancelButton')}
           </Button>
         </DialogActions>
         <DialogContent className={classes.dialogContent}>
@@ -105,7 +108,9 @@ export default function Dialogs(props) {
           <h1>{name}</h1>
           <div>{description}</div>
           <Divider className={classes.dialogDivider} />
-          <div style={{ textTransform: 'uppercase' }}>From:</div>
+          <div style={{ textTransform: 'uppercase' }}>
+            {t('item.dialogs.take.from')}:
+          </div>
           <div>{donor && donor.displayName ? donor.displayName : ''}</div>
           <div>{donor && donor.email ? donor.email : ''}</div>
         </DialogContent>

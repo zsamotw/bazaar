@@ -13,6 +13,7 @@ export default ({
   menuItems,
   control,
   inputLabel,
+  rules,
   error
 }) => (
   <FormControl error={error} style={{ width: '100%' }}>
@@ -30,7 +31,7 @@ export default ({
       name={name}
       control={control}
       defaultValue=""
-      rules={{ required: 'Required' }}
+      rules={rules}
     />
     {error && <FormHelperText>{error.message}</FormHelperText>}
   </FormControl>

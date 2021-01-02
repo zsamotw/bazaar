@@ -118,7 +118,7 @@ function* setRecipient(action) {
     item: { id, recipient: itemRecipient, donor: itemDonor }
   } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
-  const recipient = Firebase.transformStateUserToSafeUser(currentUser)
+  const recipient = Firebase.transformDbUserToSafeUser(currentUser)
   const takeAt = new Date().toString()
 
   if (!itemRecipient || recipient.uid === itemDonor.uid) {

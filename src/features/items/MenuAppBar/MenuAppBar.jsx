@@ -1,3 +1,5 @@
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 import AppBar from '@material-ui/core/AppBar'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
@@ -6,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
 import { connect } from 'react-redux'
 import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import * as ROUTES from '../../../constants/routes'
@@ -42,6 +43,8 @@ function MenuAppBar(props) {
 
   const history = useHistory()
   const { path } = useRouteMatch()
+
+  const { t } = useTranslation('common')
 
   const { currentUser, logout } = props
 
@@ -92,7 +95,9 @@ function MenuAppBar(props) {
           <div>
             <IconButton onClick={handleMenu} color="inherit">
               <Avatar className={classes.avatar}>
-                {currentUser.displayName.charAt(0)}
+                {currentUser.displayName
+                  ? currentUser.displayName.charAt(0)
+                  : ''}
               </Avatar>
             </IconButton>
             <Menu
@@ -106,12 +111,18 @@ function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleNavigateAddItem}>Add new item</MenuItem>
-              <MenuItem onClick={handleNavigateTransaction}>
-                Your transactions
+              <MenuItem onClick={handleNavigateAddItem}>
+                {t('menuAppBar.menu.addNewItem')}
               </MenuItem>
-              <MenuItem onClick={handleNavigateAccount}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={handleNavigateTransaction}>
+                {t('menuAppBar.menu.transactions')}
+              </MenuItem>
+              <MenuItem onClick={handleNavigateAccount}>
+                {t('menuAppBar.menu.profile')}
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                {t('menuAppBar.menu.logout')}
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>

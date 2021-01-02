@@ -17,7 +17,6 @@ const useStyles = makeStyles({
 const DeleteUserFormBase = props => {
   const { isFetchingLoginData, deleteUser, currentUser } = props
 
-  // const [email, setEmail] = useState('')
   const [error, setError] = useState({})
   const [isLoading, setIsLoading] = useState(false)
 
@@ -47,8 +46,6 @@ const DeleteUserFormBase = props => {
     label: t('deleteUser.inputs.email.label'),
     variant: 'outlined',
     name: 'email',
-    // value: email,
-    // onChange: event => setEmail(event.target.value),
     type: 'text',
     placeholder: t('deleteUser.inputs.email.placeholder'),
     register: register({

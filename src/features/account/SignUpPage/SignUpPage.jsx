@@ -44,17 +44,17 @@ const SignUpFormBase = props => {
     })
   }
 
-  const userNameInputProps = {
-    id: 'userName-input',
-    label: t('signUpPage.inputs.userName.label'),
+  const displayNameInputProps = {
+    id: 'displayName-input',
+    label: t('signUpPage.inputs.displayName.label'),
     variant: 'outlined',
-    name: 'userName',
+    name: 'displayName',
     type: 'text',
-    placeholder: t('signUpPage.inputs.userName.placeholder'),
+    placeholder: t('signUpPage.inputs.displayName.placeholder'),
     register: register({
-      required: t('signUpPage.inputs.userName.error.required')
+      required: t('signUpPage.inputs.displayName.error.required')
     }),
-    error: errors.userName,
+    error: errors.displayName,
     fullWidth: true
   }
 
@@ -116,7 +116,7 @@ const SignUpFormBase = props => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {AppInput(userNameInputProps)}
+      {AppInput(displayNameInputProps)}
       {AppInput(emailInputProps)}
       {AppInput(passwordOneInputProps)}
       {AppInput(passwordTwoInputProps)}
