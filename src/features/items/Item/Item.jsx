@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       '& $imageWrapper': {
         border: `5px solid ${theme.palette.primary.main}`,
-        backgroundImage: 'linear-gradient(to left,#045f0e8a, #045f0e8a)'
+        backgroundImage: 'linear-gradient(to left, #6fa8758a, #6fa8758a )'
       },
       '& img': {
         transform: 'scale(1.2)',
