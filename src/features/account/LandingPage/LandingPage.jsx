@@ -33,7 +33,7 @@ const LandingPage = () => {
     <div>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-          <h1 style={{ paddingLeft: '20px' }}>{t('landingPage.appTitle')}</h1>
+          <h1 style={{ paddingLeft: '2rem' }}>{t('landingPage.appTitle')}</h1>
         </Grid>
         <Grid item xs={2} md={4} lg={7} />
         <Grid item xs={8} md={4} lg={3}>

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.error.main,
     fontWidth: '600',
     fontSize: theme.typography.display3.fontSize,
-    marginBottom: '40px'
+    marginBottom: '4rem'
   }
 }))
 const NoMatch = () => {

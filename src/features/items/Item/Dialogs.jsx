@@ -89,7 +89,7 @@ export default function Dialogs(props) {
           </Toolbar>
         </AppBar>
         <DialogActions
-          style={{ justifyContent: 'flex-start', padding: '8px 24px' }}
+          style={{ justifyContent: 'flex-start', padding: '1rem 1.6rem' }}
         >
           <Button
             variant="outlined"

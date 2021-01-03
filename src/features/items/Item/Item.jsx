@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     height: '400px',
     boxSizing: 'border-box',
-    margin: '8px 16px 8px 0',
+    margin: '1rem 1.6rem 1rem 0',
     overflow: 'hidden',
     border: `5px solid ${theme.palette.secondary.main}`,
     borderRadius: '15px'

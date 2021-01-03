@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: 'none',
     color: '#fff',
-    fontSize: '15px',
-    marginLeft: '15px'
+    fontSize: '1.5em',
+    marginLeft: '1.5rem'
   }
 }))
 

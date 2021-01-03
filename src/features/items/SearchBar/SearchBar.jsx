@@ -19,7 +19,7 @@ function SearchBar(props) {
         display: 'flex',
         justifyContent: 'center',
         margin: '1rem 0',
-        paddingRight: '16px'
+        paddingRight: '1.6rem'
       }}
     >
       <TextField

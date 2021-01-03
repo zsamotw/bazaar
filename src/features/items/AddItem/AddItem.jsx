@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     minWidth: 120,
-    margin: '8px 8px 20px 0'
+    margin: '1rem 1rem 2rem 0'
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
@@ -105,7 +105,7 @@ const AddItemForm = props => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {AppInput(nameInputProps)}
           {AppInput(descriptionInputProps)}
-          <div style={{ width: '33%', marginBottom: '20px' }}>
+          <div style={{ width: '33%', marginBottom: '2rem' }}>
             <AppSelect
               id="categoryId"
               labelId="category-select-label"
@@ -117,7 +117,7 @@ const AddItemForm = props => {
               error={errors.categoryId}
             />
           </div>
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '2rem' }}>
             <AppFileUpload
               id="image-upload-control"
               name="imageUpload"
