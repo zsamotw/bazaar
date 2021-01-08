@@ -15,7 +15,7 @@ import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
 import * as ROUTES from '../../constants/routes'
 
-function* uploadFile(file, folder) {
+function* uploadFile(file, folder, messageOnFileUploadError) {
   try {
     const fileRef = Firebase.storageRef().child(`${folder}/${file.name}`)
     const task = Firebase.uploadFile(fileRef, file)
@@ -27,7 +27,7 @@ function* uploadFile(file, folder) {
     yield put(
       SET_APP_MESSAGE({
         payload: {
-          content: 'Cannot upload file due to error',
+          content: messageOnFileUploadError,
           status: 'error'
         }
       })
@@ -35,7 +35,7 @@ function* uploadFile(file, folder) {
   }
 }
 
-function* deleteFile(filePath) {
+function* deleteFile(filePath, messageOnFileRemoveError) {
   try {
     const fileRef = Firebase.storageRef().child(filePath)
 
@@ -44,7 +44,7 @@ function* deleteFile(filePath) {
     yield put(
       SET_APP_MESSAGE({
         payload: {
-          content: 'Cannot delete file due to error',
+          content: messageOnFileRemoveError,
           status: 'error'
         }
       })
@@ -53,13 +53,20 @@ function* deleteFile(filePath) {
 }
 
 function* addFirebaseItem(action) {
-  const { name, description, category, file, history } = action.payload
+  const {
+    name,
+    description,
+    category,
+    file,
+    history,
+    messageOnFileUploadError
+  } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = Firebase.transformDbUserToSafeUser(currentUser)
   const createdAt = new Date()
   const folder = `images/${createdAt.getFullYear()}-${createdAt.getMonth()}/${createdAt.getTime()}`
 
-  yield call(uploadFile, file, folder)
+  yield call(uploadFile, file, folder, messageOnFileUploadError)
 
   const imgStoragePath = `${folder}/${file.name}`
   const fileRef = Firebase.storageRef().child(imgStoragePath)
@@ -74,38 +81,26 @@ function* addFirebaseItem(action) {
     imgURL,
     createdAt: createdAt.toString()
   })
-  yield put(
-    SET_APP_MESSAGE({
-      payload: {
-        content: 'Item has been added',
-        status: 'success'
-      }
-    })
-  )
   history.push(ROUTES.HOME)
 }
 
 function* removeFirebaseItem(action) {
-  const { item } = action.payload
+  const {
+    item,
+    messageOnFileUploadError,
+    messageOnUserAccessError
+  } = action.payload
   const { id, donor: itemDonor } = item
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = currentUser
   if (donor.uid === itemDonor.uid) {
-    yield call(deleteFile, item.imgStoragePath)
+    yield call(deleteFile, item.imgStoragePath, messageOnFileUploadError)
     yield call(Firebase.removeDocument, `items/${id}`)
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Item has been removed',
-          status: 'success'
-        }
-      })
-    )
   } else {
     yield put(
       SET_APP_MESSAGE({
         payload: {
-          content: 'You cannot remove this item',
+          content: messageOnUserAccessError,
           status: 'warring'
         }
       })
@@ -115,7 +110,8 @@ function* removeFirebaseItem(action) {
 
 function* setRecipient(action) {
   const {
-    item: { id, recipient: itemRecipient, donor: itemDonor }
+    item: { id, recipient: itemRecipient, donor: itemDonor },
+    messageOnUserSetRecipientAccessError
   } = action.payload
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const recipient = Firebase.transformDbUserToSafeUser(currentUser)
@@ -128,19 +124,11 @@ function* setRecipient(action) {
       { recipient, takeAt },
       { merge: true }
     )
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Item has been taken ',
-          status: 'success'
-        }
-      })
-    )
   } else {
     yield put(
       SET_APP_MESSAGE({
         payload: {
-          content: 'This item cannot be taken by You',
+          content: messageOnUserSetRecipientAccessError,
           status: 'warring'
         }
       })
@@ -187,32 +175,23 @@ function* getTransactions() {
 }
 
 function* addItemRequest(action) {
-  const messageOnError = {
-    content: 'Item adding failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     addFirebaseItem,
-    isAsyncRequest.isProcessingItem,
-    messageOnError
+    isAsyncRequest.isProcessingItem
   )
 }
 
 function* removeItemRequest(action) {
-  const messageOnError = {
-    content: 'Item removing failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     removeFirebaseItem,
-    isAsyncRequest.isProcessingItem,
-    messageOnError
+    isAsyncRequest.isProcessingItem
   )
 }
 
-function* getFirebaseSyncItems() {
+function* getFirebaseSyncItems(action) {
+  const { messageOnError } = action.payload
   const itemsTransformer = snapshot => {
     const items = []
     snapshot.forEach(doc => {
@@ -231,35 +210,25 @@ function* getFirebaseSyncItems() {
   } catch {
     yield put(
       SET_APP_MESSAGE({
-        payload: { content: 'Cannot sync items', status: 'error' }
+        payload: { content: messageOnError, status: 'error' }
       })
     )
   }
 }
 
 function* setRecipientRequest(action) {
-  const messageOnError = {
-    content: 'Taking item failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     setRecipient,
-    isAsyncRequest.isProcessingItem,
-    messageOnError
+    isAsyncRequest.isProcessingItem
   )
 }
 
 function* getTransactionsRequest(action) {
-  const messageOnError = {
-    content: 'Getting transactions failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     getTransactions,
-    isAsyncRequest.isFetchingTransactions,
-    messageOnError
+    isAsyncRequest.isFetchingTransactions
   )
 }
 

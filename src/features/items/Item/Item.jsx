@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
@@ -113,6 +114,8 @@ function Item(prop) {
   const theme = useTheme()
   const classes = useStyles(theme)
 
+  const { t } = useTranslation('common')
+
   const { item, removeItem, setRecipient, currentUser } = prop
   const { id, name, description, category, donor, recipient, createdAt } = item
 
@@ -120,12 +123,32 @@ function Item(prop) {
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false)
 
   const handleRemoveItem = () => {
-    removeItem(item)
+    const messageOnSuccess = t('item.messageOnRemoveSuccess')
+    const messageOnError = t('addItem.messageOnRemoveError')
+    const messageOnFileUploadError = t('addItem.messageOnFileUploadError')
+    const messageOnUserAccessError = t('addItem.messageOnUserItemAccessError')
+    removeItem(
+      item,
+      messageOnSuccess,
+      messageOnError,
+      messageOnFileUploadError,
+      messageOnUserAccessError
+    )
     setOpenRemoveDialog(false)
   }
 
   const handleSetRecipient = () => {
-    setRecipient(item)
+    const messageOnSuccess = t('item.messageOnSetRecipientSuccess')
+    const messageOnError = t('addItem.messageOnSetRecipientRemoveError')
+    const messageOnUserSetRecipientAccessError = t(
+      'addItem.messageOnUserSetRecipientAccessError'
+    )
+    setRecipient(
+      item,
+      messageOnSuccess,
+      messageOnError,
+      messageOnUserSetRecipientAccessError
+    )
     setOpenConfirmDialog(false)
   }
 
@@ -228,8 +251,40 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    removeItem: item => dispatch(REMOVE_ITEM_REQUEST({ payload: { item } })),
-    setRecipient: item => dispatch(SET_RECIPIENT_REQUEST({ payload: { item } }))
+    removeItem: (
+      item,
+      messageOnSuccess,
+      messageOnError,
+      messageOnFileRemoveError,
+      messageOnUserAccessError
+    ) =>
+      dispatch(
+        REMOVE_ITEM_REQUEST({
+          payload: {
+            item,
+            messageOnSuccess,
+            messageOnError,
+            messageOnFileRemoveError,
+            messageOnUserAccessError
+          }
+        })
+      ),
+    setRecipient: (
+      item,
+      messageOnSuccess,
+      messageOnError,
+      messageOnUserSetRecipientAccessError
+    ) =>
+      dispatch(
+        SET_RECIPIENT_REQUEST({
+          payload: {
+            item,
+            messageOnSuccess,
+            messageOnError,
+            messageOnUserSetRecipientAccessError
+          }
+        })
+      )
   }
 }
 

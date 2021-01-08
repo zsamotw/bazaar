@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const PasswordChangeForm = props => {
   const { changePassword, isFetchingChangePasswordData, email } = props
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
@@ -92,7 +92,16 @@ const PasswordChangeForm = props => {
 
   const onSubmit = data => {
     const { passwordOld, passwordOne } = data
-    changePassword(email, passwordOld, passwordOne, { setError })
+    const messageOnSuccess = t('passwordChange.messageOnPasswordChangeSuccess')
+    const messageOnError = t('passwordChange.messageOnPasswordChangeError')
+    changePassword(
+      email,
+      passwordOld,
+      passwordOne,
+      { setError },
+      messageOnSuccess,
+      messageOnError
+    )
   }
 
   return (
@@ -112,7 +121,7 @@ const PasswordChangeForm = props => {
         />
 
         <div className={classes.errorBar}>
-          {error && <p>{error.message}</p>}
+          {error && <p>{t('passwordChange.formError')}</p>}
         </div>
       </form>
     </>
@@ -127,10 +136,24 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    changePassword: (email, passwordOld, passwordNew, callbacks) =>
+    changePassword: (
+      email,
+      passwordOld,
+      passwordNew,
+      callbacks,
+      messageOnSuccess,
+      messageOnError
+    ) =>
       dispatch(
         CHANGE_USER_PASSWORD_REQUEST({
-          payload: { email, passwordOld, passwordNew, callbacks }
+          payload: {
+            email,
+            passwordOld,
+            passwordNew,
+            callbacks,
+            messageOnSuccess,
+            messageOnError
+          }
         })
       )
   }

@@ -21,7 +21,7 @@ function AccountDetailsChange(props) {
     updateUserProfile
   } = props
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
@@ -36,7 +36,16 @@ function AccountDetailsChange(props) {
 
   const onSubmit = data => {
     const { displayName } = data
-    updateUserProfile(displayName, { setError })
+    const messageOnError = t('accountDetailsChange.messageOnDetailsChangeError')
+    const messageOnSuccess = t(
+      'accountDetailsChange.messageOnDetailsChangeSuccess'
+    )
+    updateUserProfile(
+      displayName,
+      { setError },
+      messageOnSuccess,
+      messageOnError
+    )
   }
 
   const displayNameInputProps = {
@@ -72,7 +81,7 @@ function AccountDetailsChange(props) {
         />
 
         <div className={classes.errorBar}>
-          {error && <p>{error.message}</p>}
+          {error && <p>{t('accountDetailsChange.formError')}</p>}
         </div>
       </form>
     </>
@@ -87,10 +96,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    updateUserProfile: (displayName, callbacks) =>
+    updateUserProfile: (
+      displayName,
+      callbacks,
+      messageOnSuccess,
+      messageOnError
+    ) =>
       dispatch(
         UPDATE_USER_ACCOUNT_DETAILS_REQUEST({
-          payload: { displayName, callbacks }
+          payload: { displayName, callbacks, messageOnSuccess, messageOnError }
         })
       )
   }

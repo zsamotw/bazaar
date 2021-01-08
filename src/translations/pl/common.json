@@ -30,14 +30,16 @@
       },
       "password": {
         "label": "Hasło",
-        "placeholder": "Wpisz swóje hasło...",
+        "placeholder": "Wpisz swoje hasło...",
         "error": {
           "required": "Hasło jest wymagane",
           "invalid": "Hasło musi składać się z minimum 6 znaków"
         }
       }
     },
-    "button": "Zaloguj się"
+    "formError": "Zalogowanie nie powiodło się. Proszę spawdzić poprawność loginu i hasła.",
+    "button": "Zaloguj się",
+    "messageOnLogInError": "Problem z logowaniem"
   },
   "signUpPage": {
     "inputs": {
@@ -74,7 +76,9 @@
         }
       }
     },
-    "button": "Załóż konto"
+    "formError": "Utworzenie konta nie udało się",
+    "button": "Załóż konto",
+    "messageOnSignUpError": "Nie udało się założyć konta"
   },
   "signOut": {
     "title": "Wyloguj"
@@ -83,14 +87,17 @@
     "inputs": {
       "displayName": {
         "label": "Imię",
-        "placeholder": "Wpisz swóje imię...",
+        "placeholder": "Wpisz swoje imię...",
         "error": {
           "required": "Imię jest wymagane"
         }
       }
     },
     "title": "Twój profil",
-    "button": "Zapisz"
+    "button": "Zapisz",
+    "messageOnDetailsChangeError": "Nie udało się zmienić detali profilu",
+    "messageOnDetailsChangeSuccess": "Detale profilu zostały zmienione",
+    "formError": "Zmiana detali twojego profilu nie udała się"
   },
   "passwordChange": {
     "inputs": {
@@ -101,7 +108,7 @@
       },
       "passwordOld": {
         "label": "Aktualne hasło",
-        "placeholder": "Wpisz swóje aktualne hasło..."
+        "placeholder": "Wpisz swoje aktualne hasło..."
       },
       "passwordOne": {
         "label": "Nowe hasło",
@@ -113,7 +120,10 @@
       }
     },
     "title": "Zmiana hasła",
-    "button": "Zapisz"
+    "button": "Zapisz",
+    "messageOnPasswordChangeSuccess": "Hasło zostało zmienione",
+    "messageOnPasswordChangeError": "Hasło nie zostało zmienione",
+    "formError": "Zmiania hasła nie udała się"
   },
   "deleteUser": {
     "inputs": {
@@ -128,6 +138,9 @@
     },
     "title": "Usuń konto",
     "button": "Usuń",
+    "messageOnUserDeleteSuccess": "Konto użytkownika zostało skasowane",
+    "messageOnUserDeleteError": "Nie udało się skasować konta użytkownika",
+    "formError": "Nie udało się skasować twojego konta. Sprawdź swoje uprawnienia",
     "submissionError": "Potwierdź decyzję poprawnym emailem"
   },
   "addItem": {
@@ -160,7 +173,11 @@
         }
       }
     },
-    "button": "Wystaw"
+    "button": "Wystaw",
+    "messageOnAddItemSuccess": "Przedmiot został dodany",
+    "messageOnAdItemError": "Nie udało się dodać przedmiotu",
+    "messageOnFileUploadError": "Nie można załadować pliku ze zdjęciem",
+    "formError": "Nie udało się dodać przedmiotu"
   },
   "menuAppBar": {
     "menu": {
@@ -181,10 +198,17 @@
       "take": {
         "title": "Czy chcesz ten przedmiot?",
         "cancelButton": "Nie, dziekuję",
-        "takeButton": "Tak. Poproszę o ten przedmiot",
+        "takeButton": "Tak. Poproszę",
         "from": "Od"
       }
-    }
+    },
+    "messageOnRemoveSuccess": "Przedmiot został usunięty",
+    "messageOnRemoveError": "Nie udało się skasować przedmiotu",
+    "messageOnFileRemoveError": "Nie można skasować pliku ze zdjęciem",
+    "messageOnUserItemAccessError": "Nie masz uprawnień do skasowania tego przemiotu",
+    "messageOnSetRecipientSuccess": "Udało się",
+    "messageOnSetRecipientError": "Nie udało się wziąść przedmiotu",
+    "messageOnUserSetRecipientAccessError": "Nie masz uprawnień do posiadania tego przemiotu"
   },
   "searchBar": {
     "input": {
@@ -194,7 +218,8 @@
   },
   "transactionsTabs": {
     "gifts": "Podarowane",
-    "givenAway": "Oddane"
+    "givenAway": "Oddane",
+    "messageOnGetTransactionsError": "Nie udało się pobrać transakcji"
   },
   "transactions": {
     "to": "dla",

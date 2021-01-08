@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 const SignInFormBase = props => {
   const { isFetchingLoginData, login } = props
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
@@ -34,7 +34,8 @@ const SignInFormBase = props => {
 
   const onSubmit = data => {
     const { email, password } = data
-    login(email, password, { setError })
+    const messageOnError = t('signInPage.messageOnLogInError')
+    login(email, password, { setError }, messageOnError)
   }
 
   const emailInputProps = {
@@ -85,7 +86,9 @@ const SignInFormBase = props => {
         isLoading={isLoading}
         text={t('signInPage.button')}
       />
-      <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
+      <div className={classes.errorBar}>
+        {error && <p>{t('signInPage.formError')}</p>}
+      </div>
     </form>
   )
 }
@@ -97,8 +100,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    login: (email, password, callbacks) =>
-      dispatch(LOGIN_REQUEST({ payload: { email, password, callbacks } }))
+    login: (email, password, callbacks, messageOnError) =>
+      dispatch(
+        LOGIN_REQUEST({
+          payload: { email, password, callbacks, messageOnError }
+        })
+      )
   }
 }
 

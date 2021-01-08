@@ -42,7 +42,7 @@ const AddItemForm = props => {
 
   const { t } = useTranslation('common')
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [file, setFile] = useState({})
 
@@ -94,7 +94,20 @@ const AddItemForm = props => {
   }
   const onSubmit = ({ name, description, categoryId }) => {
     const category = categories.find(c => c.id === categoryId)
-    addItem(name, description, category, file, history, { setError })
+    const messageOnSuccess = t('addItem.messageOnAddItemSuccess')
+    const messageOnError = t('addItem.messageOnAddItemError')
+    const messageOnFileUploadError = t('addItem.messageOnFileUploadError')
+    addItem(
+      name,
+      description,
+      category,
+      file,
+      history,
+      { setError },
+      messageOnSuccess,
+      messageOnError,
+      messageOnFileUploadError
+    )
   }
 
   return (
@@ -139,7 +152,7 @@ const AddItemForm = props => {
             isLoading={isLoading}
           />
           <div className={classes.errorBar}>
-            {error && <p>{error.message}</p>}
+            {error && <p>{t('addItem.formError')}</p>}
           </div>
         </form>
       </Grid>
@@ -154,10 +167,30 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (name, description, category, file, history, callbacks) =>
+    addItem: (
+      name,
+      description,
+      category,
+      file,
+      history,
+      callbacks,
+      messageOnSuccess,
+      messageOnError,
+      messageOnFileUploadError
+    ) =>
       dispatch(
         ADD_ITEM_REQUEST({
-          payload: { name, description, category, file, history, callbacks }
+          payload: {
+            name,
+            description,
+            category,
+            file,
+            history,
+            callbacks,
+            messageOnSuccess,
+            messageOnError,
+            messageOnFileUploadError
+          }
         })
       )
   }

@@ -72,8 +72,9 @@ function TransactionsTabs(props) {
   }
 
   useEffect(() => {
-    getTransactions()
-  }, [getTransactions])
+    const messageOnError = t('transactionsTabs.messageOnGetTransactionsError')
+    getTransactions(messageOnError)
+  }, [getTransactions, t])
 
   return (
     <div className={classes.tabsContainer}>
@@ -107,7 +108,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    getTransactions: () => dispatch(GET_TRANSACTIONS_REQUEST())
+    getTransactions: messageOnGetTransactionsError =>
+      dispatch(
+        GET_TRANSACTIONS_REQUEST({ payload: { messageOnGetTransactionsError } })
+      )
   }
 }
 

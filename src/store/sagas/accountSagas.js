@@ -1,6 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import {
-  SET_APP_MESSAGE,
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   SIGNUP_REQUEST,
@@ -55,14 +54,6 @@ function* updateFirebaseUserAccount(action) {
     )
     const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
     yield put(SET_AUTH_USER({ payload: currentUser }))
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Account update successfully',
-          status: 'success'
-        }
-      })
-    )
   }
 }
 
@@ -83,14 +74,6 @@ function* changeFirebasePassword(action) {
   )
   if (user) {
     yield call(Firebase.doPasswordUpdate, passwordNew)
-    yield put(
-      SET_APP_MESSAGE({
-        payload: {
-          content: 'Password updated successfully',
-          status: 'success'
-        }
-      })
-    )
   }
 }
 
@@ -106,8 +89,7 @@ function* singInRequest(action) {
   yield requestWithFetchingData(
     action,
     signInWithFirebase,
-    isAsyncRequest.isFetchingLoginData,
-    null
+    isAsyncRequest.isFetchingLoginData
   )
 }
 
@@ -120,34 +102,23 @@ function* signUpRequest(action) {
   yield requestWithFetchingData(
     action,
     signUpWithFirebase,
-    isAsyncRequest.isFetchingSignUpData,
-    null
+    isAsyncRequest.isFetchingSignUpData
   )
 }
 
 function* updateUserAccountDetailsRequest(action) {
-  const messageOnError = {
-    content: 'Account update failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     updateFirebaseUserAccount,
-    isAsyncRequest.isFetchingUpdateUserAccountData,
-    messageOnError
+    isAsyncRequest.isFetchingUpdateUserAccountData
   )
 }
 
 function* changePasswordRequest(action) {
-  const messageOnError = {
-    content: 'Password update failed',
-    status: 'error'
-  }
   yield requestWithFetchingData(
     action,
     changeFirebasePassword,
-    isAsyncRequest.isFetchingChangePasswordData,
-    messageOnError
+    isAsyncRequest.isFetchingChangePasswordData
   )
 }
 
@@ -155,8 +126,7 @@ function* deleteUserRequest(action) {
   yield requestWithFetchingData(
     action,
     deleteFirebaseUser,
-    isAsyncRequest.isFetchingLoginData,
-    null
+    isAsyncRequest.isFetchingLoginData
   )
 }
 

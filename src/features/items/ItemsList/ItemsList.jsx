@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Backdrop from '@material-ui/core/Backdrop'
@@ -32,10 +33,12 @@ function ItemsList(props) {
   const { getItemsList, items, isProcessingItem } = props
   const theme = useTheme()
   const classes = useStyles(theme)
+  const { t } = useTranslation('common')
 
   useEffect(() => {
-    getItemsList()
-  }, [getItemsList])
+    const messageOnError = t('itemsList.messageOnItemLoadError')
+    getItemsList(messageOnError)
+  }, [getItemsList, t])
 
   return (
     <Grid container>
@@ -55,7 +58,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    getItemsList: () => dispatch(GET_ITEMS_REQUEST())
+    getItemsList: messageOnError =>
+      dispatch(GET_ITEMS_REQUEST({ payload: { messageOnError } }))
   }
 }
 

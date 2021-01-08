@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 const SignUpFormBase = props => {
   const { isFetchingSignUpData, signUp } = props
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
@@ -39,9 +39,8 @@ const SignUpFormBase = props => {
 
   const onSubmit = data => {
     const { displayName, email, passwordOne: password } = data
-    signUp(displayName, email, password, {
-      setError
-    })
+    const messageOnError = t('singUpPage.messageOnSignUpError')
+    signUp(displayName, email, password, { setError }, messageOnError)
   }
 
   const displayNameInputProps = {
@@ -128,7 +127,9 @@ const SignUpFormBase = props => {
         isLoading={isLoading}
         text={t('signUpPage.button')}
       />
-      <div className={classes.errorBar}>{error && <p>{error.message}</p>}</div>
+      <div className={classes.errorBar}>
+        {error && <p>{t('signUpPage.formError')}</p>}
+      </div>
     </form>
   )
 }
@@ -140,9 +141,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    signUp: (displayName, email, password, callbacks) =>
+    signUp: (displayName, email, password, callbacks, messageOnError) =>
       dispatch(
-        SIGNUP_REQUEST({ payload: { displayName, email, password, callbacks } })
+        SIGNUP_REQUEST({
+          payload: { displayName, email, password, callbacks, messageOnError }
+        })
       )
   }
 }

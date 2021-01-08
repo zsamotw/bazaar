@@ -48,9 +48,15 @@ export const REMOVE_ITEM_REQUEST = createAction(
   'REMOVE ITEM REQUEST',
   item => item
 )
-export const GET_ITEMS_REQUEST = createAction('GET ITEMS REQUEST')
+export const GET_ITEMS_REQUEST = createAction(
+  'GET ITEMS REQUEST',
+  message => message
+)
 export const SET_RECIPIENT_REQUEST = createAction(
   'SET RECIPIENT REQUEST',
   item => item
 )
-export const GET_TRANSACTIONS_REQUEST = createAction('GET TRANSACTIONS REQUEST')
+export const GET_TRANSACTIONS_REQUEST = createAction(
+  'GET TRANSACTIONS REQUEST',
+  message => message
+)

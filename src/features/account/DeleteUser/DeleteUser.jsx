@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 const DeleteUserFormBase = props => {
   const { isFetchingLoginData, deleteUser, currentUser } = props
 
-  const [error, setError] = useState({})
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation('common')
@@ -35,7 +35,9 @@ const DeleteUserFormBase = props => {
   const onSubmit = data => {
     const { email } = data
     if (email === currentUser.email) {
-      deleteUser({ setError })
+      const messageOnSuccess = t('deleteUser.messageOnUserDeleteSuccess')
+      const messageOnError = t('deleteUser.messageOnUserDeleteError')
+      deleteUser({ setError }, messageOnSuccess, messageOnError)
     } else {
       setError({ message: t('deleteUser.submissionError') })
     }
@@ -73,7 +75,7 @@ const DeleteUserFormBase = props => {
           text={t('deleteUser.button')}
         />
         <div className={classes.errorBar}>
-          {error && <p>{error.message}</p>}
+          {error && <p>{t('deleteUser.formError')}</p>}
         </div>
       </form>
     </>
@@ -88,8 +90,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    deleteUser: callbacks =>
-      dispatch(DELETE_USER_REQUEST({ payload: { callbacks } }))
+    deleteUser: (callbacks, messageOnSuccess, messageOnError) =>
+      dispatch(
+        DELETE_USER_REQUEST({
+          payload: { callbacks },
+          messageOnSuccess,
+          messageOnError
+        })
+      )
   }
 }
 
