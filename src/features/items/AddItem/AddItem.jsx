@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import AppInput from '../../../components/AppInput'
 import AppSelect from '../../../components/AppSelect'
-import { ADD_ITEM_REQUEST } from '../../../store/actions'
+import { ADD_ITEM_REQUEST } from '../../../store/actions/async-actions'
 import { getIsAsyncRequest } from '../../../store/selectors'
 import categories_ from '../../../constants/categories'
 import AppFileUpload from '../../../components/AppFileUpload'
@@ -97,17 +97,17 @@ const AddItemForm = props => {
     const messageOnSuccess = t('addItem.messageOnAddItemSuccess')
     const messageOnError = t('addItem.messageOnAddItemError')
     const messageOnFileUploadError = t('addItem.messageOnFileUploadError')
-    addItem(
+    addItem({
       name,
       description,
       category,
       file,
       history,
-      { setError },
+      setError,
       messageOnSuccess,
       messageOnError,
       messageOnFileUploadError
-    )
+    })
   }
 
   return (
@@ -167,32 +167,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: (
-      name,
-      description,
-      category,
-      file,
-      history,
-      callbacks,
-      messageOnSuccess,
-      messageOnError,
-      messageOnFileUploadError
-    ) =>
-      dispatch(
-        ADD_ITEM_REQUEST({
-          payload: {
-            name,
-            description,
-            category,
-            file,
-            history,
-            callbacks,
-            messageOnSuccess,
-            messageOnError,
-            messageOnFileUploadError
-          }
-        })
-      )
+    addItem: itemData => dispatch(ADD_ITEM_REQUEST(itemData))
   }
 }
 

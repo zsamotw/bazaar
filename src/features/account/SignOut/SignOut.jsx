@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { LOGOUT_REQUEST } from '../../../store/actions'
+import { LOGOUT_REQUEST } from '../../../store/actions/async-actions'
 
 const SignOutButton = ({ logout }) => {
   const { t } = useTranslation('common')

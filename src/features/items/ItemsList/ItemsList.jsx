@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { GET_ITEMS_REQUEST } from '../../../store/actions'
+import { GET_ITEMS_REQUEST } from '../../../store/actions/async-actions'
 import { getIsAsyncRequest, getItems } from '../../../store/selectors'
 import Item from '../Item'
 
@@ -58,8 +58,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    getItemsList: messageOnError =>
-      dispatch(GET_ITEMS_REQUEST({ payload: { messageOnError } }))
+    getItemsList: messageOnError => dispatch(GET_ITEMS_REQUEST(messageOnError))
   }
 }
 

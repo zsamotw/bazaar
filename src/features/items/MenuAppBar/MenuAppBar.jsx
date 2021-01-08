@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import * as ROUTES from '../../../constants/routes'
-import { SET_AUTH_USER, LOGOUT_REQUEST } from '../../../store/actions'
+import { SET_AUTH_USER } from '../../../store/actions/sync-actions'
+import { LOGOUT_REQUEST } from '../../../store/actions/async-actions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -133,7 +134,7 @@ function MenuAppBar(props) {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAuthUser: authUser => dispatch(SET_AUTH_USER({ payload: authUser })),
+    setAuthUser: authUser => dispatch(SET_AUTH_USER(authUser)),
     logout: () => dispatch(LOGOUT_REQUEST())
   }
 }

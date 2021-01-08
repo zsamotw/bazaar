@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { GET_TRANSACTIONS_REQUEST } from '../../../store/actions'
+import { GET_TRANSACTIONS_REQUEST } from '../../../store/actions/async-actions'
 import Transactions from './Transactions'
 import {
   getRecipientTransactions,
@@ -108,10 +108,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    getTransactions: messageOnGetTransactionsError =>
-      dispatch(
-        GET_TRANSACTIONS_REQUEST({ payload: { messageOnGetTransactionsError } })
-      )
+    getTransactions: messageOnError =>
+      dispatch(GET_TRANSACTIONS_REQUEST(messageOnError))
   }
 }
 

@@ -16,7 +16,7 @@ import {
   SYNC_ITEMS,
   SET_TRANSACTIONS,
   SET_ITEM_QUERY_FILTER
-} from './actions'
+} from './actions/sync-actions'
 import initialState from './initial-state'
 
 const appReducers = createReducer(initialState, {

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import AppInput from '../../../components/AppInput'
-import { CHANGE_USER_PASSWORD_REQUEST } from '../../../store/actions'
+import { CHANGE_USER_PASSWORD_REQUEST } from '../../../store/actions/async-actions'
 import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
 
 const useStyles = makeStyles({
@@ -94,14 +94,14 @@ const PasswordChangeForm = props => {
     const { passwordOld, passwordOne } = data
     const messageOnSuccess = t('passwordChange.messageOnPasswordChangeSuccess')
     const messageOnError = t('passwordChange.messageOnPasswordChangeError')
-    changePassword(
+    changePassword({
       email,
       passwordOld,
       passwordOne,
-      { setError },
+      setError,
       messageOnSuccess,
       messageOnError
-    )
+    })
   }
 
   return (
@@ -136,26 +136,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    changePassword: (
-      email,
-      passwordOld,
-      passwordNew,
-      callbacks,
-      messageOnSuccess,
-      messageOnError
-    ) =>
-      dispatch(
-        CHANGE_USER_PASSWORD_REQUEST({
-          payload: {
-            email,
-            passwordOld,
-            passwordNew,
-            callbacks,
-            messageOnSuccess,
-            messageOnError
-          }
-        })
-      )
+    changePassword: passwordData =>
+      dispatch(CHANGE_USER_PASSWORD_REQUEST(passwordData))
   }
 }
 

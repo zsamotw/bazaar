@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getIsAsyncRequest } from '../../../store/selectors'
-import { LOGIN_REQUEST } from '../../../store/actions'
+import { LOGIN_REQUEST } from '../../../store/actions/async-actions'
 import AppInput from '../../../components/AppInput'
 
 const useStyles = makeStyles({
@@ -35,7 +35,7 @@ const SignInFormBase = props => {
   const onSubmit = data => {
     const { email, password } = data
     const messageOnError = t('signInPage.messageOnLogInError')
-    login(email, password, { setError }, messageOnError)
+    login({ email, password, setError, messageOnError })
   }
 
   const emailInputProps = {
@@ -100,12 +100,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    login: (email, password, callbacks, messageOnError) =>
-      dispatch(
-        LOGIN_REQUEST({
-          payload: { email, password, callbacks, messageOnError }
-        })
-      )
+    login: loginData => dispatch(LOGIN_REQUEST(loginData))
   }
 }
 

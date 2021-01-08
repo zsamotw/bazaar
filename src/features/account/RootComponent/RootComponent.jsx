@@ -7,7 +7,7 @@ import PublicRoute from '../../../components/PublicRoute'
 import Alert from '../../../components/Alert'
 import withAuthentication from '../Session'
 import { getAppMessage } from '../../../store/selectors'
-import { SET_APP_MESSAGE } from '../../../store/actions'
+import { SET_APP_MESSAGE } from '../../../store/actions/sync-actions'
 import routes from './routes'
 
 function RootComponent(props) {
@@ -77,7 +77,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToState = dispatch => {
   return {
-    setAppMessage: message => dispatch(SET_APP_MESSAGE({ payload: message }))
+    setAppMessage: message => dispatch(SET_APP_MESSAGE(message))
   }
 }
 

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
-import { DELETE_USER_REQUEST } from '../../../store/actions'
+import { DELETE_USER_REQUEST } from '../../../store/actions/async-actions'
 import AppInput from '../../../components/AppInput'
 
 const useStyles = makeStyles({
@@ -37,7 +37,7 @@ const DeleteUserFormBase = props => {
     if (email === currentUser.email) {
       const messageOnSuccess = t('deleteUser.messageOnUserDeleteSuccess')
       const messageOnError = t('deleteUser.messageOnUserDeleteError')
-      deleteUser({ setError }, messageOnSuccess, messageOnError)
+      deleteUser({ setError, messageOnSuccess, messageOnError })
     } else {
       setError({ message: t('deleteUser.submissionError') })
     }
@@ -90,14 +90,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    deleteUser: (callbacks, messageOnSuccess, messageOnError) =>
-      dispatch(
-        DELETE_USER_REQUEST({
-          payload: { callbacks },
-          messageOnSuccess,
-          messageOnError
-        })
-      )
+    deleteUser: deleteUserData => dispatch(DELETE_USER_REQUEST(deleteUserData))
   }
 }
 

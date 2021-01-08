@@ -1,15 +1,17 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import {
+  SET_AUTH_USER,
+  SET_IS_FETCHING_DATA,
+  RESET_STATE
+} from '../actions/sync-actions'
+import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   SIGNUP_REQUEST,
-  SET_AUTH_USER,
-  SET_IS_FETCHING_DATA,
   UPDATE_USER_ACCOUNT_DETAILS_REQUEST,
   CHANGE_USER_PASSWORD_REQUEST,
-  DELETE_USER_REQUEST,
-  RESET_STATE
-} from '../actions'
+  DELETE_USER_REQUEST
+} from '../actions/async-actions'
 import Firebase from '../../firebase'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
@@ -22,7 +24,12 @@ function* signInWithFirebase(action) {
     password
   )
   const currentUser = Firebase.transformDbUserToSafeUser(user)
-  yield put(SET_AUTH_USER({ payload: currentUser }))
+  yield put(SET_AUTH_USER(currentUser))
+}
+
+function* signOutWithFirebase() {
+  yield call(Firebase.doSignOut)
+  yield put(RESET_STATE())
 }
 
 function* signUpWithFirebase(action) {
@@ -36,7 +43,7 @@ function* signUpWithFirebase(action) {
     const loggedUser = yield call(Firebase.doGetCurrentUser)
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
     const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
-    yield put(SET_AUTH_USER({ payload: currentUser }))
+    yield put(SET_AUTH_USER(currentUser))
   }
 }
 
@@ -53,7 +60,7 @@ function* updateFirebaseUserAccount(action) {
       displayName
     )
     const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
-    yield put(SET_AUTH_USER({ payload: currentUser }))
+    yield put(SET_AUTH_USER(currentUser))
   }
 }
 
@@ -61,10 +68,8 @@ function* changeFirebasePassword(action) {
   const { email, passwordOld, passwordNew } = action.payload
   yield put(
     SET_IS_FETCHING_DATA({
-      payload: {
-        type: isAsyncRequest.isFetchingChangePasswordData,
-        value: true
-      }
+      type: isAsyncRequest.isFetchingChangePasswordData,
+      value: true
     })
   )
   const { user } = yield call(
@@ -81,7 +86,7 @@ function* deleteFirebaseUser() {
   const loggedUser = yield call(Firebase.doGetCurrentUser)
   if (loggedUser) {
     yield call(loggedUser.delete.bind(loggedUser))
-    yield put(SET_AUTH_USER({ payload: null }))
+    yield put(SET_AUTH_USER(null))
   }
 }
 
@@ -93,9 +98,12 @@ function* singInRequest(action) {
   )
 }
 
-function* logoutRequest() {
-  yield call(Firebase.doSignOut)
-  yield put(RESET_STATE())
+function* logoutRequest(action) {
+  yield requestWithFetchingData(
+    action,
+    signOutWithFirebase,
+    isAsyncRequest.isFetchingLoginData
+  )
 }
 
 function* signUpRequest(action) {

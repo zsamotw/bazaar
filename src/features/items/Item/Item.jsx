@@ -12,7 +12,7 @@ import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
 import {
   REMOVE_ITEM_REQUEST,
   SET_RECIPIENT_REQUEST
-} from '../../../store/actions'
+} from '../../../store/actions/async-actions'
 
 const paperTextStyles = {
   color: 'white',
@@ -125,30 +125,30 @@ function Item(prop) {
   const handleRemoveItem = () => {
     const messageOnSuccess = t('item.messageOnRemoveSuccess')
     const messageOnError = t('addItem.messageOnRemoveError')
-    const messageOnFileUploadError = t('addItem.messageOnFileUploadError')
+    const messageOnFileRemoveError = t('addItem.messageOnFileRemoveError')
     const messageOnUserAccessError = t('addItem.messageOnUserItemAccessError')
-    removeItem(
+    removeItem({
       item,
       messageOnSuccess,
       messageOnError,
-      messageOnFileUploadError,
+      messageOnFileRemoveError,
       messageOnUserAccessError
-    )
+    })
     setOpenRemoveDialog(false)
   }
 
   const handleSetRecipient = () => {
     const messageOnSuccess = t('item.messageOnSetRecipientSuccess')
-    const messageOnError = t('addItem.messageOnSetRecipientRemoveError')
+    const messageOnError = t('addItem.messageOnSetRecipientError')
     const messageOnUserSetRecipientAccessError = t(
       'addItem.messageOnUserSetRecipientAccessError'
     )
-    setRecipient(
+    setRecipient({
       item,
       messageOnSuccess,
       messageOnError,
       messageOnUserSetRecipientAccessError
-    )
+    })
     setOpenConfirmDialog(false)
   }
 
@@ -251,40 +251,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    removeItem: (
-      item,
-      messageOnSuccess,
-      messageOnError,
-      messageOnFileRemoveError,
-      messageOnUserAccessError
-    ) =>
-      dispatch(
-        REMOVE_ITEM_REQUEST({
-          payload: {
-            item,
-            messageOnSuccess,
-            messageOnError,
-            messageOnFileRemoveError,
-            messageOnUserAccessError
-          }
-        })
-      ),
-    setRecipient: (
-      item,
-      messageOnSuccess,
-      messageOnError,
-      messageOnUserSetRecipientAccessError
-    ) =>
-      dispatch(
-        SET_RECIPIENT_REQUEST({
-          payload: {
-            item,
-            messageOnSuccess,
-            messageOnError,
-            messageOnUserSetRecipientAccessError
-          }
-        })
-      )
+    removeItem: removeItemData => dispatch(REMOVE_ITEM_REQUEST(removeItemData)),
+    setRecipient: itemData => dispatch(SET_RECIPIENT_REQUEST(itemData))
   }
 }
 

@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getCurrentUser, getIsAsyncRequest } from '../../../store/selectors'
 import AppInput from '../../../components/AppInput'
-import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../../store/actions'
+import { UPDATE_USER_ACCOUNT_DETAILS_REQUEST } from '../../../store/actions/async-actions'
 
 const useStyles = makeStyles({
   errorBar: {
@@ -40,12 +40,12 @@ function AccountDetailsChange(props) {
     const messageOnSuccess = t(
       'accountDetailsChange.messageOnDetailsChangeSuccess'
     )
-    updateUserProfile(
+    updateUserProfile({
       displayName,
-      { setError },
+      setError,
       messageOnSuccess,
       messageOnError
-    )
+    })
   }
 
   const displayNameInputProps = {
@@ -96,17 +96,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    updateUserProfile: (
-      displayName,
-      callbacks,
-      messageOnSuccess,
-      messageOnError
-    ) =>
-      dispatch(
-        UPDATE_USER_ACCOUNT_DETAILS_REQUEST({
-          payload: { displayName, callbacks, messageOnSuccess, messageOnError }
-        })
-      )
+    updateUserProfile: userData =>
+      dispatch(UPDATE_USER_ACCOUNT_DETAILS_REQUEST(userData))
   }
 }
 

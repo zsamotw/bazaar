@@ -2,14 +2,16 @@ import { call, fork, put, takeLatest, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import {
   SET_APP_MESSAGE,
+  SYNC_ITEMS_CREATION,
+  SET_TRANSACTIONS
+} from '../actions/sync-actions'
+import {
   ADD_ITEM_REQUEST,
   GET_ITEMS_REQUEST,
   SET_RECIPIENT_REQUEST,
-  SYNC_ITEMS_CREATION,
   GET_TRANSACTIONS_REQUEST,
-  SET_TRANSACTIONS,
   REMOVE_ITEM_REQUEST
-} from '../actions'
+} from '../actions/async-actions'
 import Firebase from '../../firebase'
 import requestWithFetchingData from './SagasHelper'
 import isAsyncRequest from '../../constants/asyncRequests'
@@ -26,10 +28,8 @@ function* uploadFile(file, folder, messageOnFileUploadError) {
   } catch {
     yield put(
       SET_APP_MESSAGE({
-        payload: {
-          content: messageOnFileUploadError,
-          status: 'error'
-        }
+        content: messageOnFileUploadError,
+        status: 'error'
       })
     )
   }
@@ -43,10 +43,8 @@ function* deleteFile(filePath, messageOnFileRemoveError) {
   } catch {
     yield put(
       SET_APP_MESSAGE({
-        payload: {
-          content: messageOnFileRemoveError,
-          status: 'error'
-        }
+        content: messageOnFileRemoveError,
+        status: 'error'
       })
     )
   }
@@ -87,22 +85,20 @@ function* addFirebaseItem(action) {
 function* removeFirebaseItem(action) {
   const {
     item,
-    messageOnFileUploadError,
+    messageOnFileRemoveError,
     messageOnUserAccessError
   } = action.payload
   const { id, donor: itemDonor } = item
   const currentUser = yield call(Firebase.doGetCurrentUser)
   const donor = currentUser
   if (donor.uid === itemDonor.uid) {
-    yield call(deleteFile, item.imgStoragePath, messageOnFileUploadError)
+    yield call(deleteFile, item.imgStoragePath, messageOnFileRemoveError)
     yield call(Firebase.removeDocument, `items/${id}`)
   } else {
     yield put(
       SET_APP_MESSAGE({
-        payload: {
-          content: messageOnUserAccessError,
-          status: 'warring'
-        }
+        content: messageOnUserAccessError,
+        status: 'warring'
       })
     )
   }
@@ -127,10 +123,8 @@ function* setRecipient(action) {
   } else {
     yield put(
       SET_APP_MESSAGE({
-        payload: {
-          content: messageOnUserSetRecipientAccessError,
-          status: 'warring'
-        }
+        content: messageOnUserSetRecipientAccessError,
+        status: 'warring'
       })
     )
   }
@@ -166,11 +160,7 @@ function* getTransactions() {
         ]
       }
     })
-    yield put(
-      SET_TRANSACTIONS({
-        payload: { recipientTransactions, donorTransactions }
-      })
-    )
+    yield put(SET_TRANSACTIONS({ recipientTransactions, donorTransactions }))
   }
 }
 
@@ -208,11 +198,7 @@ function* getFirebaseSyncItems(action) {
       transform: itemsTransformer
     })
   } catch {
-    yield put(
-      SET_APP_MESSAGE({
-        payload: { content: messageOnError, status: 'error' }
-      })
-    )
+    yield put(SET_APP_MESSAGE({ content: messageOnError, status: 'error' }))
   }
 }
 

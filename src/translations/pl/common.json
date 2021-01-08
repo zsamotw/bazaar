@@ -175,7 +175,7 @@
     },
     "button": "Wystaw",
     "messageOnAddItemSuccess": "Przedmiot został dodany",
-    "messageOnAdItemError": "Nie udało się dodać przedmiotu",
+    "messageOnAddItemError": "Nie udało się dodać przedmiotu",
     "messageOnFileUploadError": "Nie można załadować pliku ze zdjęciem",
     "formError": "Nie udało się dodać przedmiotu"
   },

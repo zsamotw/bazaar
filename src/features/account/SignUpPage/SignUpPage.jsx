@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import { getIsAsyncRequest } from '../../../store/selectors'
-import { SIGNUP_REQUEST } from '../../../store/actions'
+import { SIGNUP_REQUEST } from '../../../store/actions/async-actions'
 import AppInput from '../../../components/AppInput'
 
 const useStyles = makeStyles({
@@ -40,7 +40,7 @@ const SignUpFormBase = props => {
   const onSubmit = data => {
     const { displayName, email, passwordOne: password } = data
     const messageOnError = t('singUpPage.messageOnSignUpError')
-    signUp(displayName, email, password, { setError }, messageOnError)
+    signUp({ displayName, email, password, setError, messageOnError })
   }
 
   const displayNameInputProps = {
@@ -141,12 +141,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    signUp: (displayName, email, password, callbacks, messageOnError) =>
-      dispatch(
-        SIGNUP_REQUEST({
-          payload: { displayName, email, password, callbacks, messageOnError }
-        })
-      )
+    signUp: singUpData => dispatch(SIGNUP_REQUEST(singUpData))
   }
 }
 

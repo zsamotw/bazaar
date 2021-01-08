@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
-import { SET_ITEM_QUERY_FILTER } from '../../../store/actions'
+import { SET_ITEM_QUERY_FILTER } from '../../../store/actions/sync-actions'
 import { getItemFilters } from '../../../store/selectors'
 
 function SearchBar(props) {
