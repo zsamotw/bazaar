@@ -74,7 +74,7 @@ function MenuAppBar(props) {
 
   const handleLogout = () => {
     const messageOnError = t('menuAppBar.messageOnLogOutError')
-    logout({messageOnError})
+    logout({ messageOnError })
   }
 
   return (
