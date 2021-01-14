@@ -92,6 +92,7 @@ const AddItemForm = props => {
   const handleUploadFile = files => {
     setFile(files[0])
   }
+
   const onSubmit = ({ name, description, categoryId }) => {
     const category = categories.find(c => c.id === categoryId)
     const messageOnSuccess = t('addItem.messageOnAddItemSuccess')
@@ -133,6 +134,7 @@ const AddItemForm = props => {
           <div style={{ marginBottom: '2rem' }}>
             <AppFileUpload
               id="image-upload-control"
+              dataTestId="file-upload-button"
               name="imageUpload"
               onChange={handleUploadFile}
               accept="image/*"

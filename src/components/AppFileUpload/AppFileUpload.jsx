@@ -18,6 +18,7 @@ const useStyles = makeStyles({
 })
 const appFileUpload = function AppFileUpload({
   id,
+  dataTestId,
   name,
   onChange,
   accept,
@@ -48,6 +49,7 @@ const appFileUpload = function AppFileUpload({
           <input
             className={classes.input}
             id={id}
+            data-testid={dataTestId}
             name={name}
             ref={register}
             accept={accept}

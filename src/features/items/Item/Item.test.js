@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, wait } from '@testing-library/react'
+import { cleanup } from '@testing-library/react'
 import { render, currentUser } from '../../../services/test-service'
 import Item from './index'
 
@@ -33,21 +33,8 @@ const itemToTake = {
   imgURL: ''
 }
 
-const itemWithNulls = {
-  id: 'KlYH2A8gw3SFcjpqOxcY',
-  name: null,
-  imgStoragePath: '',
-  donor: null,
-  description: null,
-  category: {
-    id: 2,
-    label: null
-  },
-  createdAt: null,
-  imgURL: ''
-}
-
 describe('Item component tests', () => {
+  afterEach(cleanup)
   it('Should render Item component with proper item data', () => {
     const { getByText } = render(<Item item={donorItem} />)
     const name = new RegExp(donorItem.name)
@@ -73,20 +60,114 @@ describe('Item component tests', () => {
     expect(button).toBeInTheDocument()
   })
 
-  it('Should not render Item component with not proper item data', () => {
-    const item = render(<Item item={itemWithNulls} />)
-    expect(item.firstChild).toBeUndefined()
+  it('Should not render Item component with not proper item data: id as null', () => {
+    const itemWithNullName = {
+      id: null,
+      name: 'name',
+      imgStoragePath: '',
+      donor: {},
+      description: 'description',
+      category: {
+        id: 2,
+        label: 'label'
+      },
+      createdAt: new Date(),
+      imgURL: ''
+    }
+    const Wrapper = () => (
+      <div>
+        <Item item={itemWithNullName} />
+      </div>
+    )
+    const wrapper = render(<Wrapper />)
+    expect(wrapper.queryByText(itemWithNullName.name)).toBeNull()
   })
 
-  it('should dispatch state method when remove button has been clicked', () => {
-    const { getByTestId, store } = render(<Item item={donorItem} />)
-    store.dispatch = jest.fn()
-    const button = getByTestId('removeIcon')
-    fireEvent.click(button)
-    const buttonToRemove = getByTestId('buttonToRemove')
-    fireEvent.click(buttonToRemove)
-    wait(() => {
-      expect(store.dispatch).toHaveBeenCalled()
-    })
+  it('Should not render Item component with not proper item data: donor as undefined', () => {
+    const itemWithNullName = {
+      id: '1234',
+      name: 'name',
+      imgStoragePath: '',
+      donor: undefined,
+      description: 'description',
+      category: {
+        id: 2,
+        label: 'label'
+      },
+      createdAt: new Date(),
+      imgURL: ''
+    }
+    const Wrapper = () => (
+      <div>
+        <Item item={itemWithNullName} />
+      </div>
+    )
+
+    const wrapper = render(<Wrapper />)
+    expect(wrapper.queryByText(itemWithNullName.name)).toBeNull()
+  })
+
+  it('Should not render Item component with not proper item data: donor email as undefined', () => {
+    const itemWithNullName = {
+      id: '1234',
+      name: 'name',
+      imgStoragePath: '',
+      donor: {},
+      description: 'description',
+      category: {
+        id: 2,
+        label: 'label'
+      },
+      createdAt: new Date(),
+      imgURL: ''
+    }
+    const Wrapper = () => (
+      <div>
+        <Item item={itemWithNullName} data-testid="item" />
+      </div>
+    )
+    const wrapper = render(<Wrapper />)
+    expect(wrapper.queryByTestId('item')).toBeNull()
+  })
+
+  it('Should not render Item component with not proper item data: description as undefined', () => {
+    const itemWithNullName = {
+      id: '1234',
+      name: 'name',
+      imgStoragePath: '',
+      donor: { email: 'email' },
+      category: {
+        id: 2,
+        label: 'label'
+      },
+      createdAt: new Date(),
+      imgURL: ''
+    }
+    const Wrapper = () => (
+      <div>
+        <Item item={itemWithNullName} data-testid="item" />
+      </div>
+    )
+    const wrapper = render(<Wrapper />)
+    expect(wrapper.queryByTestId('item')).toBeNull()
+  })
+
+  it('Should not render Item component with not proper item data: category as null', () => {
+    const itemWithNullName = {
+      id: '1234',
+      name: 'name',
+      imgStoragePath: '',
+      donor: { email: 'email' },
+      description: 'description',
+      createdAt: new Date(),
+      imgURL: ''
+    }
+    const Wrapper = () => (
+      <div>
+        <Item item={itemWithNullName} data-testid="item" />
+      </div>
+    )
+    const wrapper = render(<Wrapper />)
+    expect(wrapper.queryByTestId('item')).toBeNull()
   })
 })

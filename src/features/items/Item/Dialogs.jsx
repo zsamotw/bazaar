@@ -95,6 +95,7 @@ export default function Dialogs(props) {
             variant="outlined"
             size="large"
             onClick={handleSetRecipient}
+            data-testid="buttonToConfirm"
             autoFocus
           >
             {t('item.dialogs.take.takeButton')}

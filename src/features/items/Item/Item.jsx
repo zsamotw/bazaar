@@ -169,14 +169,16 @@ function Item(prop) {
   }
 
   const hasData = () =>
-    item &&
-    id &&
-    category &&
-    category.label &&
-    donor &&
-    donor.email &&
-    donor.displayName &&
-    createdAt
+    !!item &&
+    !!id &&
+    !!name &&
+    !!description &&
+    !!category &&
+    !!category.label &&
+    !!donor &&
+    !!donor.email &&
+    !!donor.displayName &&
+    !!createdAt
 
   const getIcon = () => {
     if (
