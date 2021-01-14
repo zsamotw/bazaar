@@ -5,7 +5,9 @@ export const LOGIN_REQUEST = createAction('LOGIN REQUEST', loginData => ({
   payload: { ...loginData }
 }))
 
-export const LOGOUT_REQUEST = createAction('LOGOUT REQUEST')
+export const LOGOUT_REQUEST = createAction('LOGOUT REQUEST', logOutData => ({
+  payload: { ...logOutData }
+}))
 
 export const SIGNUP_REQUEST = createAction('SIGNUP REQUEST', signUpData => ({
   payload: { ...signUpData }

@@ -73,7 +73,8 @@ function MenuAppBar(props) {
   }
 
   const handleLogout = () => {
-    logout()
+    const messageOnError = t('menuAppBar.messageOnLogOutError')
+    logout({messageOnError})
   }
 
   return (
@@ -135,7 +136,7 @@ function MenuAppBar(props) {
 const mapDispatchToState = dispatch => {
   return {
     setAuthUser: authUser => dispatch(SET_AUTH_USER(authUser)),
-    logout: () => dispatch(LOGOUT_REQUEST())
+    logout: logOutData => dispatch(LOGOUT_REQUEST(logOutData))
   }
 }
 

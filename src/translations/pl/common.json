@@ -185,7 +185,8 @@
       "transactions": "Twoje transakcje",
       "profile": "Profil",
       "logout": "Wyloguj"
-    }
+    },
+    "messageOnLogOutError": "Nie można się wylogować"
   },
   "item": {
     "dialogs": {
