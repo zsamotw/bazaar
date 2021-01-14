@@ -31,6 +31,11 @@ export const handleSetItemQueryFilter = (state, query) => {
   return nextState
 }
 
+export const handleSetSearchBarConfig = (state, config) => {
+  const nextState = state.set('searchBarConfig', config)
+  return nextState
+}
+
 export const handleSetRecipientTransactions = (
   state,
   recipientTransactions,

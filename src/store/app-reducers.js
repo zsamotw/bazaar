@@ -5,7 +5,8 @@ import {
   handleSetIsFetchingData,
   handleSetItems,
   handleSetRecipientTransactions,
-  handleSetItemQueryFilter
+  handleSetItemQueryFilter,
+  handleSetSearchBarConfig
 } from './action-handlers'
 import {
   RESET_STATE,
@@ -15,7 +16,8 @@ import {
   SET_ITEMS,
   SYNC_ITEMS,
   SET_TRANSACTIONS,
-  SET_ITEM_QUERY_FILTER
+  SET_ITEM_QUERY_FILTER,
+  SET_SEARCHBAR_CONFIG
 } from './actions/sync-actions'
 import initialState from './initial-state'
 
@@ -43,6 +45,9 @@ const appReducers = createReducer(initialState, {
       recipientTransactions,
       donorTransactions
     )
+  },
+  [SET_SEARCHBAR_CONFIG.type]: (state, action) => {
+    return handleSetSearchBarConfig(state, action.payload)
   },
   [SET_ITEM_QUERY_FILTER.type]: (state, action) => {
     return handleSetItemQueryFilter(state, action.payload)

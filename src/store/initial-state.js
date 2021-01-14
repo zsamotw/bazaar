@@ -11,6 +11,7 @@ const makeInitialState = Record({
     isProcessingItem: false,
     isFetchingTransactions: false
   },
+  searchBarConfig: { isVisible: false, collection: '' },
   appMessage: { content: '', type: null },
   items: List([]),
   itemFilters: { query: '' },

@@ -13,6 +13,7 @@ import {
   getDonorTransactions,
   getIsAsyncRequest
 } from '../../../store/selectors'
+import { SET_SEARCHBAR_CONFIG } from '../../../store/actions/sync-actions'
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -55,6 +56,7 @@ function TabPanel(props) {
 function TransactionsTabs(props) {
   const {
     getTransactions,
+    setSearchConfig,
     isFetchingTransactions,
     donorTransactions,
     recipientTransactions
@@ -74,7 +76,12 @@ function TransactionsTabs(props) {
   useEffect(() => {
     const messageOnError = t('transactionsTabs.messageOnGetTransactionsError')
     getTransactions(messageOnError)
-  }, [getTransactions, t])
+    setSearchConfig({ isVisible: true, collection: 'transactions' })
+
+    return () => {
+      setSearchConfig({ isVisible: false, collection: '' })
+    }
+  }, [getTransactions, setSearchConfig, t])
 
   return (
     <div className={classes.tabsContainer}>
@@ -109,7 +116,8 @@ function mapStateToProps(state) {
 function mapDispatchToState(dispatch) {
   return {
     getTransactions: messageOnError =>
-      dispatch(GET_TRANSACTIONS_REQUEST(messageOnError))
+      dispatch(GET_TRANSACTIONS_REQUEST(messageOnError)),
+    setSearchConfig: config => dispatch(SET_SEARCHBAR_CONFIG(config))
   }
 }
 

@@ -8,6 +8,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { GET_ITEMS_REQUEST } from '../../../store/actions/async-actions'
 import { getIsAsyncRequest, getItems } from '../../../store/selectors'
 import Item from '../Item'
+import { SET_SEARCHBAR_CONFIG } from '../../../store/actions/sync-actions'
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function ItemsList(props) {
-  const { getItemsList, items, isProcessingItem } = props
+  const { getItemsList, setSearchConfig, items, isProcessingItem } = props
   const theme = useTheme()
   const classes = useStyles(theme)
   const { t } = useTranslation('common')
@@ -38,7 +39,12 @@ function ItemsList(props) {
   useEffect(() => {
     const messageOnError = t('itemsList.messageOnItemLoadError')
     getItemsList(messageOnError)
-  }, [getItemsList, t])
+    setSearchConfig({ isVisible: true, collection: 'items' })
+
+    return () => {
+      setSearchConfig({ isVisible: false, collection: '' })
+    }
+  }, [getItemsList, setSearchConfig, t])
 
   return (
     <Grid container>
@@ -58,7 +64,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    getItemsList: messageOnError => dispatch(GET_ITEMS_REQUEST(messageOnError))
+    getItemsList: messageOnError => dispatch(GET_ITEMS_REQUEST(messageOnError)),
+    setSearchConfig: config => dispatch(SET_SEARCHBAR_CONFIG(config))
   }
 }
 

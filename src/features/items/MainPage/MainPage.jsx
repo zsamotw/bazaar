@@ -2,8 +2,6 @@ import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import ItemList from '../ItemsList'
 
-import SearchBar from '../SearchBar'
-
 const useStyles = makeStyles(theme => ({
   container: {
     padding: '2rem 15rem',
@@ -25,7 +23,6 @@ export default function MainPage() {
 
   return (
     <div className={classes.container}>
-      <SearchBar />
       <ItemList />
     </div>
   )

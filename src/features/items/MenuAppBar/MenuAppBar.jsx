@@ -10,9 +10,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import SearchBar from '../SearchBar'
 import * as ROUTES from '../../../constants/routes'
 import { SET_AUTH_USER } from '../../../store/actions/sync-actions'
 import { LOGOUT_REQUEST } from '../../../store/actions/async-actions'
+import { getSearchBarConfig } from '../../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,7 +49,7 @@ function MenuAppBar(props) {
 
   const { t } = useTranslation('common')
 
-  const { currentUser, logout } = props
+  const { currentUser, logout, isSearchBarVisible } = props
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -94,6 +96,13 @@ function MenuAppBar(props) {
               Bazaar
             </Link>
           </Typography>
+          <div style={{ marginLeft: '3rem', width: '100%' }}>
+            <SearchBar
+              isVisible={isSearchBarVisible}
+              color="secondary"
+              variant="outlined"
+            />
+          </div>
           <div>
             <IconButton onClick={handleMenu} color="inherit">
               <Avatar className={classes.avatar}>
@@ -133,6 +142,11 @@ function MenuAppBar(props) {
   )
 }
 
+const mapStateToProps = state => {
+  const { isVisible: isSearchBarVisible } = getSearchBarConfig(state)
+  return { isSearchBarVisible }
+}
+
 const mapDispatchToState = dispatch => {
   return {
     setAuthUser: authUser => dispatch(SET_AUTH_USER(authUser)),
@@ -140,4 +154,4 @@ const mapDispatchToState = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToState)(MenuAppBar)
+export default connect(mapStateToProps, mapDispatchToState)(MenuAppBar)

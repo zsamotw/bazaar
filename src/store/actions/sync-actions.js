@@ -31,3 +31,8 @@ export const SET_ITEM_QUERY_FILTER = createAction(
   'SET ITEM QUERY FILTER',
   query => ({ payload: query })
 )
+
+export const SET_SEARCHBAR_CONFIG = createAction(
+  'SET SEARCH BAR CONFIG',
+  config => ({ payload: { ...config } })
+)
