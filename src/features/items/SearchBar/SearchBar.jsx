@@ -8,25 +8,6 @@ import { SET_ITEM_QUERY_FILTER } from '../../../store/actions/sync-actions'
 import { getItemFilters } from '../../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    '& label.Mui-focused': {
-      color: 'white'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white'
-      },
-      '&:hover fieldset': {
-        borderColor: 'white'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white'
-      }
-    }
-  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -76,13 +57,7 @@ function SearchBar(props) {
   const classes = useStyles()
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        margin: '1rem 0'
-      }}
-    >
+    <>
       {isVisible && (
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -102,7 +77,7 @@ function SearchBar(props) {
           />
         </div>
       )}
-    </div>
+    </>
   )
 }
 
