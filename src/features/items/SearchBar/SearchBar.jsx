@@ -1,12 +1,13 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { makeStyles } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
+import { fade, makeStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
+import SearchIcon from '@material-ui/icons/Search'
+import InputBase from '@material-ui/core/InputBase'
 import { SET_ITEM_QUERY_FILTER } from '../../../store/actions/sync-actions'
 import { getItemFilters } from '../../../store/selectors'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     '& label.Mui-focused': {
       color: 'white'
@@ -25,11 +26,47 @@ const useStyles = makeStyles({
         borderColor: 'white'
       }
     }
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto'
+    }
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inputRoot: {
+    color: 'inherit'
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
+    }
   }
-})
+}))
 
 function SearchBar(props) {
-  const { setQueryFilter, query, isVisible, color, variant } = props
+  const { setQueryFilter, query, isVisible } = props
   const { t } = useTranslation('common')
 
   const handleQueryChange = event => {
@@ -47,18 +84,23 @@ function SearchBar(props) {
       }}
     >
       {isVisible && (
-        <TextField
-          className={classes.root}
-          id="item-search"
-          label={t('searchBar.input.label')}
-          placeholder={t('searchBar.input.placeholder')}
-          variant={variant}
-          size="medium"
-          fullWidth
-          value={query}
-          onChange={handleQueryChange}
-          color={color}
-        />
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            id="item-search"
+            label={t('searchBar.input.label')}
+            placeholder={t('searchBar.input.placeholder')}
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            onChange={handleQueryChange}
+            value={query}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
       )}
     </div>
   )

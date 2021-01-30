@@ -20,8 +20,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
   },
-  title: {
+  grow: {
     flexGrow: 1
+  },
+  title: {
+    marginRight: theme.spacing(3)
   },
   avatar: {
     width: theme.spacing(5),
@@ -96,13 +99,8 @@ function MenuAppBar(props) {
               Bazaar
             </Link>
           </Typography>
-          <div style={{ marginLeft: '3rem', width: '100%' }}>
-            <SearchBar
-              isVisible={isSearchBarVisible}
-              color="secondary"
-              variant="outlined"
-            />
-          </div>
+          <SearchBar isVisible={isSearchBarVisible} />
+          <div className={classes.grow} />
           <div>
             <IconButton onClick={handleMenu} color="inherit">
               <Avatar className={classes.avatar}>
