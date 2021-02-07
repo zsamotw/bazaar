@@ -19,7 +19,7 @@ import isAsyncRequest from '../../constants/asyncRequests'
 function* signInWithFirebase(action) {
   const { email, password } = action.payload
   const { user } = yield call(
-    Firebase.doSignInWithEmailAndPassword,
+    Firebase.signInWithEmailAndPassword,
     email,
     password
   )
@@ -28,19 +28,19 @@ function* signInWithFirebase(action) {
 }
 
 function* signOutWithFirebase() {
-  yield call(Firebase.doSignOut)
+  yield call(Firebase.signOut)
   yield put(RESET_STATE())
 }
 
 function* signUpWithFirebase(action) {
   const { displayName, email, password } = action.payload
   const user = yield call(
-    Firebase.doCreateUserWithEmailAndPassword,
+    Firebase.crateUserWithEmailAndPassword,
     email,
     password
   )
   if (user) {
-    const loggedUser = yield call(Firebase.doGetCurrentUser)
+    const loggedUser = yield call(Firebase.getCurrentUser)
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
     const currentUser = Firebase.transformDbUserToSafeUser(loggedUser)
     yield put(SET_AUTH_USER(currentUser))
@@ -49,7 +49,7 @@ function* signUpWithFirebase(action) {
 
 function* updateFirebaseUserAccount(action) {
   const { displayName } = action.payload
-  const loggedUser = yield call(Firebase.doGetCurrentUser)
+  const loggedUser = yield call(Firebase.getCurrentUser)
 
   if (loggedUser) {
     yield call(loggedUser.updateProfile.bind(loggedUser), { displayName })
@@ -73,17 +73,17 @@ function* changeFirebasePassword(action) {
     })
   )
   const { user } = yield call(
-    Firebase.doSignInWithEmailAndPassword,
+    Firebase.signInWithEmailAndPassword,
     email,
     passwordOld
   )
   if (user) {
-    yield call(Firebase.doPasswordUpdate, passwordNew)
+    yield call(Firebase.passwordUpdate, passwordNew)
   }
 }
 
 function* deleteFirebaseUser() {
-  const loggedUser = yield call(Firebase.doGetCurrentUser)
+  const loggedUser = yield call(Firebase.getCurrentUser)
   if (loggedUser) {
     yield call(loggedUser.delete.bind(loggedUser))
     yield put(SET_AUTH_USER(null))

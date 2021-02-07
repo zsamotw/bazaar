@@ -25,25 +25,25 @@ class Firebase {
   }
 
   // Auth API
-  doCreateUserWithEmailAndPassword = (email, password) =>
+  createUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password)
 
-  doSignInWithEmailAndPassword = (email, password) =>
+  signInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password)
 
-  doSignOut = () => this.auth.signOut()
+  signOut = () => this.auth.signOut()
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email)
+  passwordReset = email => this.auth.sendPasswordResetEmail(email)
 
-  doPasswordUpdate = password => this.auth.updatePassword(password)
+  passwordUpdate = password => this.auth.updatePassword(password)
 
-  doGetCurrentUser = () => firebase.auth().currentUser
+  getCurrentUser = () => firebase.auth().currentUser
 
-  doOnAuthStateChange = user => firebase.auth().onAuthStateChanged(user)
+  onAuthStateChange = user => firebase.auth().onAuthStateChanged(user)
 
-  doDeleteUser = () => firebase.auth().currentUser.delete()
+  deleteUser = () => firebase.auth().currentUser.delete()
 
-  doReauthenticateWithCredential = (credential, next, onError) => {
+  reauthenticateWithCredential = (credential, next, onError) => {
     const user = this.auth.currentUser
     user
       .reauthenticateWithCredential(credential)
@@ -52,7 +52,7 @@ class Firebase {
   }
 
   onAuthUserListener = (next, fallback) => {
-    return this.doOnAuthStateChange(authUser => {
+    return this.onAuthStateChange(authUser => {
       if (authUser) {
         next(authUser)
       } else {

@@ -59,7 +59,7 @@ function* addFirebaseItem(action) {
     history,
     messageOnFileUploadError
   } = action.payload
-  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = yield call(Firebase.getCurrentUser)
   const donor = Firebase.transformDbUserToSafeUser(currentUser)
   const createdAt = new Date()
   const folder = `images/${createdAt.getFullYear()}-${createdAt.getMonth()}/${createdAt.getTime()}`
@@ -89,7 +89,7 @@ function* removeFirebaseItem(action) {
     messageOnUserAccessError
   } = action.payload
   const { id, donor: itemDonor } = item
-  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = yield call(Firebase.getCurrentUser)
   const donor = currentUser
   if (donor.uid === itemDonor.uid) {
     yield call(deleteFile, item.imgStoragePath, messageOnFileRemoveError)
@@ -109,7 +109,7 @@ function* setRecipient(action) {
     item: { id, recipient: itemRecipient, donor: itemDonor },
     messageOnUserSetRecipientAccessError
   } = action.payload
-  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = yield call(Firebase.getCurrentUser)
   const recipient = Firebase.transformDbUserToSafeUser(currentUser)
   const takeAt = new Date().toString()
 
@@ -131,7 +131,7 @@ function* setRecipient(action) {
 }
 
 function* getTransactions() {
-  const currentUser = yield call(Firebase.doGetCurrentUser)
+  const currentUser = yield call(Firebase.getCurrentUser)
   if (currentUser) {
     const snapshot = yield call(
       Firebase.getCollectionRef(),
