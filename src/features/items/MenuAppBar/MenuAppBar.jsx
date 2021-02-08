@@ -64,12 +64,12 @@ function MenuAppBar(props) {
   }
 
   const handleNavigateAddItem = () => {
-    history.push(`${path}${ROUTES.ADD_ITEM}`)
+    history.push(`${path}${ROUTES.ITEMS}${ROUTES.ADD_ITEM}`)
     setAnchorEl(null)
   }
 
   const handleNavigateTransaction = () => {
-    history.push(`${path}${ROUTES.TRANSACTIONS}`)
+    history.push(`${path}${ROUTES.ITEMS}${ROUTES.TRANSACTIONS}`)
     setAnchorEl(null)
   }
 

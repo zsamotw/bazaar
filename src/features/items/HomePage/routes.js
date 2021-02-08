@@ -2,8 +2,8 @@ import AccountProfile from '../../account/AccountProfile'
 import * as ROUTES from '../../../constants/routes'
 import MainPage from '../MainPage'
 import AddItem from '../AddItem'
-import ItemsList from '../ItemsList'
 import TransactionsTabs from '../Transactions'
+import ItemsContainer from '../ItemsContainer'
 
 const routes = path => [
   {
@@ -17,19 +17,19 @@ const routes = path => [
     component: AccountProfile
   },
   {
-    path: `${path}${ROUTES.ADD_ITEM}`,
+    path: `${path}${ROUTES.ITEMS}${ROUTES.ADD_ITEM}`,
     exact: false,
     component: AddItem
   },
   {
-    path: `${path}${ROUTES.ITEMS}`,
-    exact: false,
-    component: ItemsList
-  },
-  {
-    path: `${path}${ROUTES.TRANSACTIONS}`,
+    path: `${path}${ROUTES.ITEMS}${ROUTES.TRANSACTIONS}`,
     exact: false,
     component: TransactionsTabs
+  },
+  {
+    path: `${path}${ROUTES.ITEMS}`,
+    exact: false,
+    component: ItemsContainer
   },
   {
     path,
