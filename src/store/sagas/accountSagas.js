@@ -35,7 +35,7 @@ function* signOutWithFirebase() {
 function* signUpWithFirebase(action) {
   const { displayName, email, password } = action.payload
   const user = yield call(
-    Firebase.crateUserWithEmailAndPassword,
+    Firebase.createUserWithEmailAndPassword,
     email,
     password
   )
