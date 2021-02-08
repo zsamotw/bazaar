@@ -39,7 +39,7 @@ const SignUpFormBase = props => {
 
   const onSubmit = data => {
     const { displayName, email, passwordOne: password } = data
-    const messageOnError = t('singUpPage.messageOnSignUpError')
+    const messageOnError = t('signUpPage.messageOnSignUpError')
     signUp({ displayName, email, password, setError, messageOnError })
   }
 
