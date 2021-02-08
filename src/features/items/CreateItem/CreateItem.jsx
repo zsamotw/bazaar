@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import ButtonWithProgress from '../../../components/ButtonWithProgress'
 import AppInput from '../../../components/AppInput'
 import AppSelect from '../../../components/AppSelect'
-import { ADD_ITEM_REQUEST } from '../../../store/actions/async-actions'
+import { CREATE_ITEM_REQUEST } from '../../../store/actions/async-actions'
 import { getIsAsyncRequest } from '../../../store/selectors'
 import categories_ from '../../../constants/categories'
 import AppFileUpload from '../../../components/AppFileUpload'
@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const AddItemForm = props => {
-  const { addItem, isProcessingItem } = props
+const CreateItemForm = props => {
+  const { createItem, isProcessingItem } = props
 
   const classes = useStyles()
 
@@ -62,29 +62,29 @@ const AddItemForm = props => {
 
   const nameInputProps = {
     id: 'itemName-input',
-    label: t('addItem.inputs.name.label'),
+    label: t('createItem.inputs.name.label'),
     variant: 'outlined',
     name: 'name',
     type: 'text',
     fullWidth: true,
-    placeholder: t('addItem.inputs.name.placeholder'),
+    placeholder: t('createItem.inputs.name.placeholder'),
     register: register({
-      required: t('addItem.inputs.name.error.required')
+      required: t('createItem.inputs.name.error.required')
     }),
     error: errors.name
   }
 
   const descriptionInputProps = {
     id: 'itemDescription-input',
-    label: t('addItem.inputs.description.label'),
+    label: t('createItem.inputs.description.label'),
     variant: 'outlined',
     name: 'description',
     type: 'text',
     fullWidth: true,
     isMultiline: true,
-    placeholder: t('addItem.inputs.description.placeholder'),
+    placeholder: t('createItem.inputs.description.placeholder'),
     register: register({
-      required: t('addItem.inputs.description.label')
+      required: t('createItem.inputs.description.label')
     }),
     error: errors.description
   }
@@ -95,10 +95,10 @@ const AddItemForm = props => {
 
   const onSubmit = ({ name, description, categoryId }) => {
     const category = categories.find(c => c.id === categoryId)
-    const messageOnSuccess = t('addItem.messageOnAddItemSuccess')
-    const messageOnError = t('addItem.messageOnAddItemError')
-    const messageOnFileUploadError = t('addItem.messageOnFileUploadError')
-    addItem({
+    const messageOnSuccess = t('createItem.messageOnCreateItemSuccess')
+    const messageOnError = t('createItem.messageOnCreateItemError')
+    const messageOnFileUploadError = t('createItem.messageOnFileUploadError')
+    createItem({
       name,
       description,
       category,
@@ -114,8 +114,8 @@ const AddItemForm = props => {
   return (
     <Grid container>
       <Grid item className={classes.wrapper} xs={10} md={8} lg={4}>
-        <h3>{t('addItem.title')}</h3>
-        <h5>{t('addItem.description')}</h5>
+        <h3>{t('createItem.title')}</h3>
+        <h5>{t('createItem.description')}</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           {AppInput(nameInputProps)}
           {AppInput(descriptionInputProps)}
@@ -126,8 +126,10 @@ const AddItemForm = props => {
               name="categoryId"
               menuItems={categories}
               control={control}
-              inputLabel={t('addItem.inputs.category.label')}
-              rules={{ required: t('addItem.inputs.category.error.required') }}
+              inputLabel={t('createItem.inputs.category.label')}
+              rules={{
+                required: t('createItem.inputs.category.error.required')
+              }}
               error={errors.categoryId}
             />
           </div>
@@ -140,7 +142,7 @@ const AddItemForm = props => {
               accept="image/*"
               multiple={false}
               register={register({
-                required: t('addItem.inputs.fileUpload.error.required')
+                required: t('createItem.inputs.fileUpload.error.required')
               })}
               error={errors.imageUpload}
             />
@@ -150,11 +152,11 @@ const AddItemForm = props => {
             color="primary"
             size="large"
             type="submit"
-            text={t('addItem.button')}
+            text={t('createItem.button')}
             isLoading={isLoading}
           />
           <div className={classes.errorBar}>
-            {error && <p>{t('addItem.formError')}</p>}
+            {error && <p>{t('createItem.formError')}</p>}
           </div>
         </form>
       </Grid>
@@ -169,8 +171,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToState(dispatch) {
   return {
-    addItem: itemData => dispatch(ADD_ITEM_REQUEST(itemData))
+    createItem: itemData => dispatch(CREATE_ITEM_REQUEST(itemData))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToState)(AddItemForm)
+export default connect(mapStateToProps, mapDispatchToState)(CreateItemForm)

@@ -1,7 +1,7 @@
 import AccountProfile from '../../account/AccountProfile'
 import * as ROUTES from '../../../constants/routes'
 import MainPage from '../MainPage'
-import AddItem from '../AddItem'
+import CreateItem from '../CreateItem'
 import TransactionsTabs from '../Transactions'
 import ItemsContainer from '../ItemsContainer'
 
@@ -17,9 +17,9 @@ const routes = path => [
     component: AccountProfile
   },
   {
-    path: `${path}${ROUTES.ITEMS}${ROUTES.ADD_ITEM}`,
+    path: `${path}${ROUTES.ITEMS}${ROUTES.CREATE_ITEM}`,
     exact: false,
-    component: AddItem
+    component: CreateItem
   },
   {
     path: `${path}${ROUTES.ITEMS}${ROUTES.TRANSACTIONS}`,

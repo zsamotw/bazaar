@@ -143,7 +143,7 @@
     "formError": "Nie udało się skasować twojego konta. Sprawdź swoje uprawnienia",
     "submissionError": "Potwierdź decyzję poprawnym emailem"
   },
-  "addItem": {
+  "createItem": {
     "title": "Oddaj innym",
     "description": "Podaj szczegóły przedmiotu",
     "inputs": {
@@ -174,14 +174,14 @@
       }
     },
     "button": "Wystaw",
-    "messageOnAddItemSuccess": "Przedmiot został dodany",
-    "messageOnAddItemError": "Nie udało się dodać przedmiotu",
+    "messageOnCreateItemSuccess": "Przedmiot został dodany",
+    "messageOnCreateItemError": "Nie udało się dodać przedmiotu",
     "messageOnFileUploadError": "Nie można załadować pliku ze zdjęciem",
     "formError": "Nie udało się dodać przedmiotu"
   },
   "menuAppBar": {
     "menu": {
-      "addNewItem": "Dodaj przedmiot",
+      "createNewItem": "Dodaj przedmiot",
       "transactions": "Twoje transakcje",
       "profile": "Profil",
       "logout": "Wyloguj"

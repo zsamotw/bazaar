@@ -29,9 +29,12 @@ export const DELETE_USER_REQUEST = createAction(
 )
 
 // user items async actions
-export const ADD_ITEM_REQUEST = createAction('ADD ITEM REQUEST', itemData => ({
-  payload: { ...itemData }
-}))
+export const CREATE_ITEM_REQUEST = createAction(
+  'CREATE ITEM REQUEST',
+  itemData => ({
+    payload: { ...itemData }
+  })
+)
 
 export const REMOVE_ITEM_REQUEST = createAction(
   'REMOVE ITEM REQUEST',

@@ -6,7 +6,7 @@ import {
   SET_TRANSACTIONS
 } from '../actions/sync-actions'
 import {
-  ADD_ITEM_REQUEST,
+  CREATE_ITEM_REQUEST,
   GET_ITEMS_REQUEST,
   SET_RECIPIENT_REQUEST,
   GET_TRANSACTIONS_REQUEST,
@@ -50,7 +50,7 @@ function* deleteFile(filePath, messageOnFileRemoveError) {
   }
 }
 
-function* addFirebaseItem(action) {
+function* createFirebaseItem(action) {
   const {
     name,
     description,
@@ -164,10 +164,10 @@ function* getTransactions() {
   }
 }
 
-function* addItemRequest(action) {
+function* createItemRequest(action) {
   yield requestWithFetchingData(
     action,
-    addFirebaseItem,
+    createFirebaseItem,
     isAsyncRequest.isProcessingItem
   )
 }
@@ -219,7 +219,7 @@ function* getTransactionsRequest(action) {
 }
 
 export default function* itemsSaga() {
-  yield takeLatest(ADD_ITEM_REQUEST.type, addItemRequest)
+  yield takeLatest(CREATE_ITEM_REQUEST.type, createItemRequest)
   yield takeLatest(REMOVE_ITEM_REQUEST.type, removeItemRequest)
   yield takeLatest(GET_ITEMS_REQUEST.type, getFirebaseSyncItems)
   yield takeLatest(SET_RECIPIENT_REQUEST.type, setRecipientRequest)

@@ -124,9 +124,11 @@ function Item(prop) {
 
   const handleRemoveItem = () => {
     const messageOnSuccess = t('item.messageOnRemoveSuccess')
-    const messageOnError = t('addItem.messageOnRemoveError')
-    const messageOnFileRemoveError = t('addItem.messageOnFileRemoveError')
-    const messageOnUserAccessError = t('addItem.messageOnUserItemAccessError')
+    const messageOnError = t('createItem.messageOnRemoveError')
+    const messageOnFileRemoveError = t('createItem.messageOnFileRemoveError')
+    const messageOnUserAccessError = t(
+      'createItem.messageOnUserItemAccessError'
+    )
     removeItem({
       item,
       messageOnSuccess,
@@ -139,9 +141,9 @@ function Item(prop) {
 
   const handleSetRecipient = () => {
     const messageOnSuccess = t('item.messageOnSetRecipientSuccess')
-    const messageOnError = t('addItem.messageOnSetRecipientError')
+    const messageOnError = t('createItem.messageOnSetRecipientError')
     const messageOnUserSetRecipientAccessError = t(
-      'addItem.messageOnUserSetRecipientAccessError'
+      'createItem.messageOnUserSetRecipientAccessError'
     )
     setRecipient({
       item,

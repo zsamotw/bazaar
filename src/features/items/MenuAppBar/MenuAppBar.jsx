@@ -63,8 +63,8 @@ function MenuAppBar(props) {
     setAnchorEl(null)
   }
 
-  const handleNavigateAddItem = () => {
-    history.push(`${path}${ROUTES.ITEMS}${ROUTES.ADD_ITEM}`)
+  const handleNavigateCreateItem = () => {
+    history.push(`${path}${ROUTES.ITEMS}${ROUTES.CREATE_ITEM}`)
     setAnchorEl(null)
   }
 
@@ -120,8 +120,8 @@ function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleNavigateAddItem}>
-                {t('menuAppBar.menu.addNewItem')}
+              <MenuItem onClick={handleNavigateCreateItem}>
+                {t('menuAppBar.menu.createNewItem')}
               </MenuItem>
               <MenuItem onClick={handleNavigateTransaction}>
                 {t('menuAppBar.menu.transactions')}
